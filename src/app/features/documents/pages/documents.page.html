@@ -1,0 +1,32 @@
+<section class="documents-page">
+  <div class="page-head">
+    <h1>Your Documents</h1>
+    <p>Invoices, credit notes, cancellations, reminders and more.</p>
+  </div>
+
+  @if (isLoading()) {
+    <p class="state-text">Loading documents...</p>
+  } @else if (!documents().length) {
+    <p class="state-text">No documents available.</p>
+  } @else {
+    <div class="documents-list">
+      @for (document of documents(); track document.id) {
+        <article class="document-card">
+          <div>
+            <h2>{{ document.document_number }}</h2>
+            <p>{{ document.document_type }}</p>
+          </div>
+
+          <div class="document-meta">
+            <span>{{ document.issue_date | date: 'mediumDate' }}</span>
+            <span>{{ document.status }}</span>
+          </div>
+
+          @if (document.file_url) {
+            <a [href]="document.file_url" target="_blank" rel="noopener noreferrer"> Open PDF </a>
+          }
+        </article>
+      }
+    </div>
+  }
+</section>

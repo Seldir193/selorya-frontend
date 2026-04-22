@@ -65,6 +65,15 @@
       <input matInput formControlName="country" />
     </mat-form-field>
 
+    <label class="upload-field">
+      <span>Images</span>
+      <input type="file" multiple accept="image/*" (change)="onFilesSelected($event)" />
+    </label>
+
+    @if (selectedFiles().length) {
+      <p class="file-info">{{ selectedFiles().length }} image(s) selected.</p>
+    }
+
     @if (errorText()) {
       <p class="error-text">{{ errorText() }}</p>
     }

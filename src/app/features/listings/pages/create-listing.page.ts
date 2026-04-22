@@ -1,6 +1,7 @@
 import { Component, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { forkJoin, of, switchMap } from 'rxjs';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -31,6 +32,7 @@ export class CreateListingPage {
   readonly categories = signal<Category[]>([]);
   readonly errorText = signal('');
   readonly isSubmitting = signal(false);
+  readonly selectedFiles = signal<File[]>([]);
 
   readonly form = this.fb.nonNullable.group({
     category: [0, [Validators.required]],
@@ -53,6 +55,12 @@ export class CreateListingPage {
     });
   }
 
+  onFilesSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    const files = Array.from(input.files ?? []);
+    this.selectedFiles.set(files);
+  }
+
   submit(): void {
     if (this.form.invalid || this.isSubmitting()) {
       this.form.markAllAsTouched();
@@ -62,15 +70,31 @@ export class CreateListingPage {
     this.errorText.set('');
     this.isSubmitting.set(true);
 
-    this.listingsService.create(this.form.getRawValue()).subscribe({
-      next: (listing) => {
-        this.isSubmitting.set(false);
-        this.router.navigate(['/listings', listing.slug]);
-      },
-      error: () => {
-        this.isSubmitting.set(false);
-        this.errorText.set('Listing could not be created.');
-      },
-    });
+    this.listingsService
+      .create(this.form.getRawValue())
+      .pipe(
+        switchMap((listing) => {
+          const files = this.selectedFiles();
+          if (!files.length) {
+            return of(listing);
+          }
+
+          const uploads = files.map((file, index) =>
+            this.listingsService.uploadImage(listing.slug, file, listing.title, index, index === 0),
+          );
+
+          return forkJoin(uploads).pipe(switchMap(() => of(listing)));
+        }),
+      )
+      .subscribe({
+        next: (listing) => {
+          this.isSubmitting.set(false);
+          this.router.navigate(['/listings', listing.slug]);
+        },
+        error: () => {
+          this.isSubmitting.set(false);
+          this.errorText.set('Listing could not be created.');
+        },
+      });
   }
 }

@@ -60,4 +60,20 @@ export class ListingsService {
   }): Observable<Listing> {
     return this.http.post<Listing>(`${API_BASE_URL}/listings/create/`, payload);
   }
+
+  uploadImage(
+    slug: string,
+    file: File,
+    altText = '',
+    sortOrder = 0,
+    isPrimary = false,
+  ): Observable<unknown> {
+    const formData = new FormData();
+    formData.append('image', file);
+    formData.append('alt_text', altText);
+    formData.append('sort_order', String(sortOrder));
+    formData.append('is_primary', String(isPrimary));
+
+    return this.http.post(`${API_BASE_URL}/listings/${slug}/images/create/`, formData);
+  }
 }

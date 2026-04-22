@@ -9,6 +9,10 @@ import { FavoritesPage } from './features/favorites/pages/favorites.page';
 import { OrdersPage } from './features/orders/pages/orders.page';
 import { MyListingsPage } from './features/listings/pages/my-listings.page';
 import { CreateListingPage } from './features/listings/pages/create-listing.page';
+import { CheckoutSuccessPage } from './features/checkout/pages/checkout-success.page';
+import { CheckoutCancelPage } from './features/checkout/pages/checkout-cancel.page';
+import { DocumentsPage } from './features/documents/pages/documents.page';
+import { ProfilePage } from './features/profile/pages/profile.page';
 
 export const routes: Routes = [
   {
@@ -42,6 +46,16 @@ export const routes: Routes = [
     canActivate: [authGuard],
   },
   {
+    path: 'documents',
+    component: DocumentsPage,
+    canActivate: [authGuard],
+  },
+  {
+    path: 'profile',
+    component: ProfilePage,
+    canActivate: [authGuard],
+  },
+  {
     path: 'my-listings',
     component: MyListingsPage,
     canActivate: [authGuard],
@@ -49,6 +63,16 @@ export const routes: Routes = [
   {
     path: 'sell/create',
     component: CreateListingPage,
+    canActivate: [authGuard],
+  },
+  {
+    path: 'checkout/success',
+    component: CheckoutSuccessPage,
+    canActivate: [authGuard],
+  },
+  {
+    path: 'checkout/cancel',
+    component: CheckoutCancelPage,
     canActivate: [authGuard],
   },
 ];

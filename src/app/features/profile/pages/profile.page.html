@@ -1,0 +1,38 @@
+<section class="profile-page">
+  <div class="page-head">
+    <h1>Your Profile</h1>
+    <p>Account and profile information for Selorya.</p>
+  </div>
+
+  <div class="profile-card">
+    <div class="profile-row">
+      <span>Full name</span>
+      <strong>{{ authService.user()?.full_name }}</strong>
+    </div>
+
+    <div class="profile-row">
+      <span>Email</span>
+      <strong>{{ authService.user()?.email }}</strong>
+    </div>
+
+    <div class="profile-row">
+      <span>Role</span>
+      <strong>{{ authService.user()?.role }}</strong>
+    </div>
+
+    <div class="profile-row">
+      <span>Language</span>
+      <strong>{{ authService.user()?.language }}</strong>
+    </div>
+
+    <div class="profile-row">
+      <span>Seller display name</span>
+      <strong>{{ authService.user()?.seller_profile?.display_name }}</strong>
+    </div>
+
+    <div class="profile-row">
+      <span>Seller city</span>
+      <strong>{{ authService.user()?.seller_profile?.city }}</strong>
+    </div>
+  </div>
+</section>
