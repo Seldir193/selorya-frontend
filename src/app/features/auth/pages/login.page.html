@@ -1,0 +1,28 @@
+<section class="auth-page">
+  <mat-card class="auth-card">
+    <div class="auth-card__head">
+      <h1>Welcome back</h1>
+      <p>Login to your Selorya account.</p>
+    </div>
+
+    <form [formGroup]="form" (ngSubmit)="submit()" class="auth-form">
+      <mat-form-field appearance="outline">
+        <mat-label>Email</mat-label>
+        <input matInput type="email" formControlName="email" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Password</mat-label>
+        <input matInput type="password" formControlName="password" />
+      </mat-form-field>
+
+      @if (errorText()) {
+        <p class="auth-error">{{ errorText() }}</p>
+      }
+
+      <button mat-flat-button type="submit" [disabled]="isSubmitting()">
+        {{ isSubmitting() ? 'Signing in...' : 'Login' }}
+      </button>
+    </form>
+  </mat-card>
+</section>

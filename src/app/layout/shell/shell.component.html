@@ -1,0 +1,20 @@
+<div class="shell">
+  <header class="topbar">
+    <a routerLink="/" class="brand">
+      <img src="assets/icons/brand-mark.svg" alt="Selorya" />
+      <span>Selorya</span>
+    </a>
+
+    <nav class="topbar__actions">
+      @if (!authService.isAuthenticated()) {
+        <a mat-stroked-button routerLink="/login">Login</a>
+      } @else {
+        <button mat-stroked-button type="button" (click)="logout()">Logout</button>
+      }
+    </nav>
+  </header>
+
+  <main class="shell__content">
+    <router-outlet />
+  </main>
+</div>
