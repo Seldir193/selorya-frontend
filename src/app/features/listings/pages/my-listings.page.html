@@ -1,0 +1,27 @@
+<section class="my-listings-page">
+  <div class="page-head">
+    <div>
+      <h1>My Listings</h1>
+      <p>Manage your products and selling activity.</p>
+    </div>
+
+    <a routerLink="/sell/create" class="create-link">Create Listing</a>
+  </div>
+
+  @if (isLoading()) {
+    <p class="state-text">Loading listings...</p>
+  } @else if (!listings().length) {
+    <p class="state-text">You have no listings yet.</p>
+  } @else {
+    <div class="listing-grid">
+      @for (listing of listings(); track listing.id) {
+        <article class="listing-card">
+          <span class="listing-status">{{ listing.status }}</span>
+          <h2>{{ listing.title }}</h2>
+          <p>{{ listing.city }}, {{ listing.country }}</p>
+          <strong>{{ +listing.price | currency: 'EUR' }}</strong>
+        </article>
+      }
+    </div>
+  }
+</section>

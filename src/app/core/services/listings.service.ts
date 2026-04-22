@@ -41,4 +41,23 @@ export class ListingsService {
   detail(slug: string): Observable<Listing> {
     return this.http.get<Listing>(`${API_BASE_URL}/listings/${slug}/`);
   }
+
+  myListings(): Observable<Listing[]> {
+    return this.http.get<Listing[]>(`${API_BASE_URL}/listings/mine/`);
+  }
+
+  create(payload: {
+    category: number;
+    title: string;
+    slug: string;
+    description: string;
+    price: string;
+    condition: string;
+    status: string;
+    city: string;
+    country: string;
+    is_featured: boolean;
+  }): Observable<Listing> {
+    return this.http.post<Listing>(`${API_BASE_URL}/listings/create/`, payload);
+  }
 }

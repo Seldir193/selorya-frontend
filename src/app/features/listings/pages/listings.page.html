@@ -6,6 +6,34 @@
     </div>
   </div>
 
+  <div class="filters-panel">
+    <input
+      class="filter-input"
+      type="text"
+      placeholder="Search listings"
+      [ngModel]="search()"
+      (ngModelChange)="updateSearch($event)"
+    />
+
+    <input
+      class="filter-input"
+      type="text"
+      placeholder="Min price"
+      [ngModel]="minPrice()"
+      (ngModelChange)="updateMinPrice($event)"
+    />
+
+    <input
+      class="filter-input"
+      type="text"
+      placeholder="Max price"
+      [ngModel]="maxPrice()"
+      (ngModelChange)="updateMaxPrice($event)"
+    />
+
+    <button type="button" class="apply-button" (click)="applyFilters()">Apply</button>
+  </div>
+
   <div class="category-filters">
     <button
       type="button"
@@ -35,24 +63,35 @@
   } @else {
     <div class="listing-grid">
       @for (listing of filteredListings(); track listing.id) {
-        <a class="listing-card" [routerLink]="['/listings', listing.slug]">
-          <div class="listing-card__media">
-            @if (primaryImage(listing)) {
-              <img [src]="primaryImage(listing)" [alt]="listing.title" />
-            } @else {
-              <div class="listing-card__placeholder">No image</div>
-            }
-          </div>
+        <article class="listing-card">
+          <a class="listing-card__link" [routerLink]="['/listings', listing.slug]">
+            <div class="listing-card__media">
+              @if (primaryImage(listing)) {
+                <img [src]="primaryImage(listing)" [alt]="listing.title" />
+              } @else {
+                <div class="listing-card__placeholder">No image</div>
+              }
+            </div>
 
-          <div class="listing-card__body">
-            <span class="listing-card__category">
-              {{ listing.category_data.name }}
-            </span>
-            <h2>{{ listing.title }}</h2>
-            <p>{{ listing.city }}, {{ listing.country }}</p>
-            <strong>{{ +listing.price | currency: 'EUR' }}</strong>
-          </div>
-        </a>
+            <div class="listing-card__body">
+              <span class="listing-card__category">
+                {{ listing.category_data.name }}
+              </span>
+              <h2>{{ listing.title }}</h2>
+              <p>{{ listing.city }}, {{ listing.country }}</p>
+              <strong>{{ +listing.price | currency: 'EUR' }}</strong>
+            </div>
+          </a>
+
+          <button
+            type="button"
+            class="favorite-button"
+            [class.is-active]="isFavorite(listing.id)"
+            (click)="toggleFavorite(listing.id)"
+          >
+            ♥
+          </button>
+        </article>
       }
     </div>
   }

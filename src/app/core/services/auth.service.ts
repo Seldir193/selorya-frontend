@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { EMPTY, Observable, catchError, tap } from 'rxjs';
 import { API_BASE_URL } from '../config/api.config';
 import { AuthUser, JwtLoginResponse, JwtRefreshResponse } from '../models/auth.model';
+import { RegisterPayload } from '../models/register.model';
 import { TokenService } from './token.service';
 
 type LoginPayload = {
@@ -28,6 +29,10 @@ export class AuthService {
         this.userState.set(response.user);
       }),
     );
+  }
+
+  register(payload: RegisterPayload): Observable<AuthUser> {
+    return this.http.post<AuthUser>(`${API_BASE_URL}/accounts/register/`, payload);
   }
 
   refresh(): Observable<JwtRefreshResponse> {

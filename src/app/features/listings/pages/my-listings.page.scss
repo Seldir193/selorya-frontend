@@ -1,0 +1,71 @@
+.my-listings-page {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 32px 24px 56px;
+}
+
+.page-head {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.page-head h1 {
+  margin: 0 0 10px;
+  font-size: clamp(32px, 6vw, 52px);
+  line-height: 1;
+  letter-spacing: -0.04em;
+}
+
+.page-head p,
+.state-text {
+  margin: 0;
+  color: var(--color-text-soft);
+}
+
+.create-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 48px;
+  padding: 0 18px;
+  border-radius: 16px;
+  background: var(--color-primary);
+  color: #fff;
+  text-decoration: none;
+  font-weight: 700;
+}
+
+.listing-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 24px;
+  margin-top: 28px;
+}
+
+.listing-card {
+  display: grid;
+  gap: 12px;
+  padding: 20px;
+  border: 1px solid var(--color-border);
+  border-radius: 24px;
+  background: var(--color-surface);
+  box-shadow: var(--shadow-lg);
+}
+
+.listing-card h2,
+.listing-card p {
+  margin: 0;
+}
+
+.listing-card p {
+  color: var(--color-text-soft);
+}
+
+.listing-status {
+  color: var(--color-primary);
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: capitalize;
+}

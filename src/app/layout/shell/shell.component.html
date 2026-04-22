@@ -11,12 +11,15 @@
       @if (authService.isAuthenticated()) {
         <a routerLink="/favorites">Favorites</a>
         <a routerLink="/orders">Orders</a>
+        <a routerLink="/my-listings">My Listings</a>
+        <a routerLink="/sell/create">Sell</a>
       }
     </nav>
 
     <div class="topbar__actions">
       @if (!authService.isAuthenticated()) {
         <a mat-stroked-button routerLink="/login">Login</a>
+        <a mat-flat-button routerLink="/register">Register</a>
       } @else {
         <span class="user-pill">{{ authService.user()?.full_name }}</span>
         <button mat-stroked-button type="button" (click)="logout()">Logout</button>

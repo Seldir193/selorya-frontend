@@ -1,0 +1,52 @@
+<section class="auth-page">
+  <mat-card class="auth-card">
+    <div class="auth-card__head">
+      <h1>Create account</h1>
+      <p>Start buying or selling on Selorya.</p>
+    </div>
+
+    <form [formGroup]="form" (ngSubmit)="submit()" class="auth-form">
+      <mat-form-field appearance="outline">
+        <mat-label>Full name</mat-label>
+        <input matInput formControlName="full_name" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Email</mat-label>
+        <input matInput type="email" formControlName="email" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Role</mat-label>
+        <mat-select formControlName="role">
+          <mat-option value="customer">Customer</mat-option>
+          <mat-option value="seller">Seller</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Language</mat-label>
+        <mat-select formControlName="language">
+          <mat-option value="de">Deutsch</mat-option>
+          <mat-option value="en">English</mat-option>
+          <mat-option value="tr">Türkçe</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Password</mat-label>
+        <input matInput type="password" formControlName="password" />
+      </mat-form-field>
+
+      @if (errorText()) {
+        <p class="auth-error">{{ errorText() }}</p>
+      }
+
+      <button mat-flat-button type="submit" [disabled]="isSubmitting()">
+        {{ isSubmitting() ? 'Creating...' : 'Create account' }}
+      </button>
+
+      <a routerLink="/login" class="auth-link">Already have an account?</a>
+    </form>
+  </mat-card>
+</section>
