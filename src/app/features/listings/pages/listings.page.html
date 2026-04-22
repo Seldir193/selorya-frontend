@@ -1,0 +1,59 @@
+<section class="listings-page">
+  <div class="listings-head">
+    <div>
+      <h1>Discover Listings</h1>
+      <p>Browse premium secondhand products on Selorya.</p>
+    </div>
+  </div>
+
+  <div class="category-filters">
+    <button
+      type="button"
+      class="filter-chip"
+      [class.is-active]="selectedCategory() === ''"
+      (click)="selectCategory()"
+    >
+      All
+    </button>
+
+    @for (category of categories(); track category.id) {
+      <button
+        type="button"
+        class="filter-chip"
+        [class.is-active]="selectedCategory() === category.slug"
+        (click)="selectCategory(category.slug)"
+      >
+        {{ category.name }}
+      </button>
+    }
+  </div>
+
+  @if (isLoading()) {
+    <p class="listings-state">Loading listings...</p>
+  } @else if (!filteredListings().length) {
+    <p class="listings-state">No listings found.</p>
+  } @else {
+    <div class="listing-grid">
+      @for (listing of filteredListings(); track listing.id) {
+        <a class="listing-card" [routerLink]="['/listings', listing.slug]">
+          <div class="listing-card__media">
+            @if (primaryImage(listing)) {
+              <img [src]="primaryImage(listing)" [alt]="listing.title" />
+            } @else {
+              <div class="listing-card__placeholder">No image</div>
+            }
+          </div>
+
+          <div class="listing-card__body">
+            <span class="listing-card__category">
+              {{ listing.category_data.name }}
+            </span>
+            <h2>{{ listing.title }}</h2>
+            <p>{{ listing.city }}, {{ listing.country }}</p>
+            <strong>{{ +listing.price | currency: 'EUR' }}</strong>
+          </div>
+        </a>
+      }
+    </div>
+  }
+</section>
