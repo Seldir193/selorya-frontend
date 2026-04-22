@@ -1,0 +1,34 @@
+<section class="favorites-page">
+  <div class="page-head">
+    <h1>Your Favorites</h1>
+    <p>Saved products you want to revisit later.</p>
+  </div>
+
+  @if (isLoading()) {
+    <p class="state-text">Loading favorites...</p>
+  } @else if (!favorites().length) {
+    <p class="state-text">You have no favorites yet.</p>
+  } @else {
+    <div class="favorites-grid">
+      @for (favorite of favorites(); track favorite.id) {
+        <article class="favorite-card">
+          <a class="favorite-card__link" [routerLink]="['/listings', favorite.listing_data.slug]">
+            <span class="favorite-card__category">
+              {{ favorite.listing_data.category_name }}
+            </span>
+            <h2>{{ favorite.listing_data.title }}</h2>
+            <p>
+              {{ favorite.listing_data.city }},
+              {{ favorite.listing_data.country }}
+            </p>
+            <strong>{{ +favorite.listing_data.price | currency: 'EUR' }}</strong>
+          </a>
+
+          <button type="button" class="remove-button" (click)="removeFavorite(favorite.id)">
+            Remove
+          </button>
+        </article>
+      }
+    </div>
+  }
+</section>

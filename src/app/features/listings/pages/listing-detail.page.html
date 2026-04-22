@@ -28,6 +28,24 @@
           <span>Condition: {{ listing()!.condition }}</span>
           <span>Seller: {{ listing()!.seller_name }}</span>
         </div>
+
+        <div class="detail-actions">
+          <button type="button" class="secondary-button" (click)="addToFavorites()">
+            Add to Favorites
+          </button>
+
+          <button type="button" class="primary-button" (click)="buyWithStripe()">
+            Buy with Stripe
+          </button>
+
+          <button type="button" class="secondary-button" (click)="buyWithPayPal()">
+            Buy with PayPal
+          </button>
+        </div>
+
+        @if (actionText()) {
+          <p class="action-text">{{ actionText() }}</p>
+        }
       </div>
     </div>
   }

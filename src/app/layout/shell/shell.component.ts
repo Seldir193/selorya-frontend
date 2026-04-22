@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { RouterLink, RouterOutlet } from '@angular/router';
+import { Router, RouterLink, RouterOutlet } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 import { AuthService } from '../../core/services/auth.service';
 
@@ -12,8 +12,14 @@ import { AuthService } from '../../core/services/auth.service';
 })
 export class ShellComponent {
   readonly authService = inject(AuthService);
+  private readonly router = inject(Router);
+
+  constructor() {
+    this.authService.initialize();
+  }
 
   logout(): void {
     this.authService.logout();
+    this.router.navigateByUrl('/');
   }
 }

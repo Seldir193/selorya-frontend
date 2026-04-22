@@ -1,6 +1,6 @@
 import { Injectable, computed, inject, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, tap } from 'rxjs';
+import { EMPTY, Observable, catchError, tap } from 'rxjs';
 import { API_BASE_URL } from '../config/api.config';
 import { AuthUser, JwtLoginResponse, JwtRefreshResponse } from '../models/auth.model';
 import { TokenService } from './token.service';
@@ -42,6 +42,21 @@ export class AuthService {
         this.userState.set(user);
       }),
     );
+  }
+
+  initialize(): void {
+    if (!this.tokenService.hasAccessToken()) {
+      return;
+    }
+
+    this.loadMe()
+      .pipe(
+        catchError(() => {
+          this.logout();
+          return EMPTY;
+        }),
+      )
+      .subscribe();
   }
 
   logout(): void {

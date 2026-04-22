@@ -4,6 +4,8 @@ import { HomePage } from './features/home.page';
 import { LoginPage } from './features/auth/pages/login.page';
 import { ListingsPage } from './features/listings/pages/listings.page';
 import { ListingDetailPage } from './features/listings/pages/listing-detail.page';
+import { FavoritesPage } from './features/favorites/pages/favorites.page';
+import { OrdersPage } from './features/orders/pages/orders.page';
 
 export const routes: Routes = [
   {
@@ -21,6 +23,16 @@ export const routes: Routes = [
   {
     path: 'listings/:slug',
     component: ListingDetailPage,
+  },
+  {
+    path: 'favorites',
+    component: FavoritesPage,
+    canActivate: [authGuard],
+  },
+  {
+    path: 'orders',
+    component: OrdersPage,
+    canActivate: [authGuard],
   },
   {
     path: 'account',

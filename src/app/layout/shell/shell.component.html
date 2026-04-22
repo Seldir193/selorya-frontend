@@ -5,13 +5,23 @@
       <span>Selorya</span>
     </a>
 
-    <nav class="topbar__actions">
+    <nav class="topbar__nav">
+      <a routerLink="/listings">Listings</a>
+
+      @if (authService.isAuthenticated()) {
+        <a routerLink="/favorites">Favorites</a>
+        <a routerLink="/orders">Orders</a>
+      }
+    </nav>
+
+    <div class="topbar__actions">
       @if (!authService.isAuthenticated()) {
         <a mat-stroked-button routerLink="/login">Login</a>
       } @else {
+        <span class="user-pill">{{ authService.user()?.full_name }}</span>
         <button mat-stroked-button type="button" (click)="logout()">Logout</button>
       }
-    </nav>
+    </div>
   </header>
 
   <main class="shell__content">
