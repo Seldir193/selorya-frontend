@@ -9,6 +9,8 @@ import { MatSelectModule } from '@angular/material/select';
 import { CategoriesService } from '../../../core/services/categories.service';
 import { ListingsService } from '../../../core/services/listings.service';
 import { Category } from '../../../core/models/category.model';
+import { ToastService } from '../../../core/services/toast.service';
+import { I18nService } from '../../../core/services/i18n.service';
 
 @Component({
   selector: 'app-create-listing-page',
@@ -28,6 +30,8 @@ export class CreateListingPage {
   private readonly router = inject(Router);
   private readonly categoriesService = inject(CategoriesService);
   private readonly listingsService = inject(ListingsService);
+  private readonly toast = inject(ToastService);
+  private readonly i18n = inject(I18nService);
 
   readonly categories = signal<Category[]>([]);
   readonly errorText = signal('');
@@ -90,10 +94,15 @@ export class CreateListingPage {
         next: (listing) => {
           this.isSubmitting.set(false);
           this.router.navigate(['/listings', listing.slug]);
+          this.toast.success(this.i18n.t('listingCreated'));
         },
         error: () => {
           this.isSubmitting.set(false);
           this.errorText.set('Listing could not be created.');
+
+          const message = this.i18n.t('listingCreateFailed');
+          this.errorText.set(message);
+          this.toast.error(message);
         },
       });
   }

@@ -6,6 +6,8 @@ import { FavoritesService } from '../../../core/services/favorites.service';
 import { OrdersService } from '../../../core/services/orders.service';
 import { AuthService } from '../../../core/services/auth.service';
 import { Listing } from '../../../core/models/listing.model';
+import { ToastService } from '../../../core/services/toast.service';
+import { I18nService } from '../../../core/services/i18n.service';
 
 @Component({
   selector: 'app-listing-detail-page',
@@ -21,6 +23,8 @@ export class ListingDetailPage {
   private readonly favoritesService = inject(FavoritesService);
   private readonly ordersService = inject(OrdersService);
   readonly authService = inject(AuthService);
+  private readonly toast = inject(ToastService);
+  private readonly i18n = inject(I18nService);
 
   readonly listing = signal<Listing | null>(null);
   readonly isLoading = signal(true);
@@ -66,10 +70,12 @@ export class ListingDetailPage {
 
     this.favoritesService.create(listing.id).subscribe({
       next: () => {
-        this.actionText.set('Listing added to favorites.');
+        this.actionText.set(this.i18n.t('favoriteAdded'));
+        this.toast.success(this.i18n.t('favoriteAdded'));
       },
       error: () => {
-        this.actionText.set('Could not add listing to favorites.');
+        this.actionText.set(this.i18n.t('favoriteFailed'));
+        this.toast.error(this.i18n.t('favoriteFailed'));
       },
     });
   }
@@ -100,7 +106,8 @@ export class ListingDetailPage {
               window.location.href = response.checkout_url;
             },
             error: () => {
-              this.actionText.set('Stripe checkout could not be started.');
+              this.actionText.set(this.i18n.t('stripeStartFailed'));
+              this.toast.error(this.i18n.t('stripeStartFailed'));
             },
           });
           return;
@@ -111,12 +118,14 @@ export class ListingDetailPage {
             window.location.href = response.approve_url;
           },
           error: () => {
-            this.actionText.set('PayPal checkout could not be started.');
+            this.actionText.set(this.i18n.t('paypalStartFailed'));
+            this.toast.error(this.i18n.t('paypalStartFailed'));
           },
         });
       },
       error: () => {
-        this.actionText.set('Order could not be created.');
+        this.actionText.set(this.i18n.t('orderCreateFailed'));
+        this.toast.error(this.i18n.t('orderCreateFailed'));
       },
     });
   }

@@ -1,0 +1,7 @@
+@use './create-listing.page.scss';
+
+.edit-actions {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+}

@@ -7,6 +7,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { AuthService } from '../../../core/services/auth.service';
+import { ToastService } from '../../../core/services/toast.service';
+import { I18nService } from '../../../core/services/i18n.service';
 
 @Component({
   selector: 'app-register-page',
@@ -27,6 +29,8 @@ export class RegisterPage {
   private readonly fb = inject(FormBuilder);
   private readonly authService = inject(AuthService);
   private readonly router = inject(Router);
+  private readonly toast = inject(ToastService);
+  private readonly i18n = inject(I18nService);
 
   readonly errorText = signal('');
   readonly isSubmitting = signal(false);
@@ -52,10 +56,15 @@ export class RegisterPage {
       next: () => {
         this.isSubmitting.set(false);
         this.router.navigateByUrl('/login');
+        this.toast.success('Account created successfully.');
       },
       error: () => {
         this.isSubmitting.set(false);
         this.errorText.set('Registration failed.');
+
+        const message = this.i18n.t('registerFailed');
+        this.errorText.set(message);
+        this.toast.error(message);
       },
     });
   }

@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { CheckoutReturnService } from '../../../core/services/checkout-return.service';
 
 @Component({
   selector: 'app-checkout-success-page',
@@ -8,4 +9,6 @@ import { RouterLink } from '@angular/router';
   templateUrl: './checkout-success.page.html',
   styleUrls: ['./checkout-success.page.scss'],
 })
-export class CheckoutSuccessPage {}
+export class CheckoutSuccessPage {
+  readonly checkoutReturn = inject(CheckoutReturnService);
+}

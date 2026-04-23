@@ -13,6 +13,7 @@ import { CheckoutSuccessPage } from './features/checkout/pages/checkout-success.
 import { CheckoutCancelPage } from './features/checkout/pages/checkout-cancel.page';
 import { DocumentsPage } from './features/documents/pages/documents.page';
 import { ProfilePage } from './features/profile/pages/profile.page';
+import { EditListingPage } from './features/listings/pages/edit-listing.page';
 
 export const routes: Routes = [
   {
@@ -73,6 +74,11 @@ export const routes: Routes = [
   {
     path: 'checkout/cancel',
     component: CheckoutCancelPage,
+    canActivate: [authGuard],
+  },
+  {
+    path: 'sell/:slug/edit',
+    component: EditListingPage,
     canActivate: [authGuard],
   },
 ];

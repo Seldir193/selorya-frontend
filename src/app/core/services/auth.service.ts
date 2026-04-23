@@ -5,6 +5,7 @@ import { API_BASE_URL } from '../config/api.config';
 import { AuthUser, JwtLoginResponse, JwtRefreshResponse } from '../models/auth.model';
 import { RegisterPayload } from '../models/register.model';
 import { TokenService } from './token.service';
+import { FavoritesService } from './favorites.service';
 
 type LoginPayload = {
   email: string;
@@ -18,7 +19,7 @@ export class AuthService {
   private readonly http = inject(HttpClient);
   private readonly tokenService = inject(TokenService);
   private readonly userState = signal<AuthUser | null>(null);
-
+  private readonly favoritesService = inject(FavoritesService);
   readonly user = computed(() => this.userState());
   readonly isAuthenticated = computed(() => this.tokenService.hasAccessToken());
 
@@ -67,5 +68,6 @@ export class AuthService {
   logout(): void {
     this.tokenService.clearTokens();
     this.userState.set(null);
+    this.favoritesService.clear();
   }
 }

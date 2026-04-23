@@ -15,12 +15,12 @@
   } @else {
     <div class="listing-grid">
       @for (listing of listings(); track listing.id) {
-        <article class="listing-card">
+        <a class="listing-card" [routerLink]="['/sell', listing.slug, 'edit']">
           <span class="listing-status">{{ listing.status }}</span>
           <h2>{{ listing.title }}</h2>
           <p>{{ listing.city }}, {{ listing.country }}</p>
           <strong>{{ +listing.price | currency: 'EUR' }}</strong>
-        </article>
+        </a>
       }
     </div>
   }

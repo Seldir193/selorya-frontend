@@ -6,6 +6,8 @@ import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { AuthService } from '../../../core/services/auth.service';
+import { ToastService } from '../../../core/services/toast.service';
+import { I18nService } from '../../../core/services/i18n.service';
 
 @Component({
   selector: 'app-login-page',
@@ -24,6 +26,8 @@ export class LoginPage {
   private readonly fb = inject(FormBuilder);
   private readonly authService = inject(AuthService);
   private readonly router = inject(Router);
+  private readonly toast = inject(ToastService);
+  private readonly i18n = inject(I18nService);
 
   readonly errorText = signal('');
   readonly isSubmitting = signal(false);
@@ -51,6 +55,10 @@ export class LoginPage {
         this.isSubmitting.set(false);
         const detail = error?.error?.detail;
         this.errorText.set(detail || 'Login failed.');
+
+        const message = detail || this.i18n.t('loginFailed');
+        this.errorText.set(message);
+        this.toast.error(message);
       },
     });
   }

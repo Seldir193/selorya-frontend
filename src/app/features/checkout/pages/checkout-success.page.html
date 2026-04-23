@@ -2,9 +2,18 @@
   <div class="state-card">
     <h1>Payment successful</h1>
     <p>Your payment was completed successfully. Your documents will be available soon.</p>
+
+    @if (checkoutReturn.provider()) {
+      <p>Provider: {{ checkoutReturn.provider() }}</p>
+    }
+
+    @if (checkoutReturn.sessionId()) {
+      <p>Session: {{ checkoutReturn.sessionId() }}</p>
+    }
+
     <div class="state-actions">
       <a routerLink="/orders" class="primary-link">View Orders</a>
-      <a routerLink="/listings" class="secondary-link">Continue Shopping</a>
+      <a routerLink="/documents" class="secondary-link">View Documents</a>
     </div>
   </div>
 </section>

@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { CheckoutReturnService } from '../../../core/services/checkout-return.service';
 
 @Component({
   selector: 'app-checkout-cancel-page',
@@ -8,4 +9,6 @@ import { RouterLink } from '@angular/router';
   templateUrl: './checkout-cancel.page.html',
   styleUrls: ['./checkout-cancel.page.scss'],
 })
-export class CheckoutCancelPage {}
+export class CheckoutCancelPage {
+  readonly checkoutReturn = inject(CheckoutReturnService);
+}

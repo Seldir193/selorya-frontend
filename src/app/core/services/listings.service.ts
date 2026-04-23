@@ -76,4 +76,26 @@ export class ListingsService {
 
     return this.http.post(`${API_BASE_URL}/listings/${slug}/images/create/`, formData);
   }
+
+  update(
+    slug: string,
+    payload: {
+      category: number;
+      title: string;
+      slug: string;
+      description: string;
+      price: string;
+      condition: string;
+      status: string;
+      city: string;
+      country: string;
+      is_featured: boolean;
+    },
+  ): Observable<Listing> {
+    return this.http.patch<Listing>(`${API_BASE_URL}/listings/${slug}/update/`, payload);
+  }
+
+  delete(slug: string): Observable<void> {
+    return this.http.delete<void>(`${API_BASE_URL}/listings/${slug}/delete/`);
+  }
 }
