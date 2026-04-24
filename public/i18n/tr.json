@@ -1,0 +1,18 @@
+{
+  "loginFailed": "Giriş başarısız oldu.",
+  "registerFailed": "Kayıt başarısız oldu.",
+  "listingCreateFailed": "İlan oluşturulamadı.",
+  "listingCreated": "İlan başarıyla oluşturuldu.",
+  "listingUpdated": "İlan başarıyla güncellendi.",
+  "listingDeleted": "İlan başarıyla silindi.",
+  "favoriteAdded": "İlan favorilere eklendi.",
+  "favoriteRemoved": "İlan favorilerden kaldırıldı.",
+  "favoriteFailed": "Favori işlemi başarısız oldu.",
+  "stripeStartFailed": "Stripe ödeme akışı başlatılamadı.",
+  "paypalStartFailed": "PayPal ödeme akışı başlatılamadı.",
+  "orderCreateFailed": "Sipariş oluşturulamadı.",
+  "listingUpdateFailed": "İlan güncellenemedi.",
+  "listingDeleteFailed": "İlan silinemedi.",
+  "profileUpdated": "Profil başarıyla güncellendi.",
+  "profileUpdateFailed": "Profil güncellenemedi."
+}

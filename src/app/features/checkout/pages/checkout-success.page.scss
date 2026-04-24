@@ -27,6 +27,15 @@
   line-height: 1.7;
 }
 
+.order-summary {
+  display: grid;
+  gap: 8px;
+  padding: 18px;
+  border: 1px solid var(--color-border);
+  border-radius: 18px;
+  background: #fff;
+}
+
 .state-actions {
   display: flex;
   justify-content: center;

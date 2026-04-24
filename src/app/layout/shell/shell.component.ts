@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
 import { Router, RouterLink, RouterOutlet } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 import { AuthService } from '../../core/services/auth.service';
@@ -13,6 +13,11 @@ import { AuthService } from '../../core/services/auth.service';
 export class ShellComponent {
   readonly authService = inject(AuthService);
   private readonly router = inject(Router);
+
+  readonly isSeller = computed(() => {
+    const role = this.authService.user()?.role;
+    return role === 'seller' || role === 'admin';
+  });
 
   constructor() {
     this.authService.initialize();

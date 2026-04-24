@@ -77,6 +77,21 @@ export class ListingsService {
     return this.http.post(`${API_BASE_URL}/listings/${slug}/images/create/`, formData);
   }
 
+  updateImage(
+    imageId: number,
+    payload: {
+      alt_text: string;
+      sort_order: number;
+      is_primary: boolean;
+    },
+  ): Observable<unknown> {
+    return this.http.patch(`${API_BASE_URL}/listings/images/${imageId}/update/`, payload);
+  }
+
+  deleteImage(imageId: number): Observable<void> {
+    return this.http.delete<void>(`${API_BASE_URL}/listings/images/${imageId}/delete/`);
+  }
+
   update(
     slug: string,
     payload: {

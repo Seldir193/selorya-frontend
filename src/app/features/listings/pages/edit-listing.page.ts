@@ -10,6 +10,7 @@ import { CategoriesService } from '../../../core/services/categories.service';
 import { ToastService } from '../../../core/services/toast.service';
 import { I18nService } from '../../../core/services/i18n.service';
 import { Category } from '../../../core/models/category.model';
+import { Listing } from '../../../core/models/listing.model';
 
 @Component({
   selector: 'app-edit-listing-page',
@@ -37,6 +38,9 @@ export class EditListingPage {
   readonly categories = signal<Category[]>([]);
   readonly isLoading = signal(true);
   readonly isSubmitting = signal(false);
+  readonly listing = signal<Listing | null>(null);
+
+  readonly selectedFiles = signal<File[]>([]);
 
   readonly form = this.fb.nonNullable.group({
     category: [0, [Validators.required]],
@@ -58,8 +62,13 @@ export class EditListingPage {
       },
     });
 
+    this.reloadListing();
+  }
+
+  reloadListing(): void {
     this.listingsService.detail(this.slug).subscribe({
       next: (listing) => {
+        this.listing.set(listing);
         this.form.patchValue({
           category: listing.category,
           title: listing.title,
@@ -76,6 +85,53 @@ export class EditListingPage {
       },
       error: () => {
         this.isLoading.set(false);
+      },
+    });
+  }
+
+  onFilesSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    this.selectedFiles.set(Array.from(input.files ?? []));
+  }
+
+  uploadImages(): void {
+    const listing = this.listing();
+    const files = this.selectedFiles();
+
+    if (!listing || !files.length) {
+      return;
+    }
+
+    files.forEach((file, index) => {
+      this.listingsService.uploadImage(listing.slug, file, listing.title, index, false).subscribe({
+        next: () => {
+          this.toast.success('Image uploaded successfully.');
+          this.reloadListing();
+        },
+      });
+    });
+  }
+
+  makePrimary(imageId: number, altText: string, sortOrder: number): void {
+    this.listingsService
+      .updateImage(imageId, {
+        alt_text: altText,
+        sort_order: sortOrder,
+        is_primary: true,
+      })
+      .subscribe({
+        next: () => {
+          this.toast.success('Primary image updated.');
+          this.reloadListing();
+        },
+      });
+  }
+
+  deleteImage(imageId: number): void {
+    this.listingsService.deleteImage(imageId).subscribe({
+      next: () => {
+        this.toast.success('Image deleted successfully.');
+        this.reloadListing();
       },
     });
   }

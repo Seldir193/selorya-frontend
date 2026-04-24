@@ -1,14 +1,24 @@
 <section class="checkout-state-page">
   <div class="state-card">
     <h1>Payment successful</h1>
-    <p>Your payment was completed successfully. Your documents will be available soon.</p>
+    <p>Your payment was completed successfully.</p>
 
-    @if (checkoutReturn.provider()) {
-      <p>Provider: {{ checkoutReturn.provider() }}</p>
+    @if (provider()) {
+      <p>Provider: {{ provider() }}</p>
     }
 
-    @if (checkoutReturn.sessionId()) {
-      <p>Session: {{ checkoutReturn.sessionId() }}</p>
+    @if (sessionId()) {
+      <p>Session: {{ sessionId() }}</p>
+    }
+
+    @if (isLoading()) {
+      <p>Loading order details...</p>
+    } @else if (order()) {
+      <div class="order-summary">
+        <p>Order ID: {{ order()!.id }}</p>
+        <p>Status: {{ order()!.status }}</p>
+        <p>Total: €{{ order()!.total_amount }}</p>
+      </div>
     }
 
     <div class="state-actions">

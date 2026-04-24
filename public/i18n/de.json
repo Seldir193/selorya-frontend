@@ -1,0 +1,18 @@
+{
+  "loginFailed": "Login fehlgeschlagen.",
+  "registerFailed": "Registrierung fehlgeschlagen.",
+  "listingCreateFailed": "Listing konnte nicht erstellt werden.",
+  "listingCreated": "Listing erfolgreich erstellt.",
+  "listingUpdated": "Listing erfolgreich aktualisiert.",
+  "listingDeleted": "Listing erfolgreich gelöscht.",
+  "favoriteAdded": "Listing zu Favoriten hinzugefügt.",
+  "favoriteRemoved": "Listing aus Favoriten entfernt.",
+  "favoriteFailed": "Favoriten-Aktion fehlgeschlagen.",
+  "stripeStartFailed": "Stripe-Checkout konnte nicht gestartet werden.",
+  "paypalStartFailed": "PayPal-Checkout konnte nicht gestartet werden.",
+  "orderCreateFailed": "Bestellung konnte nicht erstellt werden.",
+  "listingUpdateFailed": "Listing konnte nicht aktualisiert werden.",
+  "listingDeleteFailed": "Listing konnte nicht gelöscht werden.",
+  "profileUpdated": "Profil erfolgreich aktualisiert.",
+  "profileUpdateFailed": "Profil konnte nicht aktualisiert werden."
+}

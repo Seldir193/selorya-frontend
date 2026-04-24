@@ -68,6 +68,40 @@
         <input matInput formControlName="country" />
       </mat-form-field>
 
+      @if (listing()?.images?.length) {
+        <div class="edit-gallery">
+          @for (image of listing()!.images; track image.id) {
+            <article class="edit-gallery__item">
+              <img [src]="image.image_url" [alt]="image.alt_text || listing()!.title" />
+              <div class="edit-gallery__actions">
+                <button
+                  mat-stroked-button
+                  type="button"
+                  (click)="makePrimary(image.id, image.alt_text, image.sort_order)"
+                >
+                  Make Primary
+                </button>
+
+                <button mat-stroked-button type="button" (click)="deleteImage(image.id)">
+                  Delete Image
+                </button>
+              </div>
+            </article>
+          }
+        </div>
+      }
+
+      <label class="upload-field">
+        <span>Add More Images</span>
+        <input type="file" multiple accept="image/*" (change)="onFilesSelected($event)" />
+      </label>
+
+      @if (selectedFiles().length) {
+        <button mat-stroked-button type="button" (click)="uploadImages()">
+          Upload Selected Images
+        </button>
+      }
+
       <div class="edit-actions">
         <button mat-flat-button type="submit" [disabled]="isSubmitting()">
           {{ isSubmitting() ? 'Saving...' : 'Save Changes' }}
