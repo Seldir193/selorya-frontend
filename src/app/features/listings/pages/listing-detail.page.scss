@@ -115,6 +115,22 @@
   color: var(--color-text);
 }
 
+.detail-gallery {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 14px;
+}
+
+.detail-gallery__thumb {
+  width: 84px;
+  height: 84px;
+  object-fit: cover;
+  border: 1px solid var(--color-border);
+  border-radius: 16px;
+  background: var(--color-surface);
+}
+
 @media (max-width: 920px) {
   .detail-layout {
     grid-template-columns: 1fr;

@@ -35,6 +35,10 @@ export class ListingDetailPage {
     this.loadListing(slug);
   }
 
+  selectedImage(): string {
+    return this.primaryImage();
+  }
+
   loadListing(slug: string): void {
     this.listingsService.detail(slug).subscribe({
       next: (listing) => {

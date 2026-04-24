@@ -1,13 +1,18 @@
-import { Injectable } from '@angular/core';
-import { uiTexts } from '../i18n/ui-texts';
+import { Injectable, inject } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
 
 @Injectable({
   providedIn: 'root',
 })
 export class I18nService {
-  private readonly lang: keyof typeof uiTexts = 'en';
+  private readonly translate = inject(TranslateService);
 
-  t(key: keyof (typeof uiTexts)['en']): string {
-    return uiTexts[this.lang][key];
+  constructor() {
+    this.translate.setDefaultLang('en');
+    this.translate.use('en');
+  }
+
+  t(key: string): string {
+    return this.translate.instant(key);
   }
 }

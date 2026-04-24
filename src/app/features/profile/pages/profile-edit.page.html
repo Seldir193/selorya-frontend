@@ -1,0 +1,47 @@
+<section class="profile-page">
+  <div class="page-head">
+    <h1>Edit Profile</h1>
+    <p>Update your buyer and seller profile information.</p>
+  </div>
+
+  <form [formGroup]="form" (ngSubmit)="submit()" class="profile-card">
+    <mat-form-field appearance="outline">
+      <mat-label>Phone</mat-label>
+      <input matInput formControlName="phone" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Customer city</mat-label>
+      <input matInput formControlName="customerCity" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Customer country</mat-label>
+      <input matInput formControlName="customerCountry" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Seller display name</mat-label>
+      <input matInput formControlName="display_name" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Bio</mat-label>
+      <textarea matInput rows="4" formControlName="bio"></textarea>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Seller city</mat-label>
+      <input matInput formControlName="sellerCity" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Seller country</mat-label>
+      <input matInput formControlName="sellerCountry" />
+    </mat-form-field>
+
+    <button mat-flat-button type="submit" [disabled]="isSubmitting()">
+      {{ isSubmitting() ? 'Saving...' : 'Save Profile' }}
+    </button>
+  </form>
+</section>

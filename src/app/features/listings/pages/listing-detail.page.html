@@ -8,10 +8,21 @@
   } @else {
     <div class="detail-layout">
       <div class="detail-media">
-        @if (primaryImage()) {
-          <img [src]="primaryImage()" [alt]="listing()!.title" />
+        @if (selectedImage()) {
+          <img [src]="selectedImage()" [alt]="listing()!.title" />
         } @else {
           <div class="detail-media__placeholder">No image</div>
+        }
+        @if (listing()!.images.length) {
+          <div class="detail-gallery">
+            @for (image of listing()!.images; track image.id) {
+              <img
+                class="detail-gallery__thumb"
+                [src]="image.image_url"
+                [alt]="image.alt_text || listing()!.title"
+              />
+            }
+          </div>
         }
       </div>
 

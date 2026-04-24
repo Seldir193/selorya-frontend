@@ -22,9 +22,15 @@
             <span>{{ document.status }}</span>
           </div>
 
-          @if (document.file_url) {
-            <a [href]="document.file_url" target="_blank" rel="noopener noreferrer"> Open PDF </a>
-          }
+          <div class="document-actions">
+            @if (document.file_url) {
+              <a [href]="document.file_url" target="_blank" rel="noopener noreferrer"> Open PDF </a>
+
+              <a [href]="document.file_url" [attr.download]="document.document_number + '.pdf'">
+                Download PDF
+              </a>
+            }
+          </div>
         </article>
       }
     </div>

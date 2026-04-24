@@ -8,6 +8,8 @@
     <nav class="topbar__nav">
       <a routerLink="/listings">Listings</a>
 
+      <a routerLink="/profile/edit">Edit Profile</a>
+
       @if (authService.isAuthenticated()) {
         <a routerLink="/favorites">Favorites</a>
         <a routerLink="/orders">Orders</a>
