@@ -20,6 +20,7 @@
                 class="detail-gallery__thumb"
                 [src]="image.image_url"
                 [alt]="image.alt_text || listing()!.title"
+                (click)="selectImage(image.image_url)"
               />
             }
           </div>

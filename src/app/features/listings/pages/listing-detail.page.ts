@@ -1,169 +1,142 @@
 import { Component, inject, signal } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { MatButtonModule } from '@angular/material/button';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatSelectModule } from '@angular/material/select';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { CurrencyPipe } from '@angular/common';
 import { ListingsService } from '../../../core/services/listings.service';
-import { CategoriesService } from '../../../core/services/categories.service';
+import { FavoritesService } from '../../../core/services/favorites.service';
+import { OrdersService } from '../../../core/services/orders.service';
+import { AuthService } from '../../../core/services/auth.service';
 import { ToastService } from '../../../core/services/toast.service';
 import { I18nService } from '../../../core/services/i18n.service';
-import { Category } from '../../../core/models/category.model';
 import { Listing } from '../../../core/models/listing.model';
 
 @Component({
-  selector: 'app-edit-listing-page',
+  selector: 'app-listing-detail-page',
   standalone: true,
-  imports: [
-    ReactiveFormsModule,
-    MatButtonModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatSelectModule,
-  ],
-  templateUrl: './edit-listing.page.html',
-  styleUrls: ['./edit-listing.page.scss'],
+  imports: [CurrencyPipe, RouterLink],
+  templateUrl: './listing-detail.page.html',
+  styleUrls: ['./listing-detail.page.scss'],
 })
-export class EditListingPage {
+export class ListingDetailPage {
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
-  private readonly fb = inject(FormBuilder);
   private readonly listingsService = inject(ListingsService);
-  private readonly categoriesService = inject(CategoriesService);
+  private readonly favoritesService = inject(FavoritesService);
+  private readonly ordersService = inject(OrdersService);
   private readonly toast = inject(ToastService);
   private readonly i18n = inject(I18nService);
+  readonly authService = inject(AuthService);
 
-  readonly slug = this.route.snapshot.paramMap.get('slug') ?? '';
-  readonly categories = signal<Category[]>([]);
   readonly listing = signal<Listing | null>(null);
   readonly isLoading = signal(true);
-  readonly isSubmitting = signal(false);
-  readonly selectedFiles = signal<File[]>([]);
-
-  readonly form = this.fb.nonNullable.group({
-    category: [0, [Validators.required]],
-    title: ['', [Validators.required]],
-    slug: ['', [Validators.required]],
-    description: ['', [Validators.required]],
-    price: ['', [Validators.required]],
-    condition: ['very_good', [Validators.required]],
-    status: ['draft', [Validators.required]],
-    city: ['', [Validators.required]],
-    country: ['Germany', [Validators.required]],
-    is_featured: [false, [Validators.required]],
-  });
+  readonly actionText = signal('');
+  readonly selectedImageUrl = signal('');
 
   constructor() {
-    this.categoriesService.list().subscribe({
-      next: (categories) => {
-        this.categories.set(categories);
-      },
-    });
-
-    this.reloadListing();
+    const slug = this.route.snapshot.paramMap.get('slug') ?? '';
+    this.loadListing(slug);
   }
 
-  reloadListing(): void {
-    this.listingsService.detail(this.slug).subscribe({
+  loadListing(slug: string): void {
+    this.listingsService.detail(slug).subscribe({
       next: (listing) => {
         this.listing.set(listing);
-        this.form.patchValue({
-          category: listing.category,
-          title: listing.title,
-          slug: listing.slug,
-          description: listing.description,
-          price: listing.price,
-          condition: listing.condition,
-          status: listing.status,
-          city: listing.city,
-          country: listing.country,
-          is_featured: listing.is_featured,
-        });
+        this.selectedImageUrl.set(this.primaryImageFrom(listing));
         this.isLoading.set(false);
       },
       error: () => {
+        this.listing.set(null);
         this.isLoading.set(false);
       },
     });
   }
 
-  onFilesSelected(event: Event): void {
-    const input = event.target as HTMLInputElement;
-    this.selectedFiles.set(Array.from(input.files ?? []));
+  selectedImage(): string {
+    return this.selectedImageUrl();
   }
 
-  uploadImages(): void {
+  primaryImage(): string {
+    return this.selectedImageUrl();
+  }
+
+  selectImage(imageUrl: string): void {
+    this.selectedImageUrl.set(imageUrl);
+  }
+
+  private primaryImageFrom(listing: Listing): string {
+    const primary = listing.images.find((image) => image.is_primary);
+    return primary?.image_url || listing.images[0]?.image_url || '';
+  }
+
+  addToFavorites(): void {
     const listing = this.listing();
-    const files = this.selectedFiles();
-
-    if (!listing || !files.length) {
+    if (!listing) {
       return;
     }
 
-    files.forEach((file, index) => {
-      this.listingsService.uploadImage(listing.slug, file, listing.title, index, false).subscribe({
-        next: () => {
-          this.toast.success('Image uploaded successfully.');
-          this.reloadListing();
-        },
-      });
-    });
-  }
-
-  makePrimary(imageId: number, altText: string, sortOrder: number): void {
-    this.listingsService
-      .updateImage(imageId, {
-        alt_text: altText,
-        sort_order: sortOrder,
-        is_primary: true,
-      })
-      .subscribe({
-        next: () => {
-          this.toast.success('Primary image updated.');
-          this.reloadListing();
-        },
-      });
-  }
-
-  deleteImage(imageId: number): void {
-    this.listingsService.deleteImage(imageId).subscribe({
-      next: () => {
-        this.toast.success('Image deleted successfully.');
-        this.reloadListing();
-      },
-    });
-  }
-
-  submit(): void {
-    if (this.form.invalid || this.isSubmitting()) {
-      this.form.markAllAsTouched();
+    if (!this.authService.isAuthenticated()) {
+      this.router.navigateByUrl('/login');
       return;
     }
 
-    this.isSubmitting.set(true);
-
-    this.listingsService.update(this.slug, this.form.getRawValue()).subscribe({
-      next: (listing) => {
-        this.isSubmitting.set(false);
-        this.toast.success(this.i18n.t('listingUpdated'));
-        this.router.navigate(['/listings', listing.slug]);
+    this.favoritesService.create(listing.id).subscribe({
+      next: () => {
+        this.actionText.set(this.i18n.t('favoriteAdded'));
+        this.toast.success(this.i18n.t('favoriteAdded'));
       },
       error: () => {
-        this.isSubmitting.set(false);
-        this.toast.error(this.i18n.t('listingUpdateFailed'));
+        this.actionText.set(this.i18n.t('favoriteFailed'));
+        this.toast.error(this.i18n.t('favoriteFailed'));
       },
     });
   }
 
-  deleteListing(): void {
-    this.listingsService.delete(this.slug).subscribe({
-      next: () => {
-        this.toast.success(this.i18n.t('listingDeleted'));
-        this.router.navigateByUrl('/my-listings');
+  buyWithStripe(): void {
+    this.createOrderAndCheckout('stripe');
+  }
+
+  buyWithPayPal(): void {
+    this.createOrderAndCheckout('paypal');
+  }
+
+  private createOrderAndCheckout(provider: 'stripe' | 'paypal'): void {
+    const listing = this.listing();
+    if (!listing) {
+      return;
+    }
+
+    if (!this.authService.isAuthenticated()) {
+      this.router.navigateByUrl('/login');
+      return;
+    }
+
+    this.ordersService.create(listing.id).subscribe({
+      next: (order) => {
+        if (provider === 'stripe') {
+          this.ordersService.startStripeCheckout(order.id).subscribe({
+            next: (response) => {
+              window.location.href = response.checkout_url;
+            },
+            error: () => {
+              this.actionText.set(this.i18n.t('stripeStartFailed'));
+              this.toast.error(this.i18n.t('stripeStartFailed'));
+            },
+          });
+          return;
+        }
+
+        this.ordersService.startPayPalCheckout(order.id).subscribe({
+          next: (response) => {
+            window.location.href = response.approve_url;
+          },
+          error: () => {
+            this.actionText.set(this.i18n.t('paypalStartFailed'));
+            this.toast.error(this.i18n.t('paypalStartFailed'));
+          },
+        });
       },
       error: () => {
-        this.toast.error(this.i18n.t('listingDeleteFailed'));
+        this.actionText.set(this.i18n.t('orderCreateFailed'));
+        this.toast.error(this.i18n.t('orderCreateFailed'));
       },
     });
   }
