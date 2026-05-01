@@ -20,46 +20,80 @@ export class CheckoutSuccessPage {
   readonly order = signal<Order | null>(null);
   readonly provider = signal('');
   readonly sessionId = signal('');
+  readonly paypalToken = signal('');
 
   readonly orderId = computed(() => this.order()?.id ?? null);
 
   constructor() {
     const provider = this.route.snapshot.queryParamMap.get('provider') ?? '';
     const sessionId = this.route.snapshot.queryParamMap.get('session_id') ?? '';
+    const paypalToken = this.route.snapshot.queryParamMap.get('token') ?? '';
 
     this.provider.set(provider);
     this.sessionId.set(sessionId);
+    this.paypalToken.set(paypalToken);
 
     if (provider === 'stripe' && sessionId) {
-      this.loadStripeOrder(sessionId);
+      this.loadPaymentOrder(sessionId);
+      return;
+    }
+
+    if (provider === 'paypal' && paypalToken) {
+      this.capturePayPalPayment(paypalToken);
       return;
     }
 
     this.isLoading.set(false);
   }
 
-  private loadStripeOrder(sessionId: string): void {
-    this.paymentsService.findOrderBySessionId(sessionId).subscribe({
-      next: (payments) => {
-        const payment = payments.find((item) => item.external_reference === sessionId);
-        if (!payment) {
-          this.isLoading.set(false);
-          return;
-        }
-
-        this.ordersService.detail(payment.order_id).subscribe({
-          next: (order) => {
-            this.order.set(order);
-            this.isLoading.set(false);
-          },
-          error: () => {
-            this.isLoading.set(false);
-          },
-        });
-      },
-      error: () => {
-        this.isLoading.set(false);
-      },
+  private loadPaymentOrder(reference: string): void {
+    this.paymentsService.findPaymentByReference(reference).subscribe({
+      next: (payments) => this.handlePaymentLookup(payments, reference),
+      error: () => this.isLoading.set(false),
     });
+  }
+
+  private handlePaymentLookup(payments: any[], reference: string): void {
+    const payment = payments.find((item) => item.external_reference === reference);
+
+    if (!payment) {
+      this.isLoading.set(false);
+      return;
+    }
+
+    this.loadOrder(payment.order_id);
+  }
+
+  private capturePayPalPayment(reference: string): void {
+    this.paymentsService.findPaymentByReference(reference).subscribe({
+      next: (payments) => this.captureMatchingPayment(payments, reference),
+      error: () => this.isLoading.set(false),
+    });
+  }
+
+  private captureMatchingPayment(payments: any[], reference: string): void {
+    const payment = payments.find((item) => item.external_reference === reference);
+
+    if (!payment) {
+      this.isLoading.set(false);
+      return;
+    }
+
+    this.paymentsService.capturePayPal(payment.id).subscribe({
+      next: () => this.loadOrder(payment.order_id),
+      error: () => this.isLoading.set(false),
+    });
+  }
+
+  private loadOrder(orderId: number): void {
+    this.ordersService.detail(orderId).subscribe({
+      next: (order) => this.setOrder(order),
+      error: () => this.isLoading.set(false),
+    });
+  }
+
+  private setOrder(order: Order): void {
+    this.order.set(order);
+    this.isLoading.set(false);
   }
 }

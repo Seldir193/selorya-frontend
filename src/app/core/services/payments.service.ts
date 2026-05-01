@@ -33,7 +33,10 @@ export class PaymentsService {
     return this.http.post(`${API_BASE_URL}/payments/paypal/${paymentId}/capture/`, {});
   }
 
-  findOrderBySessionId(sessionId: string): Observable<PaymentItem[]> {
+  // findOrderBySessionId(sessionId: string): Observable<PaymentItem[]> {
+  //   return this.list();
+  // }
+  findPaymentByReference(reference: string): Observable<PaymentItem[]> {
     return this.list();
   }
 

@@ -7,8 +7,8 @@
       <p>Provider: {{ provider() }}</p>
     }
 
-    @if (sessionId()) {
-      <p>Session: {{ sessionId() }}</p>
+    @if (paypalToken()) {
+      <p>PayPal Token: {{ paypalToken() }}</p>
     }
 
     @if (isLoading()) {
