@@ -9,6 +9,7 @@ import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
 import { ToastService } from '../../../core/services/toast.service';
 import { I18nService } from '../../../core/services/i18n.service';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-register-page',
@@ -16,6 +17,8 @@ import { I18nService } from '../../../core/services/i18n.service';
   imports: [
     RouterLink,
     ReactiveFormsModule,
+
+    TranslatePipe,
     // MatButtonModule,
     // MatCardModule,
     // MatFormFieldModule,
