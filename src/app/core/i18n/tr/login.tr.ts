@@ -17,4 +17,5 @@ export const trLoginTexts = {
   emailInvalid: 'Lütfen geçerli bir e-posta adresi gir.',
   passwordRequired: 'Lütfen şifreni gir.',
   togglePasswordVisibility: 'Şifreyi göster veya gizle',
+  passwordMinLength: 'Şifre en az 8 karakter olmalıdır.',
 } as const;

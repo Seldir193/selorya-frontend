@@ -88,12 +88,21 @@
             (click)="togglePasswordVisibility()"
             [attr.aria-label]="'togglePasswordVisibility' | translate"
           >
-            <img src="assets/icons/auth/eye.svg" alt="" aria-hidden="true" />
+            <img
+              [src]="
+                isPasswordVisible() ? 'assets/icons/auth/eye.svg' : 'assets/icons/auth/eye-off.svg'
+              "
+              alt=""
+              aria-hidden="true"
+            />
           </button>
         </span>
 
         @if (form.controls.password.touched && form.controls.password.hasError('required')) {
           <span class="auth-error">{{ 'passwordRequired' | translate }}</span>
+        }
+        @if (form.controls.password.touched && form.controls.password.hasError('minlength')) {
+          <span class="auth-error">{{ 'passwordMinLength' | translate }}</span>
         }
       </label>
 

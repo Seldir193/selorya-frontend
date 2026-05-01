@@ -17,4 +17,5 @@ export const enLoginTexts = {
   emailInvalid: 'Please enter a valid email address.',
   passwordRequired: 'Please enter your password.',
   togglePasswordVisibility: 'Show or hide password',
+  passwordMinLength: 'Password must be at least 8 characters long.',
 } as const;

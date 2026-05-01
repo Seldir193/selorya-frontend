@@ -206,8 +206,20 @@
   outline: none;
   transition:
     border-color var(--button-hover-transition),
-    box-shadow var(--button-hover-transition),
-    outline-color var(--button-hover-transition);
+    background var(--button-hover-transition),
+    box-shadow var(--button-hover-transition);
+}
+
+.auth-field__control:hover,
+.auth-field__control:focus {
+  border-color: var(--form-control-border-hover);
+  background: var(--form-control-bg-hover);
+  box-shadow: var(--form-control-shadow-hover);
+}
+
+.auth-field__control:focus-visible {
+  outline: 2px solid var(--form-control-focus-ring);
+  outline-offset: 2px;
 }
 
 .auth-field__control:hover {

@@ -66,7 +66,13 @@
             (click)="togglePasswordVisibility()"
             [attr.aria-label]="'togglePasswordVisibility' | translate"
           >
-            <img src="assets/icons/auth/eye.svg" alt="" aria-hidden="true" />
+            <img
+              [src]="
+                isPasswordVisible() ? 'assets/icons/auth/eye.svg' : 'assets/icons/auth/eye-off.svg'
+              "
+              alt=""
+              aria-hidden="true"
+            />
           </button>
         </span>
 

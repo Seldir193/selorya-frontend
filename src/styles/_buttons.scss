@@ -136,10 +136,20 @@
   justify-content: center;
 }
 
+.app-button--full {
+  width: 100%;
+  justify-content: center;
+}
+
 .app-button--social {
   width: 100%;
   justify-content: center;
-  gap: 10px;
+  text-align: center;
+}
+
+.app-button--social .app-button__icon {
+  position: absolute;
+  left: var(--button-padding-x);
 }
 
 .app-button__icon {

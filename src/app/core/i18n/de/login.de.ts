@@ -17,4 +17,5 @@ export const deLoginTexts = {
   emailInvalid: 'Bitte gib eine gültige E-Mail-Adresse ein.',
   passwordRequired: 'Bitte gib dein Passwort ein.',
   togglePasswordVisibility: 'Passwort anzeigen oder ausblenden',
+  passwordMinLength: 'Das Passwort muss mindestens 8 Zeichen lang sein.',
 } as const;
