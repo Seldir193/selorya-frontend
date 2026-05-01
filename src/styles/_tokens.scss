@@ -33,6 +33,13 @@
 
   --transition-fast: 160ms ease;
   --transition-base: 180ms ease;
+
+  --icon-color: var(--color-primary);
+  --icon-color-soft: var(--color-text-soft);
+  --icon-color-hover: var(--color-primary-deep);
+  --icon-size-sm: 16px;
+  --icon-size-md: 20px;
+  --icon-size-lg: 24px;
 }
 // :root {
 //   --color-primary: #1f325c;

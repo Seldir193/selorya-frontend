@@ -4,17 +4,26 @@
   --form-control-radius: 999px;
 
   --form-control-bg: var(--color-surface);
-  --form-control-bg-hover: var(--color-surface-soft);
+  --form-control-bg-hover: var(--color-surface);
   --form-control-color: var(--color-primary);
   --form-control-label-color: var(--color-text-soft);
 
   --form-control-border: rgba(31, 50, 92, 0.18);
-  --form-control-border-hover: rgba(31, 50, 92, 0.38);
-  --form-control-border-focus: var(--color-accent);
+  --form-control-border-hover: rgba(31, 50, 92, 0.32);
+  --form-control-border-focus: var(--color-primary);
 
-  --form-control-shadow: 0 10px 26px rgba(22, 32, 51, 0.04);
-  --form-control-shadow-hover: 0 14px 34px rgba(22, 32, 51, 0.08);
-  --form-control-focus-ring: rgba(176, 141, 87, 0.28);
+  --form-control-shadow: 0 8px 22px rgba(22, 32, 51, 0.04);
+  --form-control-shadow-hover: 0 14px 34px rgba(31, 50, 92, 0.12);
+  --form-control-focus-ring: rgba(31, 50, 92, 0.12);
+
+  --select-option-bg: var(--color-surface);
+  --select-option-color: var(--color-primary);
+  --select-option-active-bg: var(--color-primary);
+  --select-option-active-color: #ffffff;
+
+  --dropdown-menu-border: rgba(31, 50, 92, 0.16);
+  --dropdown-item-bg-hover: var(--color-primary);
+  --dropdown-item-color-hover: #ffffff;
 }
 
 .app-select {
@@ -30,11 +39,11 @@
   transition:
     border-color var(--button-hover-transition),
     background var(--button-hover-transition),
-    box-shadow var(--button-hover-transition);
+    box-shadow var(--button-hover-transition),
+    outline-color var(--button-hover-transition);
 }
 
-.app-select:hover,
-.app-select:focus-within {
+.app-select:hover {
   border-color: var(--form-control-border-hover);
   background: var(--form-control-bg-hover);
   box-shadow: var(--form-control-shadow-hover);
@@ -42,8 +51,10 @@
 
 .app-select:focus-within {
   border-color: var(--form-control-border-focus);
-  outline: 3px solid var(--form-control-focus-ring);
-  outline-offset: 3px;
+  background: var(--color-surface);
+  box-shadow: var(--form-control-shadow-hover);
+  outline: 2px solid var(--form-control-focus-ring);
+  outline-offset: 2px;
 }
 
 .app-select__label {
@@ -62,6 +73,111 @@
 }
 
 .app-select__control option {
-  color: var(--color-text);
+  background: var(--select-option-bg);
+  color: var(--select-option-color);
+  font-weight: 700;
+}
+
+.app-select__control option:checked {
+  background: var(--select-option-active-bg);
+  color: var(--select-option-active-color);
+}
+
+.app-dropdown {
+  position: relative;
+  display: inline-flex;
+}
+
+.app-dropdown__trigger {
+  min-height: var(--form-control-height);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 var(--form-control-padding-x);
+  border: 1px solid var(--form-control-border);
+  border-radius: var(--form-control-radius);
+  background: var(--form-control-bg);
+  color: var(--color-primary);
+  box-shadow: var(--form-control-shadow);
+  font-weight: 800;
+  cursor: pointer;
+  transition:
+    border-color var(--button-hover-transition),
+    background var(--button-hover-transition),
+    box-shadow var(--button-hover-transition),
+    transform var(--button-hover-transition);
+}
+
+.app-dropdown__trigger:hover,
+.app-dropdown__trigger:focus-visible {
+  border-color: var(--form-control-border-hover);
+  background: var(--form-control-bg-hover);
+  box-shadow: var(--form-control-shadow-hover);
+  transform: translateY(-1px);
+}
+
+.app-dropdown__trigger:focus-visible {
+  outline: 2px solid var(--form-control-focus-ring);
+  outline-offset: 2px;
+}
+
+.app-dropdown__label {
+  color: var(--form-control-label-color);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.app-dropdown__chevron {
+  width: var(--icon-size-sm);
+  height: var(--icon-size-sm);
+  flex: 0 0 auto;
+  color: var(--icon-color);
+  transition:
+    color var(--button-hover-transition),
+    transform var(--button-hover-transition);
+}
+
+.app-dropdown__trigger:hover .app-dropdown__chevron,
+.app-dropdown__trigger:focus-visible .app-dropdown__chevron {
+  color: var(--icon-color-hover);
+}
+
+.app-dropdown__chevron--open {
+  transform: rotate(180deg);
+}
+
+.app-dropdown__menu {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  z-index: 20;
+  min-width: 100%;
+  padding: 6px;
+  border: 1px solid var(--dropdown-menu-border);
+  border-radius: var(--radius-md);
   background: var(--color-surface);
+  box-shadow: var(--shadow-lg);
+}
+
+.app-dropdown__item {
+  width: 100%;
+  min-height: 36px;
+  display: flex;
+  align-items: center;
+  padding: 0 12px;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--color-primary);
+  font-weight: 800;
+  cursor: pointer;
+  transition:
+    background var(--button-hover-transition),
+    color var(--button-hover-transition);
+}
+
+.app-dropdown__item:hover,
+.app-dropdown__item:focus-visible {
+  background: var(--dropdown-item-bg-hover);
+  color: var(--dropdown-item-color-hover);
+  outline: none;
 }

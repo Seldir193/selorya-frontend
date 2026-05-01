@@ -23,19 +23,40 @@
     </nav>
 
     <div class="topbar__actions">
-      <label class="app-select language-select">
-        <span class="app-select__label">{{ 'languageSelectLabel' | translate }}</span>
-        <select
-          class="app-select__control"
-          [value]="currentLanguage()"
-          (change)="changeLanguage($event)"
+      <div class="app-dropdown language-select" data-language-dropdown>
+        <button
+          type="button"
+          class="app-dropdown__trigger"
+          (click)="toggleLanguageMenu()"
           [attr.aria-label]="'languageSelectLabel' | translate"
+          [attr.aria-expanded]="isLanguageMenuOpen()"
         >
-          <option value="de">DE</option>
-          <option value="en">EN</option>
-          <option value="tr">TR</option>
-        </select>
-      </label>
+          <span class="app-dropdown__label">{{ 'languageSelectLabel' | translate }}</span>
+          <strong>{{ currentLanguage().toUpperCase() }}</strong>
+
+          <img
+            class="app-dropdown__chevron"
+            [class.app-dropdown__chevron--open]="isLanguageMenuOpen()"
+            src="assets/icons/header/chevron-down.svg"
+            alt=""
+            aria-hidden="true"
+          />
+        </button>
+
+        @if (isLanguageMenuOpen()) {
+          <div class="app-dropdown__menu">
+            <button type="button" class="app-dropdown__item" (click)="selectLanguage('de')">
+              DE
+            </button>
+            <button type="button" class="app-dropdown__item" (click)="selectLanguage('en')">
+              EN
+            </button>
+            <button type="button" class="app-dropdown__item" (click)="selectLanguage('tr')">
+              TR
+            </button>
+          </div>
+        }
+      </div>
 
       @if (!authService.isAuthenticated()) {
         <a mat-stroked-button routerLink="/login">{{ 'authLogin' | translate }}</a>

@@ -1,4 +1,4 @@
-import { Component, computed, inject } from '@angular/core';
+import { Component, HostListener, computed, inject, signal } from '@angular/core';
 import { Router, RouterLink, RouterOutlet } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -16,6 +16,7 @@ export class ShellComponent {
   readonly authService = inject(AuthService);
   private readonly router = inject(Router);
   private readonly i18nService = inject(I18nService);
+  readonly isLanguageMenuOpen = signal(false);
 
   readonly isSeller = computed(() => {
     const role = this.authService.user()?.role;
@@ -38,6 +39,25 @@ export class ShellComponent {
   logout(): void {
     this.authService.logout();
     this.router.navigateByUrl('/');
+  }
+
+  toggleLanguageMenu(): void {
+    this.isLanguageMenuOpen.update((isOpen) => !isOpen);
+  }
+
+  selectLanguage(lang: SeloryaLanguage): void {
+    this.i18nService.use(lang);
+    this.isLanguageMenuOpen.set(false);
+  }
+
+  @HostListener('document:click', ['$event'])
+  closeLanguageMenuOnOutsideClick(event: MouseEvent): void {
+    const target = event.target as HTMLElement;
+    const dropdown = target.closest('[data-language-dropdown]');
+
+    if (!dropdown) {
+      this.isLanguageMenuOpen.set(false);
+    }
   }
 }
 
