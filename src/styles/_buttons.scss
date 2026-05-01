@@ -13,6 +13,7 @@
   --button-shadow-hover: var(--shadow-accent);
   --button-focus-ring: rgba(176, 141, 87, 0.28);
 
+  --checkout-min-width: 154px;
   --checkout-bg: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-soft) 100%);
   --checkout-bg-hover: linear-gradient(
     135deg,
@@ -34,12 +35,15 @@
   color: var(--button-color);
   box-shadow: var(--button-shadow);
   font-weight: 700;
+  line-height: 1;
+  white-space: nowrap;
   cursor: pointer;
   transition:
     border-color var(--transition-base),
     background var(--transition-base),
     box-shadow var(--transition-base),
     color var(--transition-base),
+    opacity var(--transition-base),
     transform var(--transition-base);
 }
 
@@ -62,8 +66,23 @@
   outline-offset: 3px;
 }
 
+.app-button:disabled,
+.app-button[aria-disabled='true'] {
+  opacity: 0.55;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.app-button:disabled:hover,
+.app-button[aria-disabled='true']:hover {
+  border-color: var(--button-border);
+  background: var(--button-bg);
+  color: var(--button-color);
+  box-shadow: var(--button-shadow);
+}
+
 .app-button--checkout {
-  min-width: 132px;
+  min-width: var(--checkout-min-width);
   border-color: var(--checkout-border);
   background: var(--checkout-bg);
   color: var(--checkout-color);
@@ -76,4 +95,16 @@
   background: var(--checkout-bg-hover);
   color: var(--checkout-color);
   box-shadow: var(--checkout-shadow-hover);
+}
+
+.app-button--checkout:active {
+  box-shadow: var(--checkout-shadow);
+}
+
+.app-button--checkout:disabled:hover,
+.app-button--checkout[aria-disabled='true']:hover {
+  border-color: var(--checkout-border);
+  background: var(--checkout-bg);
+  color: var(--checkout-color);
+  box-shadow: var(--checkout-shadow);
 }
