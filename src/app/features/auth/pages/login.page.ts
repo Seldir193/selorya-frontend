@@ -34,11 +34,20 @@ export class LoginPage {
 
   readonly errorText = signal('');
   readonly isSubmitting = signal(false);
+  readonly isPasswordVisible = signal(false);
 
   readonly form = this.fb.nonNullable.group({
     email: ['', [Validators.required, Validators.email]],
     password: ['', [Validators.required]],
   });
+
+  togglePasswordVisibility(): void {
+    this.isPasswordVisible.update((isVisible) => !isVisible);
+  }
+
+  showExternalLoginUnavailable(provider: string): void {
+    this.toast.error(`${provider} login is not connected yet.`);
+  }
 
   submit(): void {
     if (this.form.invalid || this.isSubmitting()) {

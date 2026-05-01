@@ -3,6 +3,131 @@
     <div class="auth-card__head">
       <p class="auth-card__eyebrow">{{ 'registerEyebrow' | translate }}</p>
       <h1>{{ 'registerTitle' | translate }}</h1>
+    </div>
+
+    <form [formGroup]="form" (ngSubmit)="submit()" class="auth-form">
+      <label class="auth-field">
+        <span class="auth-field__box">
+          <span class="auth-field__icon">
+            <img src="assets/icons/auth/user.svg" alt="" aria-hidden="true" />
+          </span>
+          <input
+            class="auth-field__control"
+            type="text"
+            formControlName="full_name"
+            [placeholder]="'fullNamePlaceholder' | translate"
+            [attr.aria-label]="'fullNamePlaceholder' | translate"
+          />
+        </span>
+
+        @if (form.controls.full_name.touched && form.controls.full_name.hasError('required')) {
+          <span class="auth-error">{{ 'fullNameRequired' | translate }}</span>
+        }
+      </label>
+
+      <label class="auth-field">
+        <span class="auth-field__box">
+          <span class="auth-field__icon">
+            <img src="assets/icons/auth/mail.svg" alt="" aria-hidden="true" />
+          </span>
+          <input
+            class="auth-field__control"
+            type="email"
+            formControlName="email"
+            [placeholder]="'emailPlaceholder' | translate"
+            [attr.aria-label]="'emailPlaceholder' | translate"
+          />
+        </span>
+
+        @if (form.controls.email.touched && form.controls.email.hasError('required')) {
+          <span class="auth-error">{{ 'emailRequired' | translate }}</span>
+        }
+
+        @if (form.controls.email.touched && form.controls.email.hasError('email')) {
+          <span class="auth-error">{{ 'emailInvalid' | translate }}</span>
+        }
+      </label>
+
+      <label class="auth-field">
+        <span class="auth-field__box">
+          <span class="auth-field__icon">
+            <img src="assets/icons/auth/lock.svg" alt="" aria-hidden="true" />
+          </span>
+          <input
+            class="auth-field__control"
+            [type]="isPasswordVisible() ? 'text' : 'password'"
+            formControlName="password"
+            [placeholder]="'passwordPlaceholder' | translate"
+            [attr.aria-label]="'passwordPlaceholder' | translate"
+          />
+          <button
+            class="auth-field__toggle"
+            type="button"
+            (click)="togglePasswordVisibility()"
+            [attr.aria-label]="'togglePasswordVisibility' | translate"
+          >
+            <img src="assets/icons/auth/eye.svg" alt="" aria-hidden="true" />
+          </button>
+        </span>
+
+        @if (form.controls.password.touched && form.controls.password.hasError('required')) {
+          <span class="auth-error">{{ 'passwordRequired' | translate }}</span>
+        }
+
+        @if (form.controls.password.touched && form.controls.password.hasError('minlength')) {
+          <span class="auth-error">{{ 'passwordMinLength' | translate }}</span>
+        }
+      </label>
+
+      <div class="auth-checks">
+        <label class="auth-check">
+          <input type="checkbox" formControlName="acceptsTerms" />
+          <span>{{ 'acceptTermsLabel' | translate }}</span>
+        </label>
+
+        @if (
+          form.controls.acceptsTerms.touched && form.controls.acceptsTerms.hasError('required')
+        ) {
+          <span class="auth-error">{{ 'acceptTermsRequired' | translate }}</span>
+        }
+
+        <label class="auth-check">
+          <input type="checkbox" formControlName="acceptsPrivacy" />
+          <span>{{ 'acceptPrivacyLabel' | translate }}</span>
+        </label>
+
+        @if (
+          form.controls.acceptsPrivacy.touched && form.controls.acceptsPrivacy.hasError('required')
+        ) {
+          <span class="auth-error">{{ 'acceptPrivacyRequired' | translate }}</span>
+        }
+      </div>
+
+      @if (errorText()) {
+        <p class="auth-error">{{ errorText() }}</p>
+      }
+
+      <button
+        class="app-button app-button--checkout app-button--full auth-submit"
+        type="submit"
+        [disabled]="form.invalid || isSubmitting()"
+      >
+        {{ (isSubmitting() ? 'registerSubmitting' : 'registerSubmit') | translate }}
+      </button>
+
+      <p class="auth-switch">
+        {{ 'registerLoginPrompt' | translate }}
+        <a routerLink="/login" class="auth-link">{{ 'registerLoginLink' | translate }}</a>
+      </p>
+    </form>
+  </article>
+</section>
+
+<!-- <section class="auth-page">
+  <article class="auth-card">
+    <div class="auth-card__head">
+      <p class="auth-card__eyebrow">{{ 'registerEyebrow' | translate }}</p>
+      <h1>{{ 'registerTitle' | translate }}</h1>
       <p>{{ 'registerSubtitle' | translate }}</p>
     </div>
 
@@ -40,4 +165,4 @@
       </p>
     </form>
   </article>
-</section>
+</section> -->

@@ -130,3 +130,20 @@
   color: var(--button-checkout-color);
   box-shadow: var(--button-checkout-shadow);
 }
+
+.app-button--full {
+  width: 100%;
+  justify-content: center;
+}
+
+.app-button--social {
+  width: 100%;
+  justify-content: center;
+  gap: 10px;
+}
+
+.app-button__icon {
+  width: var(--icon-size-md);
+  height: var(--icon-size-md);
+  flex: 0 0 auto;
+}
