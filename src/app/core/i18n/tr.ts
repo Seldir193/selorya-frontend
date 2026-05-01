@@ -1,16 +1,7 @@
+import { trFeedbackTexts } from './tr/feedback.tr';
+import { trHeaderTexts } from './tr/header.tr';
+
 export const trTexts = {
-  loginFailed: 'Giriş başarısız.',
-  registerFailed: 'Kayıt başarısız.',
-  listingCreateFailed: 'İlan oluşturulamadı.',
-  listingCreated: 'İlan başarıyla oluşturuldu.',
-  listingUpdated: 'İlan başarıyla güncellendi.',
-  listingDeleted: 'İlan başarıyla silindi.',
-  favoriteAdded: 'İlan favorilere eklendi.',
-  favoriteRemoved: 'İlan favorilerden kaldırıldı.',
-  favoriteFailed: 'Favori işlemi başarısız.',
-  stripeStartFailed: 'Stripe ödeme işlemi başlatılamadı.',
-  paypalStartFailed: 'PayPal ödeme işlemi başlatılamadı.',
-  orderCreateFailed: 'Sipariş oluşturulamadı.',
-  listingUpdateFailed: 'İlan güncellenemedi.',
-  listingDeleteFailed: 'İlan silinemedi.',
+  ...trFeedbackTexts,
+  ...trHeaderTexts,
 } as const;

@@ -1,0 +1,14 @@
+export const deHeaderTexts = {
+  navListings: 'Anzeigen',
+  navFavorites: 'Favoriten',
+  navOrders: 'Bestellungen',
+  navDocuments: 'Dokumente',
+  navProfile: 'Profil',
+  navEditProfile: 'Profil bearbeiten',
+  navMyListings: 'Meine Anzeigen',
+  navSell: 'Verkaufen',
+  authLogin: 'Anmelden',
+  authRegister: 'Registrieren',
+  authLogout: 'Abmelden',
+  languageSelectLabel: 'Sprache',
+} as const;

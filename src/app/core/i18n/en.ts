@@ -1,16 +1,7 @@
+import { enFeedbackTexts } from './en/feedback.en';
+import { enHeaderTexts } from './en/header.en';
+
 export const enTexts = {
-  loginFailed: 'Login failed.',
-  registerFailed: 'Registration failed.',
-  listingCreateFailed: 'Listing could not be created.',
-  listingCreated: 'Listing created successfully.',
-  listingUpdated: 'Listing updated successfully.',
-  listingDeleted: 'Listing deleted successfully.',
-  favoriteAdded: 'Listing added to favorites.',
-  favoriteRemoved: 'Listing removed from favorites.',
-  favoriteFailed: 'Favorite action failed.',
-  stripeStartFailed: 'Stripe checkout could not be started.',
-  paypalStartFailed: 'PayPal checkout could not be started.',
-  orderCreateFailed: 'Order could not be created.',
-  listingUpdateFailed: 'Listing could not be updated.',
-  listingDeleteFailed: 'Listing could not be deleted.',
+  ...enFeedbackTexts,
+  ...enHeaderTexts,
 } as const;

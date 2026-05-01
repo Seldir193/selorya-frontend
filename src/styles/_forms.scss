@@ -1,0 +1,67 @@
+:root {
+  --form-control-height: 40px;
+  --form-control-padding-x: 12px;
+  --form-control-radius: 999px;
+
+  --form-control-bg: var(--color-surface);
+  --form-control-bg-hover: var(--color-surface-soft);
+  --form-control-color: var(--color-primary);
+  --form-control-label-color: var(--color-text-soft);
+
+  --form-control-border: rgba(31, 50, 92, 0.18);
+  --form-control-border-hover: rgba(31, 50, 92, 0.38);
+  --form-control-border-focus: var(--color-accent);
+
+  --form-control-shadow: 0 10px 26px rgba(22, 32, 51, 0.04);
+  --form-control-shadow-hover: 0 14px 34px rgba(22, 32, 51, 0.08);
+  --form-control-focus-ring: rgba(176, 141, 87, 0.28);
+}
+
+.app-select {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: var(--form-control-height);
+  padding: 0 var(--form-control-padding-x);
+  border: 1px solid var(--form-control-border);
+  border-radius: var(--form-control-radius);
+  background: var(--form-control-bg);
+  box-shadow: var(--form-control-shadow);
+  transition:
+    border-color var(--button-hover-transition),
+    background var(--button-hover-transition),
+    box-shadow var(--button-hover-transition);
+}
+
+.app-select:hover,
+.app-select:focus-within {
+  border-color: var(--form-control-border-hover);
+  background: var(--form-control-bg-hover);
+  box-shadow: var(--form-control-shadow-hover);
+}
+
+.app-select:focus-within {
+  border-color: var(--form-control-border-focus);
+  outline: 3px solid var(--form-control-focus-ring);
+  outline-offset: 3px;
+}
+
+.app-select__label {
+  color: var(--form-control-label-color);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.app-select__control {
+  border: 0;
+  background: transparent;
+  color: var(--form-control-color);
+  font-weight: 800;
+  cursor: pointer;
+  outline: none;
+}
+
+.app-select__control option {
+  color: var(--color-text);
+  background: var(--color-surface);
+}

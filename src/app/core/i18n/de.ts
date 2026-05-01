@@ -1,16 +1,7 @@
+import { deFeedbackTexts } from './de/feedback.de';
+import { deHeaderTexts } from './de/header.de';
+
 export const deTexts = {
-  loginFailed: 'Anmeldung fehlgeschlagen.',
-  registerFailed: 'Registrierung fehlgeschlagen.',
-  listingCreateFailed: 'Anzeige konnte nicht erstellt werden.',
-  listingCreated: 'Anzeige wurde erfolgreich erstellt.',
-  listingUpdated: 'Anzeige wurde erfolgreich aktualisiert.',
-  listingDeleted: 'Anzeige wurde erfolgreich gelöscht.',
-  favoriteAdded: 'Anzeige wurde zu den Favoriten hinzugefügt.',
-  favoriteRemoved: 'Anzeige wurde aus den Favoriten entfernt.',
-  favoriteFailed: 'Favoriten-Aktion fehlgeschlagen.',
-  stripeStartFailed: 'Stripe-Checkout konnte nicht gestartet werden.',
-  paypalStartFailed: 'PayPal-Checkout konnte nicht gestartet werden.',
-  orderCreateFailed: 'Bestellung konnte nicht erstellt werden.',
-  listingUpdateFailed: 'Anzeige konnte nicht aktualisiert werden.',
-  listingDeleteFailed: 'Anzeige konnte nicht gelöscht werden.',
+  ...deFeedbackTexts,
+  ...deHeaderTexts,
 } as const;
