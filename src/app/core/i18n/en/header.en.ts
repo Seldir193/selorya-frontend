@@ -11,4 +11,5 @@ export const enHeaderTexts = {
   authRegister: 'Register',
   authLogout: 'Logout',
   languageSelectLabel: 'Language',
+  userMenuLabel: 'Open user menu',
 } as const;

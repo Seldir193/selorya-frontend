@@ -12,4 +12,5 @@ export const trFeedbackTexts = {
   orderCreateFailed: 'Sipariş oluşturulamadı.',
   listingUpdateFailed: 'İlan güncellenemedi.',
   listingDeleteFailed: 'İlan silinemedi.',
+  userMenuLabel: 'Kullanıcı menüsünü aç',
 } as const;

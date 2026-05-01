@@ -11,4 +11,5 @@ export const deHeaderTexts = {
   authRegister: 'Registrieren',
   authLogout: 'Abmelden',
   languageSelectLabel: 'Sprache',
+  userMenuLabel: 'Benutzermenü öffnen',
 } as const;
