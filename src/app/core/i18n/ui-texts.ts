@@ -1,18 +1,12 @@
+import { deTexts } from './de';
+import { enTexts } from './en';
+import { trTexts } from './tr';
+
 export const uiTexts = {
-  en: {
-    loginFailed: 'Login failed.',
-    registerFailed: 'Registration failed.',
-    listingCreateFailed: 'Listing could not be created.',
-    listingCreated: 'Listing created successfully.',
-    listingUpdated: 'Listing updated successfully.',
-    listingDeleted: 'Listing deleted successfully.',
-    favoriteAdded: 'Listing added to favorites.',
-    favoriteRemoved: 'Listing removed from favorites.',
-    favoriteFailed: 'Favorite action failed.',
-    stripeStartFailed: 'Stripe checkout could not be started.',
-    paypalStartFailed: 'PayPal checkout could not be started.',
-    orderCreateFailed: 'Order could not be created.',
-    listingUpdateFailed: 'Listing could not be updated.',
-    listingDeleteFailed: 'Listing could not be deleted.',
-  },
+  de: deTexts,
+  en: enTexts,
+  tr: trTexts,
 } as const;
+
+export type UiLanguage = keyof typeof uiTexts;
+export type UiTextKey = keyof typeof enTexts;
