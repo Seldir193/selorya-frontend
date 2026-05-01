@@ -15,10 +15,8 @@
         <a routerLink="/profile">{{ 'navProfile' | translate }}</a>
         <a routerLink="/profile/edit">{{ 'navEditProfile' | translate }}</a>
 
-        @if (isSeller()) {
-          <a routerLink="/my-listings">{{ 'navMyListings' | translate }}</a>
-          <a routerLink="/sell/create">{{ 'navSell' | translate }}</a>
-        }
+        <a routerLink="/my-listings">{{ 'navMyListings' | translate }}</a>
+        <a routerLink="/sell/create">{{ 'navSell' | translate }}</a>
       }
     </nav>
 

@@ -1,4 +1,4 @@
-import { Component, HostListener, computed, inject, signal } from '@angular/core';
+import { Component, HostListener, inject, signal } from '@angular/core';
 import { Router, RouterLink, RouterOutlet } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -18,11 +18,6 @@ export class ShellComponent {
   private readonly i18nService = inject(I18nService);
   readonly isLanguageMenuOpen = signal(false);
 
-  readonly isSeller = computed(() => {
-    const role = this.authService.user()?.role;
-    return role === 'seller' || role === 'admin';
-  });
-
   constructor() {
     this.authService.initialize();
   }
@@ -31,10 +26,10 @@ export class ShellComponent {
     return this.i18nService.current();
   }
 
-  changeLanguage(event: Event): void {
-    const select = event.target as HTMLSelectElement;
-    this.i18nService.use(select.value as SeloryaLanguage);
-  }
+  // changeLanguage(event: Event): void {
+  //   const select = event.target as HTMLSelectElement;
+  //   this.i18nService.use(select.value as SeloryaLanguage);
+  // }
 
   logout(): void {
     this.authService.logout();
@@ -60,34 +55,3 @@ export class ShellComponent {
     }
   }
 }
-
-// import { Component, computed, inject } from '@angular/core';
-// import { Router, RouterLink, RouterOutlet } from '@angular/router';
-// import { MatButtonModule } from '@angular/material/button';
-// import { AuthService } from '../../core/services/auth.service';
-
-// @Component({
-//   selector: 'app-shell',
-//   standalone: true,
-//   imports: [RouterLink, RouterOutlet, MatButtonModule],
-//   templateUrl: './shell.component.html',
-//   styleUrl: './shell.component.scss',
-// })
-// export class ShellComponent {
-//   readonly authService = inject(AuthService);
-//   private readonly router = inject(Router);
-
-//   readonly isSeller = computed(() => {
-//     const role = this.authService.user()?.role;
-//     return role === 'seller' || role === 'admin';
-//   });
-
-//   constructor() {
-//     this.authService.initialize();
-//   }
-
-//   logout(): void {
-//     this.authService.logout();
-//     this.router.navigateByUrl('/');
-//   }
-// }
