@@ -136,11 +136,6 @@
   justify-content: center;
 }
 
-.app-button--full {
-  width: 100%;
-  justify-content: center;
-}
-
 .app-button--social {
   width: 100%;
   justify-content: center;
@@ -158,7 +153,6 @@
   flex: 0 0 auto;
 }
 
-//
 .app-button--primary {
   border-color: var(--color-primary);
   background: var(--color-primary);
