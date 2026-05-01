@@ -1,28 +1,38 @@
 <section class="auth-page">
-  <mat-card class="auth-card">
+  <article class="auth-card auth-card--compact">
     <div class="auth-card__head">
-      <h1>Welcome back</h1>
-      <p>Login to your Selorya account.</p>
+      <p class="auth-card__eyebrow">{{ 'loginEyebrow' | translate }}</p>
+      <h1>{{ 'loginTitle' | translate }}</h1>
+      <p>{{ 'loginSubtitle' | translate }}</p>
     </div>
 
     <form [formGroup]="form" (ngSubmit)="submit()" class="auth-form">
-      <mat-form-field appearance="outline">
-        <mat-label>Email</mat-label>
-        <input matInput type="email" formControlName="email" />
-      </mat-form-field>
+      <label class="auth-field">
+        <span class="auth-field__label">{{ 'emailLabel' | translate }}</span>
+        <input class="auth-field__control" type="email" formControlName="email" />
+      </label>
 
-      <mat-form-field appearance="outline">
-        <mat-label>Password</mat-label>
-        <input matInput type="password" formControlName="password" />
-      </mat-form-field>
+      <label class="auth-field">
+        <span class="auth-field__label">{{ 'passwordLabel' | translate }}</span>
+        <input class="auth-field__control" type="password" formControlName="password" />
+      </label>
 
       @if (errorText()) {
         <p class="auth-error">{{ errorText() }}</p>
       }
 
-      <button mat-flat-button type="submit" [disabled]="isSubmitting()">
-        {{ isSubmitting() ? 'Signing in...' : 'Login' }}
+      <button
+        class="app-button app-button--checkout auth-submit"
+        type="submit"
+        [disabled]="isSubmitting()"
+      >
+        {{ (isSubmitting() ? 'loginSubmitting' : 'loginSubmit') | translate }}
       </button>
+
+      <p class="auth-switch">
+        {{ 'loginRegisterPrompt' | translate }}
+        <a routerLink="/register" class="auth-link">{{ 'loginRegisterLink' | translate }}</a>
+      </p>
     </form>
-  </mat-card>
+  </article>
 </section>
