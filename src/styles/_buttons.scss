@@ -1,0 +1,79 @@
+:root {
+  --button-height: 48px;
+  --button-padding-x: 18px;
+  --button-radius: var(--radius-md);
+
+  --button-bg: var(--color-surface);
+  --button-bg-hover: var(--color-accent-light);
+  --button-color: var(--color-text);
+  --button-color-hover: var(--color-primary);
+  --button-border: var(--color-border);
+  --button-border-hover: var(--color-accent);
+  --button-shadow: var(--shadow-sm);
+  --button-shadow-hover: var(--shadow-accent);
+  --button-focus-ring: rgba(176, 141, 87, 0.28);
+
+  --checkout-bg: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-soft) 100%);
+  --checkout-bg-hover: linear-gradient(
+    135deg,
+    var(--color-primary-deep) 0%,
+    var(--color-primary) 100%
+  );
+  --checkout-color: #ffffff;
+  --checkout-border: rgba(31, 50, 92, 0.18);
+  --checkout-shadow: 0 16px 34px rgba(31, 50, 92, 0.18);
+  --checkout-shadow-hover: 0 22px 48px rgba(31, 50, 92, 0.28);
+}
+
+.app-button {
+  min-height: var(--button-height);
+  padding: 0 var(--button-padding-x);
+  border: 1px solid var(--button-border);
+  border-radius: var(--button-radius);
+  background: var(--button-bg);
+  color: var(--button-color);
+  box-shadow: var(--button-shadow);
+  font-weight: 700;
+  cursor: pointer;
+  transition:
+    border-color var(--transition-base),
+    background var(--transition-base),
+    box-shadow var(--transition-base),
+    color var(--transition-base),
+    transform var(--transition-base);
+}
+
+.app-button:hover,
+.app-button:focus-visible {
+  border-color: var(--button-border-hover);
+  background: var(--button-bg-hover);
+  color: var(--button-color-hover);
+  box-shadow: var(--button-shadow-hover);
+  transform: translateY(-2px);
+}
+
+.app-button:active {
+  box-shadow: var(--shadow-sm);
+  transform: translateY(0);
+}
+
+.app-button:focus-visible {
+  outline: 3px solid var(--button-focus-ring);
+  outline-offset: 3px;
+}
+
+.app-button--checkout {
+  min-width: 132px;
+  border-color: var(--checkout-border);
+  background: var(--checkout-bg);
+  color: var(--checkout-color);
+  box-shadow: var(--checkout-shadow);
+}
+
+.app-button--checkout:hover,
+.app-button--checkout:focus-visible {
+  border-color: var(--checkout-border);
+  background: var(--checkout-bg-hover);
+  color: var(--checkout-color);
+  box-shadow: var(--checkout-shadow-hover);
+}
