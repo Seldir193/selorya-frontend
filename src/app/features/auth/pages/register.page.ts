@@ -38,7 +38,6 @@ export class RegisterPage {
   readonly form = this.fb.nonNullable.group({
     email: ['', [Validators.required, Validators.email]],
     full_name: ['', [Validators.required]],
-    role: ['customer' as 'customer' | 'seller', [Validators.required]],
     language: ['de', [Validators.required]],
     password: ['', [Validators.required, Validators.minLength(8)]],
   });
