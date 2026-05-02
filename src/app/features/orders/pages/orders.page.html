@@ -1,38 +1,74 @@
 <section class="orders-page">
-  <div class="page-head">
-    <h1>Your Orders</h1>
-    <p>Track your purchase history and payment status.</p>
+  <div class="orders-page__head">
+    <p class="orders-page__eyebrow">
+      {{ text('ordersEyebrow') }}
+    </p>
+
+    <h1>{{ text('ordersTitle') }}</h1>
+
+    <p>
+      {{ text('ordersDescription') }}
+    </p>
   </div>
 
   @if (isLoading()) {
-    <p class="state-text">Loading orders...</p>
+    <div class="orders-state-card">
+      <div class="orders-state-card__icon" aria-hidden="true">
+        <img src="assets/icons/orders/orders.svg" alt="" />
+      </div>
+
+      <h2>{{ text('ordersLoadingTitle') }}</h2>
+      <p>{{ text('ordersLoadingDescription') }}</p>
+    </div>
   } @else if (!orders().length) {
-    <p class="state-text">You have no orders yet.</p>
+    <div class="orders-state-card">
+      <div class="orders-state-card__icon" aria-hidden="true">
+        <img src="assets/icons/orders/orders.svg" alt="" />
+      </div>
+
+      <h2>{{ text('ordersEmptyTitle') }}</h2>
+      <p>{{ text('ordersEmptyDescription') }}</p>
+
+      <a routerLink="/listings" class="app-button app-button--primary">
+        {{ text('ordersEmptyAction') }}
+      </a>
+    </div>
   } @else {
     <div class="orders-list">
       @for (order of orders(); track order.id) {
         <article class="order-card">
           <div class="order-card__head">
             <div>
-              <h2>Order #{{ order.id }}</h2>
-              <p>{{ order.created_at | date: 'medium' }}</p>
+              <span class="order-card__label">
+                {{ text('ordersOrderLabel') }}
+              </span>
+
+              <h2>#{{ order.id }}</h2>
+
+              <p>{{ orderDate(order) }}</p>
             </div>
 
-            <span class="order-status">{{ order.status }}</span>
+            <span class="order-status">
+              {{ statusLabel(order.status) }}
+            </span>
           </div>
 
           <div class="order-items">
             @for (item of order.items; track item.id) {
               <div class="order-item">
-                <span>{{ item.title_snapshot }}</span>
-                <strong>{{ +item.line_total | currency: 'EUR' }}</strong>
+                <div>
+                  <span>{{ item.title_snapshot }}</span>
+                  <small> {{ text('ordersQuantity') }} {{ item.quantity }} </small>
+                </div>
+
+                <strong>{{ itemTotal(item, order.currency) }}</strong>
               </div>
             }
           </div>
 
           <div class="order-total">
-            <span>Total</span>
-            <strong>{{ +order.total_amount | currency: 'EUR' }}</strong>
+            <span>{{ text('ordersTotal') }}</span>
+            <strong>{{ orderTotal(order) }}</strong>
           </div>
         </article>
       }
