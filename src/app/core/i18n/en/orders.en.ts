@@ -59,4 +59,21 @@ export const enOrdersTexts = {
   ordersClearFilters: 'Reset filters',
   ordersFilterEmptyTitle: 'No matching orders',
   ordersFilterEmptyDescription: 'Adjust your search or filters to see more orders.',
+
+  ordersDetailsAction: 'Details',
+  ordersDetailTitle: 'Order',
+  ordersDetailDate: 'Date',
+  ordersDetailStatus: 'Status',
+  ordersDetailPaymentProvider: 'Payment provider',
+  ordersDetailPaymentStatus: 'Payment status',
+  ordersDetailItems: 'Items',
+  ordersUnknownItem: 'Unknown item',
+
+  ordersColumnOrder: 'Order',
+  ordersColumnProduct: 'Product',
+  ordersColumnDate: 'Date',
+  ordersColumnAmount: 'Amount',
+  ordersColumnStatus: 'Status',
+  ordersColumnPayment: 'Payment',
+  ordersColumnAction: 'Action',
 } as const;

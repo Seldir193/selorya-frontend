@@ -1,0 +1,55 @@
+<app-dialog
+  [isOpen]="isOpen()"
+  [title]="title()"
+  [ariaLabel]="title()"
+  size="md"
+  (close)="closeDialog()"
+>
+  @if (order(); as currentOrder) {
+    <div class="order-detail">
+      <div class="order-detail__meta">
+        <div>
+          <span>{{ text('ordersDetailDate') }}</span>
+          <strong>{{ orderDate() }}</strong>
+        </div>
+
+        <div>
+          <span>{{ text('ordersDetailStatus') }}</span>
+          <strong>{{ statusLabel() }}</strong>
+        </div>
+
+        <div>
+          <span>{{ text('ordersDetailPaymentProvider') }}</span>
+          <strong>{{ paymentProviderLabel(currentOrder.payment_provider) }}</strong>
+        </div>
+
+        <div>
+          <span>{{ text('ordersDetailPaymentStatus') }}</span>
+          <strong>{{ paymentStatusLabel(currentOrder.payment_status) }}</strong>
+        </div>
+      </div>
+
+      <section class="order-detail__section">
+        <h3>{{ text('ordersDetailItems') }}</h3>
+
+        <div class="order-detail__items">
+          @for (item of currentOrder.items; track item.id) {
+            <div class="order-detail__item">
+              <div>
+                <strong>{{ item.title_snapshot }}</strong>
+                <span>{{ text('ordersQuantity') }} {{ item.quantity }}</span>
+              </div>
+
+              <strong>{{ itemTotal(item) }}</strong>
+            </div>
+          }
+        </div>
+      </section>
+
+      <section class="order-detail__summary">
+        <span>{{ text('ordersTotal') }}</span>
+        <strong>{{ orderTotal() }}</strong>
+      </section>
+    </div>
+  }
+</app-dialog>

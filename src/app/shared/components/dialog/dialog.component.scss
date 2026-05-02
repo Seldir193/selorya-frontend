@@ -1,0 +1,130 @@
+.dialog {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+}
+
+.dialog__backdrop {
+  position: absolute;
+  inset: 0;
+  border: 0;
+  background: rgba(22, 32, 51, 0.48);
+  backdrop-filter: blur(10px);
+  cursor: pointer;
+}
+
+.dialog__panel {
+  position: relative;
+  z-index: 1;
+  width: min(100%, 640px);
+  max-height: min(760px, calc(100vh - 48px));
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  overflow: hidden;
+  border: 1px solid var(--color-border-soft);
+  border-radius: 32px;
+  background: var(--color-surface);
+  box-shadow: var(--shadow-lg);
+}
+
+.dialog__panel--sm {
+  width: min(100%, 460px);
+}
+
+.dialog__panel--lg {
+  width: min(100%, 860px);
+}
+
+.dialog__head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 24px 24px 18px;
+  border-bottom: 1px solid var(--color-border-soft);
+}
+
+.dialog__head h2 {
+  margin: 0;
+  color: var(--color-text);
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  line-height: 1;
+  letter-spacing: -0.03em;
+}
+
+.dialog__close {
+  width: 42px;
+  height: 42px;
+  display: inline-grid;
+  place-items: center;
+  flex: 0 0 auto;
+  border: 1px solid var(--button-secondary-border);
+  border-radius: 999px;
+  background: var(--button-bg);
+  box-shadow: var(--button-secondary-shadow);
+  cursor: pointer;
+  transition:
+    border-color var(--button-hover-transition),
+    background var(--button-hover-transition),
+    box-shadow var(--button-hover-transition),
+    transform var(--button-hover-transition);
+}
+
+.dialog__close:hover,
+.dialog__close:focus-visible {
+  border-color: var(--color-border-strong);
+  background: var(--color-surface-muted);
+  box-shadow: var(--shadow-sm);
+  transform: translateY(-2px);
+  outline: none;
+}
+
+.dialog__close img {
+  width: var(--icon-size-sm);
+  height: var(--icon-size-sm);
+}
+
+.dialog__body {
+  min-height: 0;
+  overflow-y: auto;
+  padding: 22px 24px 24px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-border-strong) transparent;
+}
+
+.dialog__body::-webkit-scrollbar {
+  width: 6px;
+}
+
+.dialog__body::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.dialog__body::-webkit-scrollbar-thumb {
+  border-radius: 999px;
+  background: var(--color-border-strong);
+}
+
+@media (max-width: 680px) {
+  .dialog {
+    align-items: end;
+    padding: 0;
+  }
+
+  .dialog__panel {
+    width: 100%;
+    max-height: 92vh;
+    border-radius: 28px 28px 0 0;
+  }
+
+  .dialog__head {
+    padding: 20px 18px 16px;
+  }
+
+  .dialog__body {
+    padding: 18px;
+  }
+}

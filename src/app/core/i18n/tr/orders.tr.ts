@@ -62,4 +62,21 @@ export const trOrdersTexts = {
   ordersFilterEmptyTitle: 'Eşleşen sipariş yok',
   ordersFilterEmptyDescription:
     'Daha fazla sipariş görmek için aramanı veya filtrelerini değiştir.',
+
+  ordersDetailsAction: 'Detaylar',
+  ordersDetailTitle: 'Sipariş',
+  ordersDetailDate: 'Tarih',
+  ordersDetailStatus: 'Durum',
+  ordersDetailPaymentProvider: 'Ödeme sağlayıcısı',
+  ordersDetailPaymentStatus: 'Ödeme durumu',
+  ordersDetailItems: 'Ürünler',
+  ordersUnknownItem: 'Bilinmeyen ürün',
+
+  ordersColumnOrder: 'Sipariş',
+  ordersColumnProduct: 'Ürün',
+  ordersColumnDate: 'Tarih',
+  ordersColumnAmount: 'Tutar',
+  ordersColumnStatus: 'Durum',
+  ordersColumnPayment: 'Ödeme',
+  ordersColumnAction: 'İşlem',
 } as const;

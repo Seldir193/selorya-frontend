@@ -62,4 +62,21 @@ export const deOrdersTexts = {
   ordersFilterEmptyTitle: 'Keine passenden Bestellungen',
   ordersFilterEmptyDescription:
     'Passe deine Suche oder Filter an, um weitere Bestellungen zu sehen.',
+
+  ordersDetailsAction: 'Details',
+  ordersDetailTitle: 'Bestellung',
+  ordersDetailDate: 'Datum',
+  ordersDetailStatus: 'Status',
+  ordersDetailPaymentProvider: 'Zahlungsanbieter',
+  ordersDetailPaymentStatus: 'Zahlungsstatus',
+  ordersDetailItems: 'Artikel',
+  ordersUnknownItem: 'Unbekannter Artikel',
+
+  ordersColumnOrder: 'Bestellung',
+  ordersColumnProduct: 'Produkt',
+  ordersColumnDate: 'Datum',
+  ordersColumnAmount: 'Betrag',
+  ordersColumnStatus: 'Status',
+  ordersColumnPayment: 'Zahlung',
+  ordersColumnAction: 'Aktion',
 } as const;

@@ -1,0 +1,45 @@
+@if (isOpen()) {
+  <div class="dialog" role="presentation">
+    <button
+      type="button"
+      class="dialog__backdrop"
+      aria-hidden="true"
+      tabindex="-1"
+      (click)="onBackdropClick()"
+    ></button>
+
+    <section
+      class="dialog__panel"
+      [class.dialog__panel--sm]="size() === 'sm'"
+      [class.dialog__panel--lg]="size() === 'lg'"
+      role="dialog"
+      aria-modal="true"
+      [attr.aria-label]="ariaLabel() || title()"
+    >
+      <header class="dialog__head">
+        <div>
+          @if (title()) {
+            <h2>{{ title() }}</h2>
+          }
+
+          <ng-content select="[dialog-subtitle]" />
+        </div>
+
+        <button
+          type="button"
+          class="dialog__close"
+          [attr.aria-label]="'Close dialog'"
+          (click)="closeDialog()"
+        >
+          <img src="assets/icons/dialog/close.svg" alt="" aria-hidden="true" />
+        </button>
+      </header>
+
+      <div class="dialog__body">
+        <ng-content />
+      </div>
+
+      <ng-content select="[dialog-actions]" />
+    </section>
+  </div>
+}

@@ -100,51 +100,76 @@
     </div>
   } @else {
     <div class="orders-list">
+      <div class="orders-table-head" aria-hidden="true">
+        <span>{{ text('ordersColumnOrder') }}</span>
+        <span>{{ text('ordersColumnProduct') }}</span>
+        <span>{{ text('ordersColumnDate') }}</span>
+        <span>{{ text('ordersColumnAmount') }}</span>
+        <span>{{ text('ordersColumnStatus') }}</span>
+        <span>{{ text('ordersColumnPayment') }}</span>
+        <span>{{ text('ordersColumnAction') }}</span>
+      </div>
+
       @for (order of paginatedOrders(); track order.id) {
-        <article class="order-card">
-          <div class="order-card__head">
-            <div>
-              <span class="order-card__label">
-                {{ text('ordersOrderLabel') }}
-              </span>
+        <article class="order-row">
+          <div class="order-row__cell order-row__cell--order">
+            <span class="order-row__mobile-label">
+              {{ text('ordersColumnOrder') }}
+            </span>
 
-              <h2>#{{ order.id }}</h2>
-
-              <p>{{ orderDate(order) }}</p>
-              <p class="order-card__context">{{ contextLabel(order) }}</p>
-            </div>
-
-            <div class="order-card__badges">
-              <span class="order-status">
-                {{ statusLabel(order.status) }}
-              </span>
-
-              <span class="order-payment">
-                {{ paymentProviderLabel(order.payment_provider) }}
-              </span>
-
-              <span class="order-payment order-payment--status">
-                {{ paymentStatusLabel(order.payment_status) }}
-              </span>
-            </div>
+            <strong>#{{ order.id }}</strong>
           </div>
 
-          <div class="order-items">
-            @for (item of order.items; track item.id) {
-              <div class="order-item">
-                <div>
-                  <span>{{ item.title_snapshot }}</span>
-                  <small> {{ text('ordersQuantity') }} {{ item.quantity }} </small>
-                </div>
+          <div class="order-row__cell order-row__cell--product">
+            <span class="order-row__mobile-label">
+              {{ text('ordersColumnProduct') }}
+            </span>
 
-                <strong>{{ itemTotal(item, order.currency) }}</strong>
-              </div>
-            }
+            <strong>{{ mainItemTitle(order) }}</strong>
           </div>
 
-          <div class="order-total">
-            <span>{{ text('ordersTotal') }}</span>
+          <div class="order-row__cell order-row__cell--date">
+            <span class="order-row__mobile-label">
+              {{ text('ordersColumnDate') }}
+            </span>
+
+            <span>{{ orderDateOnly(order) }}</span>
+          </div>
+
+          <div class="order-row__cell order-row__cell--amount">
+            <span class="order-row__mobile-label">
+              {{ text('ordersColumnAmount') }}
+            </span>
+
             <strong>{{ orderTotal(order) }}</strong>
+          </div>
+
+          <div class="order-row__cell order-row__cell--status">
+            <span class="order-row__mobile-label">
+              {{ text('ordersColumnStatus') }}
+            </span>
+
+            <span class="order-status">
+              {{ statusLabel(order.status) }}
+            </span>
+          </div>
+
+          <div class="order-row__cell order-row__cell--payment">
+            <span class="order-row__mobile-label">
+              {{ text('ordersColumnPayment') }}
+            </span>
+
+            <span>{{ paymentSummary(order) }}</span>
+          </div>
+
+          <div class="order-row__cell order-row__cell--action">
+            <button
+              type="button"
+              class="app-button app-button--secondary order-row__action"
+              (click)="openOrderDetails(order)"
+            >
+              {{ text('ordersDetailsAction') }}
+            </button>
           </div>
         </article>
       }
@@ -157,237 +182,12 @@
       [pageSizeOptions]="pageSizeOptions"
       (pageChange)="changePage($event)"
       (pageSizeChange)="changePageSize($event)"
+    />
+
+    <app-order-detail-dialog
+      [isOpen]="selectedOrder() !== null"
+      [order]="selectedOrder()"
+      (close)="closeOrderDetails()"
     />
   }
 </section>
-<!-- <section class="orders-page">
-  <div class="orders-page__head">
-    <p class="orders-page__eyebrow">
-      {{ text('ordersEyebrow') }}
-    </p>
-
-    <h1>{{ text('ordersTitle') }}</h1>
-
-    <p>
-      {{ text('ordersDescription') }}
-    </p>
-  </div>
-
-  <div class="orders-tabs" role="tablist" aria-label="Orders filter">
-    @for (scope of orderScopes; track scope) {
-      <button
-        type="button"
-        class="orders-tabs__button"
-        [class.orders-tabs__button--active]="activeScope() === scope"
-        (click)="changeScope(scope)"
-      >
-        {{ scopeLabel(scope) }}
-      </button>
-    }
-  </div>
-
-  <div class="orders-toolbar">
-    <label class="orders-search">
-      <input
-        type="search"
-        [value]="searchQuery()"
-        [placeholder]="text('ordersSearchPlaceholder')"
-        (input)="updateSearchQuery($any($event.target).value)"
-      />
-    </label>
-
-    <div class="app-dropdown orders-dropdown" data-orders-dropdown>
-      <button
-        type="button"
-        class="app-button app-button--checkout app-dropdown__trigger orders-dropdown__trigger"
-        [attr.aria-expanded]="isStatusMenuOpen()"
-        [attr.aria-label]="text('ordersStatusFilterLabel')"
-        (click)="toggleStatusMenu()"
-      >
-        <span>{{ statusFilterLabel(statusFilter()) }}</span>
-
-        <span class="chevron-swap">
-          <img
-            class="chevron-swap__icon chevron-swap__icon--default"
-            [class.chevron-swap__icon--open]="isStatusMenuOpen()"
-            src="assets/icons/header/chevron-down.svg"
-            alt=""
-            aria-hidden="true"
-          />
-          <img
-            class="chevron-swap__icon chevron-swap__icon--hover"
-            [class.chevron-swap__icon--open]="isStatusMenuOpen()"
-            src="assets/icons/header/chevron-down-light.svg"
-            alt=""
-            aria-hidden="true"
-          />
-        </span>
-      </button>
-
-      @if (isStatusMenuOpen()) {
-        <div class="app-dropdown__menu orders-dropdown__menu">
-          @for (status of statusFilters; track status) {
-            <button
-              type="button"
-              class="app-dropdown__item"
-              [class.orders-dropdown__item--active]="statusFilter() === status"
-              (click)="changeStatusFilter(status)"
-            >
-              {{ statusFilterLabel(status) }}
-            </button>
-          }
-        </div>
-      }
-    </div>
-
-    <div class="app-dropdown orders-dropdown" data-orders-dropdown>
-      <button
-        type="button"
-        class="app-button app-button--checkout app-dropdown__trigger orders-dropdown__trigger"
-        [attr.aria-expanded]="isSortMenuOpen()"
-        [attr.aria-label]="text('ordersSortLabel')"
-        (click)="toggleSortMenu()"
-      >
-        <span>{{ sortLabel(sortOption()) }}</span>
-
-        <span class="chevron-swap">
-          <img
-            class="chevron-swap__icon chevron-swap__icon--default"
-            [class.chevron-swap__icon--open]="isSortMenuOpen()"
-            src="assets/icons/header/chevron-down.svg"
-            alt=""
-            aria-hidden="true"
-          />
-          <img
-            class="chevron-swap__icon chevron-swap__icon--hover"
-            [class.chevron-swap__icon--open]="isSortMenuOpen()"
-            src="assets/icons/header/chevron-down-light.svg"
-            alt=""
-            aria-hidden="true"
-          />
-        </span>
-      </button>
-
-      @if (isSortMenuOpen()) {
-        <div class="app-dropdown__menu orders-dropdown__menu">
-          @for (option of sortOptions; track option) {
-            <button
-              type="button"
-              class="app-dropdown__item"
-              [class.orders-dropdown__item--active]="sortOption() === option"
-              (click)="changeSortOption(option)"
-            >
-              {{ sortLabel(option) }}
-            </button>
-          }
-        </div>
-      }
-    </div>
-
-    @if (hasActiveFilters()) {
-      <button
-        type="button"
-        class="app-button app-button--secondary orders-toolbar__clear"
-        (click)="clearFilters()"
-      >
-        {{ text('ordersClearFilters') }}
-      </button>
-    }
-  </div>
-
-  @if (isLoading()) {
-    <div class="orders-state-card">
-      <div class="orders-state-card__icon" aria-hidden="true">
-        <img src="assets/icons/orders/orders.svg" alt="" />
-      </div>
-
-      <h2>{{ text('ordersLoadingTitle') }}</h2>
-      <p>{{ text('ordersLoadingDescription') }}</p>
-    </div>
-  } @else if (!orders().length) {
-    <div class="orders-state-card">
-      <div class="orders-state-card__icon" aria-hidden="true">
-        <img src="assets/icons/orders/orders.svg" alt="" />
-      </div>
-
-      <h2>{{ emptyTitle() }}</h2>
-      <p>{{ emptyDescription() }}</p>
-
-      <a routerLink="/listings" class="app-button app-button--primary">
-        {{ text('ordersEmptyAction') }}
-      </a>
-    </div>
-  } @else if (!filteredOrders().length) {
-    <div class="orders-state-card">
-      <div class="orders-state-card__icon" aria-hidden="true">
-        <img src="assets/icons/orders/orders.svg" alt="" />
-      </div>
-
-      <h2>{{ text('ordersFilterEmptyTitle') }}</h2>
-      <p>{{ text('ordersFilterEmptyDescription') }}</p>
-
-      <button type="button" class="app-button app-button--primary" (click)="clearFilters()">
-        {{ text('ordersClearFilters') }}
-      </button>
-    </div>
-  } @else {
-    <div class="orders-list">
-      @for (order of paginatedOrders(); track order.id) {
-        <article class="order-card">
-          <div class="order-card__head">
-            <div>
-              <span class="order-card__label">
-                {{ text('ordersOrderLabel') }}
-              </span>
-
-              <h2>#{{ order.id }}</h2>
-
-              <p>{{ orderDate(order) }}</p>
-              <p class="order-card__context">{{ contextLabel(order) }}</p>
-            </div>
-
-            <div class="order-card__badges">
-              <span class="order-status">
-                {{ statusLabel(order.status) }}
-              </span>
-
-              <span class="order-payment">
-                {{ paymentProviderLabel(order.payment_provider) }}
-              </span>
-
-              <span class="order-payment order-payment--status">
-                {{ paymentStatusLabel(order.payment_status) }}
-              </span>
-            </div>
-          </div>
-
-          <div class="order-items">
-            @for (item of order.items; track item.id) {
-              <div class="order-item">
-                <div>
-                  <span>{{ item.title_snapshot }}</span>
-                  <small> {{ text('ordersQuantity') }} {{ item.quantity }} </small>
-                </div>
-
-                <strong>{{ itemTotal(item, order.currency) }}</strong>
-              </div>
-            }
-          </div>
-
-          <div class="order-total">
-            <span>{{ text('ordersTotal') }}</span>
-            <strong>{{ orderTotal(order) }}</strong>
-          </div>
-        </article>
-      }
-    </div>
-    <app-pagination
-      [page]="currentPage()"
-      [pageSize]="pageSize()"
-      [totalItems]="filteredOrders().length"
-      [pageSizeOptions]="pageSizeOptions"
-      (pageChange)="changePage($event)"
-      (pageSizeChange)="changePageSize($event)"
-    />
-  }
-</section> -->
