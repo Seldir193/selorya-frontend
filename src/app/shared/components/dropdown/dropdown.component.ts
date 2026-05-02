@@ -29,6 +29,7 @@ export class DropdownComponent<T extends string | number = string | number> {
   readonly valueChange = output<T>();
 
   readonly isOpen = signal(false);
+  private readonly dropdownId = crypto.randomUUID();
 
   readonly selectedLabel = computed(() => {
     return this.options().find((option) => option.value === this.value())?.label ?? '';
@@ -44,7 +45,7 @@ export class DropdownComponent<T extends string | number = string | number> {
       return;
     }
 
-    this.isOpen.update((isOpen) => !isOpen);
+    this.handleToggle();
   }
 
   selectOption(value: T): void {
@@ -66,5 +67,30 @@ export class DropdownComponent<T extends string | number = string | number> {
     if (!target.closest('[data-app-dropdown]')) {
       this.closeMenu();
     }
+  }
+
+  @HostListener('window:app-dropdown-opened', ['$event'])
+  closeOtherDropdowns(event: Event): void {
+    const customEvent = event as CustomEvent<string>;
+
+    if (customEvent.detail !== this.dropdownId) {
+      this.closeMenu();
+    }
+  }
+
+  private handleToggle(): void {
+    if (!this.isOpen()) {
+      this.notifyDropdownOpen();
+    }
+
+    this.isOpen.update((isOpen) => !isOpen);
+  }
+
+  private notifyDropdownOpen(): void {
+    window.dispatchEvent(
+      new CustomEvent('app-dropdown-opened', {
+        detail: this.dropdownId,
+      }),
+    );
   }
 }
