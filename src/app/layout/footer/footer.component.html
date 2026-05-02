@@ -62,7 +62,7 @@
         </a>
       </div>
 
-      <div class="footer__apps">
+      <!-- <div class="footer__apps">
         <a href="#" class="footer__store">
           <span>{{ 'footerAppStoreKicker' | translate }}</span>
           <strong>{{ 'footerAppStoreTitle' | translate }}</strong>
@@ -72,13 +72,23 @@
           <span>{{ 'footerPlayStoreKicker' | translate }}</span>
           <strong>{{ 'footerPlayStoreTitle' | translate }}</strong>
         </a>
+      </div> -->
+
+      <div class="footer__apps">
+        <a href="#" class="footer__store" aria-label="App Store">
+          <img src="assets/icons/footer/app-store.svg" alt="" aria-hidden="true" />
+        </a>
+
+        <a href="#" class="footer__store" aria-label="Google Play">
+          <img src="assets/icons/footer/google-play.svg" alt="" aria-hidden="true" />
+        </a>
       </div>
 
       <div class="footer__payments" [attr.aria-label]="'footerPaymentsLabel' | translate">
-        <span>Visa</span>
-        <span>Mastercard</span>
-        <span>PayPal</span>
-        <span>Stripe</span>
+        <span><img src="assets/icons/footer/visa.svg" alt="Visa" /></span>
+        <span><img src="assets/icons/footer/mastercard.svg" alt="Mastercard" /></span>
+        <span><img src="assets/icons/footer/paypal.svg" alt="PayPal" /></span>
+        <span><img src="assets/icons/footer/stripe.svg" alt="Stripe" /></span>
       </div>
     </div>
 
