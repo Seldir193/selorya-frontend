@@ -1,9 +1,5 @@
 <section class="orders-page">
   <div class="orders-page__head">
-    <p class="orders-page__eyebrow">
-      {{ text('ordersEyebrow') }}
-    </p>
-
     <h1>{{ text('ordersTitle') }}</h1>
 
     <p>
@@ -24,8 +20,8 @@
     }
   </div>
 
-  <div class="orders-toolbar">
-    <label class="orders-search">
+  <div class="filter-toolbar orders-toolbar">
+    <label class="filter-search orders-search">
       <input
         type="search"
         [value]="searchQuery()"
@@ -35,7 +31,7 @@
     </label>
 
     <app-dropdown
-      class="orders-dropdown"
+      class="filter-control orders-dropdown"
       [value]="statusFilter()"
       [options]="statusDropdownOptions()"
       [ariaLabel]="text('ordersStatusFilterLabel')"
@@ -46,7 +42,7 @@
     />
 
     <app-dropdown
-      class="orders-dropdown"
+      class="filter-control orders-dropdown"
       [value]="sortOption()"
       [options]="sortDropdownOptions()"
       [ariaLabel]="text('ordersSortLabel')"
@@ -59,7 +55,7 @@
     @if (hasActiveFilters()) {
       <button
         type="button"
-        class="app-button app-button--secondary orders-toolbar__clear"
+        class="app-button app-button--secondary filter-clear orders-toolbar__clear"
         (click)="clearFilters()"
       >
         {{ text('ordersClearFilters') }}
