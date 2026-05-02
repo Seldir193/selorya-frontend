@@ -6,8 +6,6 @@
     </a>
 
     <nav class="topbar__nav">
-      <a routerLink="/listings">{{ 'navListings' | translate }}</a>
-
       @if (authService.isAuthenticated()) {
         <a routerLink="/favorites">{{ 'navFavorites' | translate }}</a>
         <a routerLink="/my-listings">{{ 'navMyListings' | translate }}</a>

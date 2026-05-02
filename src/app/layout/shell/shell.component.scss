@@ -203,6 +203,10 @@
   min-height: calc(100vh - 72px);
 }
 
+.topbar--has-search:not(:has(.topbar__nav)) {
+  grid-template-columns: auto minmax(320px, 1fr) auto;
+}
+
 @media (max-width: 1180px) {
   .topbar--has-search {
     grid-template-columns: auto minmax(240px, 1fr) auto;
