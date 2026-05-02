@@ -1,9 +1,9 @@
 import { Component, computed, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { Listing } from '../../core/models/listing.model';
-import { I18nService } from '../../core/services/i18n.service';
-import { ListingsService } from '../../core/services/listings.service';
-import { formatMoney } from '../../core/utils/format.utils';
+import { Listing } from '../core/models/listing.model';
+import { I18nService } from '../core/services/i18n.service';
+import { ListingsService } from '../core/services/listings.service';
+import { formatMoney } from '../core/utils/format.utils';
 
 @Component({
   selector: 'app-home-page',

@@ -1,0 +1,21 @@
+export const enHomeTexts = {
+  homeHeroBadge: 'Premium Recommerce Platform',
+  homeHeroTitle: 'Buy and sell with trust.',
+  homeHeroDescription:
+    'Selorya brings together premium design, safe commerce, and a modern resale experience for Germany first.',
+  homeHeroExploreAction: 'Explore listings',
+  homeHeroSellAction: 'Sell an item',
+  homeHeroPanelLabel: 'Quick start',
+  homeHeroPanelTitle: 'Find standout products faster.',
+  homeHeroPanelDescription:
+    'Discover recent listings, compare prices, and start your next purchase or sale right away.',
+  homeListingsEyebrow: 'New listings',
+  homeListingsTitle: 'Start discovering',
+  homeListingsViewAll: 'View all',
+  homeListingsLoadingTitle: 'Loading listings',
+  homeListingsLoadingDescription: 'Please wait while we prepare the latest products.',
+  homeListingsEmptyTitle: 'No listings yet',
+  homeListingsEmptyDescription:
+    'Once products are published, they will appear directly here on the homepage.',
+  homeListingsEmptyAction: 'Create first listing',
+} as const;
