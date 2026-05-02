@@ -46,4 +46,20 @@ export const deOrdersTexts = {
   ordersPaymentStatusRefunded: 'Erstattet',
   ordersPaymentStatusPartiallyRefunded: 'Teilweise erstattet',
   ordersPaymentStatusMissing: 'Keine Zahlung',
+
+  ordersSearchLabel: 'Suche',
+  ordersSearchPlaceholder: 'Bestellung, Produkt oder Person suchen',
+  ordersStatusFilterLabel: 'Status',
+  ordersStatusFilterAll: 'Alle Status',
+  ordersSortLabel: 'Sortierung',
+  ordersSortNewest: 'Neueste zuerst',
+  ordersSortOldest: 'Älteste zuerst',
+  ordersSortHighest: 'Höchster Betrag',
+  ordersSortLowest: 'Niedrigster Betrag',
+  ordersSortAz: 'A–Z',
+  ordersSortZa: 'Z–A',
+  ordersClearFilters: 'Filter zurücksetzen',
+  ordersFilterEmptyTitle: 'Keine passenden Bestellungen',
+  ordersFilterEmptyDescription:
+    'Passe deine Suche oder Filter an, um weitere Bestellungen zu sehen.',
 } as const;

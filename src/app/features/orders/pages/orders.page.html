@@ -24,6 +24,115 @@
     }
   </div>
 
+  <div class="orders-toolbar">
+    <label class="orders-search">
+      <input
+        type="search"
+        [value]="searchQuery()"
+        [placeholder]="text('ordersSearchPlaceholder')"
+        (input)="updateSearchQuery($any($event.target).value)"
+      />
+    </label>
+
+    <div class="app-dropdown orders-dropdown" data-orders-dropdown>
+      <button
+        type="button"
+        class="app-button app-button--checkout app-dropdown__trigger orders-dropdown__trigger"
+        [attr.aria-expanded]="isStatusMenuOpen()"
+        [attr.aria-label]="text('ordersStatusFilterLabel')"
+        (click)="toggleStatusMenu()"
+      >
+        <span>{{ statusFilterLabel(statusFilter()) }}</span>
+
+        <span class="chevron-swap">
+          <img
+            class="chevron-swap__icon chevron-swap__icon--default"
+            [class.chevron-swap__icon--open]="isStatusMenuOpen()"
+            src="assets/icons/header/chevron-down.svg"
+            alt=""
+            aria-hidden="true"
+          />
+          <img
+            class="chevron-swap__icon chevron-swap__icon--hover"
+            [class.chevron-swap__icon--open]="isStatusMenuOpen()"
+            src="assets/icons/header/chevron-down-light.svg"
+            alt=""
+            aria-hidden="true"
+          />
+        </span>
+      </button>
+
+      @if (isStatusMenuOpen()) {
+        <div class="app-dropdown__menu orders-dropdown__menu">
+          @for (status of statusFilters; track status) {
+            <button
+              type="button"
+              class="app-dropdown__item"
+              [class.orders-dropdown__item--active]="statusFilter() === status"
+              (click)="changeStatusFilter(status)"
+            >
+              {{ statusFilterLabel(status) }}
+            </button>
+          }
+        </div>
+      }
+    </div>
+
+    <div class="app-dropdown orders-dropdown" data-orders-dropdown>
+      <button
+        type="button"
+        class="app-button app-button--checkout app-dropdown__trigger orders-dropdown__trigger"
+        [attr.aria-expanded]="isSortMenuOpen()"
+        [attr.aria-label]="text('ordersSortLabel')"
+        (click)="toggleSortMenu()"
+      >
+        <span>{{ sortLabel(sortOption()) }}</span>
+
+        <span class="chevron-swap">
+          <img
+            class="chevron-swap__icon chevron-swap__icon--default"
+            [class.chevron-swap__icon--open]="isSortMenuOpen()"
+            src="assets/icons/header/chevron-down.svg"
+            alt=""
+            aria-hidden="true"
+          />
+          <img
+            class="chevron-swap__icon chevron-swap__icon--hover"
+            [class.chevron-swap__icon--open]="isSortMenuOpen()"
+            src="assets/icons/header/chevron-down-light.svg"
+            alt=""
+            aria-hidden="true"
+          />
+        </span>
+      </button>
+
+      @if (isSortMenuOpen()) {
+        <div class="app-dropdown__menu orders-dropdown__menu">
+          @for (option of sortOptions; track option) {
+            <button
+              type="button"
+              class="app-dropdown__item"
+              [class.orders-dropdown__item--active]="sortOption() === option"
+              (click)="changeSortOption(option)"
+            >
+              {{ sortLabel(option) }}
+            </button>
+          }
+        </div>
+      }
+    </div>
+
+    @if (hasActiveFilters()) {
+      <button
+        type="button"
+        class="app-button app-button--secondary orders-toolbar__clear"
+        (click)="clearFilters()"
+      >
+        {{ text('ordersClearFilters') }}
+      </button>
+    }
+  </div>
+
   @if (isLoading()) {
     <div class="orders-state-card">
       <div class="orders-state-card__icon" aria-hidden="true">
@@ -46,9 +155,22 @@
         {{ text('ordersEmptyAction') }}
       </a>
     </div>
+  } @else if (!filteredOrders().length) {
+    <div class="orders-state-card">
+      <div class="orders-state-card__icon" aria-hidden="true">
+        <img src="assets/icons/orders/orders.svg" alt="" />
+      </div>
+
+      <h2>{{ text('ordersFilterEmptyTitle') }}</h2>
+      <p>{{ text('ordersFilterEmptyDescription') }}</p>
+
+      <button type="button" class="app-button app-button--primary" (click)="clearFilters()">
+        {{ text('ordersClearFilters') }}
+      </button>
+    </div>
   } @else {
     <div class="orders-list">
-      @for (order of orders(); track order.id) {
+      @for (order of filteredOrders(); track order.id) {
         <article class="order-card">
           <div class="order-card__head">
             <div>

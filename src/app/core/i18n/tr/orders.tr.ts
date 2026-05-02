@@ -46,4 +46,20 @@ export const trOrdersTexts = {
   ordersPaymentStatusRefunded: 'İade edildi',
   ordersPaymentStatusPartiallyRefunded: 'Kısmen iade edildi',
   ordersPaymentStatusMissing: 'Ödeme yok',
+
+  ordersSearchLabel: 'Arama',
+  ordersSearchPlaceholder: 'Sipariş, ürün veya kişi ara',
+  ordersStatusFilterLabel: 'Durum',
+  ordersStatusFilterAll: 'Tüm durumlar',
+  ordersSortLabel: 'Sıralama',
+  ordersSortNewest: 'En yeni önce',
+  ordersSortOldest: 'En eski önce',
+  ordersSortHighest: 'En yüksek tutar',
+  ordersSortLowest: 'En düşük tutar',
+  ordersSortAz: 'A–Z',
+  ordersSortZa: 'Z–A',
+  ordersClearFilters: 'Filtreleri sıfırla',
+  ordersFilterEmptyTitle: 'Eşleşen sipariş yok',
+  ordersFilterEmptyDescription:
+    'Daha fazla sipariş görmek için aramanı veya filtrelerini değiştir.',
 } as const;

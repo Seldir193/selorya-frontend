@@ -1,9 +1,20 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, computed, HostListener, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { Order, OrderItem, OrderScope, PaymentProvider } from '../../../core/models/order.model';
 import { I18nService } from '../../../core/services/i18n.service';
 import { OrdersService } from '../../../core/services/orders.service';
 import { formatDisplayDate, formatMoney } from '../../../core/utils/format.utils';
+
+type OrderStatusFilter =
+  | 'all'
+  | 'pending'
+  | 'confirmed'
+  | 'paid'
+  | 'cancelled'
+  | 'refunded'
+  | 'completed';
+
+type OrderSortOption = 'newest' | 'oldest' | 'highest' | 'lowest' | 'az' | 'za';
 
 @Component({
   selector: 'app-orders-page',
@@ -21,6 +32,37 @@ export class OrdersPage {
   readonly activeScope = signal<OrderScope>('purchased');
   readonly orderScopes: OrderScope[] = ['purchased', 'sold', 'all'];
 
+  readonly searchQuery = signal('');
+  readonly statusFilter = signal<OrderStatusFilter>('all');
+  readonly sortOption = signal<OrderSortOption>('newest');
+  readonly isStatusMenuOpen = signal(false);
+  readonly isSortMenuOpen = signal(false);
+
+  readonly statusFilters: OrderStatusFilter[] = [
+    'all',
+    'pending',
+    'confirmed',
+    'paid',
+    'cancelled',
+    'refunded',
+    'completed',
+  ];
+
+  readonly sortOptions: OrderSortOption[] = ['newest', 'oldest', 'highest', 'lowest', 'az', 'za'];
+
+  readonly filteredOrders = computed(() => {
+    const filteredOrders = this.filterOrders(this.orders());
+    return this.sortOrders(filteredOrders);
+  });
+
+  readonly hasActiveFilters = computed(() => {
+    return (
+      this.searchQuery().trim() !== '' ||
+      this.statusFilter() !== 'all' ||
+      this.sortOption() !== 'newest'
+    );
+  });
+
   constructor() {
     this.loadOrders();
   }
@@ -37,13 +79,68 @@ export class OrdersPage {
     if (this.activeScope() === scope) {
       return;
     }
-
     this.activeScope.set(scope);
     this.loadOrders();
   }
 
+  updateSearchQuery(value: string): void {
+    this.searchQuery.set(value);
+  }
+
+  changeStatusFilter(value: OrderStatusFilter): void {
+    this.statusFilter.set(value);
+    this.closeFilterMenus();
+  }
+
+  changeSortOption(value: OrderSortOption): void {
+    this.sortOption.set(value);
+    this.closeFilterMenus();
+  }
+
+  clearFilters(): void {
+    this.searchQuery.set('');
+    this.statusFilter.set('all');
+    this.sortOption.set('newest');
+  }
+
+  @HostListener('document:click', ['$event'])
+  closeMenusOnOutsideClick(event: MouseEvent): void {
+    const target = event.target as HTMLElement;
+
+    if (!target.closest('[data-orders-dropdown]')) {
+      this.closeFilterMenus();
+    }
+  }
+
+  toggleStatusMenu(): void {
+    this.isStatusMenuOpen.update((isOpen) => !isOpen);
+    this.isSortMenuOpen.set(false);
+  }
+
+  toggleSortMenu(): void {
+    this.isSortMenuOpen.update((isOpen) => !isOpen);
+    this.isStatusMenuOpen.set(false);
+  }
+
+  closeFilterMenus(): void {
+    this.isStatusMenuOpen.set(false);
+    this.isSortMenuOpen.set(false);
+  }
+
   scopeLabel(scope: OrderScope): string {
     return this.text(`ordersScope${this.toPascalCase(scope)}`);
+  }
+
+  statusFilterLabel(status: OrderStatusFilter): string {
+    if (status === 'all') {
+      return this.text('ordersStatusFilterAll');
+    }
+
+    return this.statusLabel(status);
+  }
+
+  sortLabel(option: OrderSortOption): string {
+    return this.text(`ordersSort${this.toPascalCase(option)}`);
   }
 
   emptyTitle(): string {
@@ -65,6 +162,7 @@ export class OrdersPage {
 
     return this.text('ordersPurchasedByYou');
   }
+
   text(key: string): string {
     return this.i18n.t(key);
   }
@@ -99,6 +197,88 @@ export class OrdersPage {
 
   itemTotal(item: OrderItem, currency: string): string {
     return formatMoney(item.line_total, currency, this.i18n.current());
+  }
+
+  private filterOrders(orders: Order[]): Order[] {
+    return orders.filter((order) => {
+      return this.matchesSearch(order) && this.matchesStatus(order);
+    });
+  }
+
+  private matchesSearch(order: Order): boolean {
+    const query = this.searchQuery().trim().toLowerCase();
+
+    if (!query) {
+      return true;
+    }
+
+    return this.searchableOrderText(order).includes(query);
+  }
+
+  private matchesStatus(order: Order): boolean {
+    const status = this.statusFilter();
+    return status === 'all' || order.status === status;
+  }
+
+  private searchableOrderText(order: Order): string {
+    return [
+      order.id,
+      order.buyer_name,
+      order.buyer_email,
+      order.status,
+      order.payment_provider,
+      order.payment_status,
+      ...order.items.map((item) => item.title_snapshot),
+    ]
+      .filter(Boolean)
+      .join(' ')
+      .toLowerCase();
+  }
+
+  private sortOrders(orders: Order[]): Order[] {
+    const sortedOrders = [...orders];
+
+    if (this.sortOption() === 'oldest') {
+      return sortedOrders.sort((a, b) => this.compareDate(a, b));
+    }
+
+    if (this.sortOption() === 'highest') {
+      return sortedOrders.sort((a, b) => this.compareTotal(b, a));
+    }
+
+    if (this.sortOption() === 'lowest') {
+      return sortedOrders.sort((a, b) => this.compareTotal(a, b));
+    }
+
+    return this.sortByTextOrNewest(sortedOrders);
+  }
+
+  private sortByTextOrNewest(orders: Order[]): Order[] {
+    if (this.sortOption() === 'az') {
+      return orders.sort((a, b) => this.compareTitle(a, b));
+    }
+
+    if (this.sortOption() === 'za') {
+      return orders.sort((a, b) => this.compareTitle(b, a));
+    }
+
+    return orders.sort((a, b) => this.compareDate(b, a));
+  }
+
+  private compareDate(first: Order, second: Order): number {
+    return Date.parse(first.created_at) - Date.parse(second.created_at);
+  }
+
+  private compareTotal(first: Order, second: Order): number {
+    return Number(first.total_amount) - Number(second.total_amount);
+  }
+
+  private compareTitle(first: Order, second: Order): number {
+    return this.firstItemTitle(first).localeCompare(this.firstItemTitle(second));
+  }
+
+  private firstItemTitle(order: Order): string {
+    return order.items[0]?.title_snapshot ?? '';
   }
 
   private setOrders(orders: Order[]): void {
