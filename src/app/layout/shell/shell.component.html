@@ -16,49 +16,16 @@
     </nav>
 
     <div class="topbar__actions">
-      <div class="app-dropdown language-select" data-language-dropdown>
-        <button
-          type="button"
-          class="app-button app-button--checkout app-dropdown__trigger topbar__control"
-          (click)="toggleLanguageMenu()"
-          [attr.aria-label]="'languageSelectLabel' | translate"
-          [attr.aria-expanded]="isLanguageMenuOpen()"
-        >
-          <span class="app-dropdown__label">{{ 'languageSelectLabel' | translate }}</span>
-          <strong>{{ currentLanguage().toUpperCase() }}</strong>
-
-          <span class="chevron-swap">
-            <img
-              class="chevron-swap__icon chevron-swap__icon--default"
-              [class.chevron-swap__icon--open]="isLanguageMenuOpen()"
-              src="assets/icons/header/chevron-down.svg"
-              alt=""
-              aria-hidden="true"
-            />
-            <img
-              class="chevron-swap__icon chevron-swap__icon--hover"
-              [class.chevron-swap__icon--open]="isLanguageMenuOpen()"
-              src="assets/icons/header/chevron-down-light.svg"
-              alt=""
-              aria-hidden="true"
-            />
-          </span>
-        </button>
-
-        @if (isLanguageMenuOpen()) {
-          <div class="app-dropdown__menu">
-            <button type="button" class="app-dropdown__item" (click)="selectLanguage('de')">
-              DE
-            </button>
-            <button type="button" class="app-dropdown__item" (click)="selectLanguage('en')">
-              EN
-            </button>
-            <button type="button" class="app-dropdown__item" (click)="selectLanguage('tr')">
-              TR
-            </button>
-          </div>
-        }
-      </div>
+      <app-dropdown
+        class="language-select"
+        [value]="currentLanguage()"
+        [options]="languageOptions"
+        [ariaLabel]="'languageSelectLabel' | translate"
+        minWidth="132px"
+        maxMenuHeight="none"
+        itemAlign="left"
+        (valueChange)="selectLanguage($event)"
+      />
 
       @if (authService.isAuthReady()) {
         @if (!authService.isAuthenticated()) {
@@ -166,13 +133,22 @@
           <span class="app-dropdown__label">{{ 'languageSelectLabel' | translate }}</span>
           <strong>{{ currentLanguage().toUpperCase() }}</strong>
 
-          <img
-            class="app-dropdown__chevron"
-            [class.app-dropdown__chevron--open]="isLanguageMenuOpen()"
-            src="assets/icons/header/chevron-down.svg"
-            alt=""
-            aria-hidden="true"
-          />
+          <span class="chevron-swap">
+            <img
+              class="chevron-swap__icon chevron-swap__icon--default"
+              [class.chevron-swap__icon--open]="isLanguageMenuOpen()"
+              src="assets/icons/header/chevron-down.svg"
+              alt=""
+              aria-hidden="true"
+            />
+            <img
+              class="chevron-swap__icon chevron-swap__icon--hover"
+              [class.chevron-swap__icon--open]="isLanguageMenuOpen()"
+              src="assets/icons/header/chevron-down-light.svg"
+              alt=""
+              aria-hidden="true"
+            />
+          </span>
         </button>
 
         @if (isLanguageMenuOpen()) {
@@ -211,13 +187,22 @@
               <span class="user-menu__avatar">{{ userInitials() }}</span>
               <span class="user-menu__name">{{ authService.user()?.full_name }}</span>
 
-              <img
-                class="user-menu__chevron"
-                [class.user-menu__chevron--open]="isUserMenuOpen()"
-                src="assets/icons/header/chevron-down.svg"
-                alt=""
-                aria-hidden="true"
-              />
+              <span class="chevron-swap">
+                <img
+                  class="chevron-swap__icon chevron-swap__icon--default"
+                  [class.chevron-swap__icon--open]="isUserMenuOpen()"
+                  src="assets/icons/header/chevron-down.svg"
+                  alt=""
+                  aria-hidden="true"
+                />
+                <img
+                  class="chevron-swap__icon chevron-swap__icon--hover"
+                  [class.chevron-swap__icon--open]="isUserMenuOpen()"
+                  src="assets/icons/header/chevron-down-light.svg"
+                  alt=""
+                  aria-hidden="true"
+                />
+              </span>
             </button>
 
             @if (isUserMenuOpen()) {

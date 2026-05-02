@@ -1,17 +1,20 @@
 <div
   class="dropdown"
   data-app-dropdown
+  [class.dropdown--right]="align() === 'right'"
+  [class.dropdown--item-left]="itemAlign() === 'left'"
   [style.--dropdown-min-width]="minWidth()"
   [style.--dropdown-max-menu-height]="maxMenuHeight()"
 >
   <button
     type="button"
     class="app-button app-button--checkout app-dropdown__trigger dropdown__trigger"
+    [disabled]="disabled()"
     [attr.aria-expanded]="isOpen()"
     [attr.aria-label]="ariaLabel()"
     (click)="toggleMenu()"
   >
-    <span>{{ selectedLabel() }}</span>
+    <span>{{ selectedTriggerLabel() }}</span>
 
     <span class="dropdown__chevron">
       <img

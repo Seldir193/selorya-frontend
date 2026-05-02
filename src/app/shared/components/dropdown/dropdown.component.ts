@@ -3,7 +3,11 @@ import { Component, HostListener, computed, input, output, signal } from '@angul
 export type DropdownOption<T extends string | number = string | number> = {
   value: T;
   label: string;
+  triggerLabel?: string;
 };
+
+export type DropdownAlign = 'left' | 'right';
+export type DropdownItemAlign = 'left' | 'center';
 
 @Component({
   selector: 'app-dropdown',
@@ -17,6 +21,10 @@ export class DropdownComponent<T extends string | number = string | number> {
   readonly ariaLabel = input('');
   readonly minWidth = input('154px');
   readonly maxMenuHeight = input('none');
+  readonly align = input<DropdownAlign>('left');
+  readonly itemAlign = input<DropdownItemAlign>('center');
+  readonly disabled = input(false);
+  readonly closeOnSelect = input(true);
 
   readonly valueChange = output<T>();
 
@@ -26,13 +34,25 @@ export class DropdownComponent<T extends string | number = string | number> {
     return this.options().find((option) => option.value === this.value())?.label ?? '';
   });
 
+  readonly selectedTriggerLabel = computed(() => {
+    const selectedOption = this.options().find((option) => option.value === this.value());
+    return selectedOption?.triggerLabel ?? selectedOption?.label ?? '';
+  });
+
   toggleMenu(): void {
+    if (this.disabled()) {
+      return;
+    }
+
     this.isOpen.update((isOpen) => !isOpen);
   }
 
   selectOption(value: T): void {
     this.valueChange.emit(value);
-    this.closeMenu();
+
+    if (this.closeOnSelect()) {
+      this.closeMenu();
+    }
   }
 
   closeMenu(): void {

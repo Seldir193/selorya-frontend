@@ -4,6 +4,11 @@
   min-width: var(--dropdown-min-width);
 }
 
+.dropdown--right .dropdown__menu {
+  right: 0;
+  left: auto;
+}
+
 .dropdown__trigger {
   width: 100%;
   min-width: var(--dropdown-min-width);
@@ -34,6 +39,13 @@
 
 .dropdown__menu .dropdown__item {
   justify-content: center;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.dropdown--item-left .dropdown__item {
+  justify-content: flex-start;
+  text-align: left;
 }
 
 .dropdown__menu .dropdown__item:hover {
