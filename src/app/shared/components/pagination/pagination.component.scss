@@ -1,14 +1,22 @@
 .pagination {
-  width: fit-content;
-  display: flex;
+  width: 100%;
+  display: grid;
+  grid-template-columns: var(--button-height) 1fr var(--button-height);
   align-items: center;
   gap: 12px;
-  margin: 24px auto 0;
+  margin-top: 24px;
   padding: 10px;
   border: 1px solid var(--color-border-soft);
   border-radius: 999px;
   background: var(--color-surface);
   box-shadow: var(--shadow-sm);
+}
+
+.pagination__center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
 }
 
 .pagination__page {
@@ -19,9 +27,6 @@
 }
 
 .pagination__icon-button {
-  position: relative;
-  isolation: isolate;
-  overflow: hidden;
   width: var(--button-height);
   height: var(--button-height);
   display: inline-flex;
@@ -30,36 +35,22 @@
   border: 1px solid var(--button-secondary-border);
   border-radius: 999px;
   background: var(--button-bg);
-  color: var(--button-secondary-color);
   box-shadow: var(--button-secondary-shadow);
   cursor: pointer;
   transition:
     border-color var(--button-hover-transition),
+    background var(--button-hover-transition),
     box-shadow var(--button-hover-transition),
     transform var(--button-hover-transition);
 }
 
-.pagination__icon-button::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  background: var(--button-bg-hover);
-  opacity: 0;
-  transition: opacity var(--button-hover-transition);
-}
-
 .pagination__icon-button:hover,
 .pagination__icon-button:focus-visible {
-  border-color: var(--button-border-hover);
-  box-shadow: var(--button-shadow-hover);
-  transform: translateY(-3px);
+  border-color: var(--color-border-strong);
+  background: var(--color-surface-muted);
+  box-shadow: var(--shadow-sm);
+  transform: translateY(-2px);
   outline: none;
-}
-
-.pagination__icon-button:hover::after,
-.pagination__icon-button:focus-visible::after {
-  opacity: 1;
 }
 
 .pagination__icon-button:disabled {
@@ -68,8 +59,15 @@
   transform: none;
 }
 
-.pagination__icon-button:disabled::after {
-  opacity: 0;
+.pagination__icon-button:disabled:hover {
+  border-color: var(--button-secondary-border);
+  background: var(--button-bg);
+  box-shadow: var(--button-secondary-shadow);
+}
+
+.pagination__arrow {
+  width: var(--icon-size-sm);
+  height: var(--icon-size-sm);
 }
 
 .pagination__dropdown {
@@ -83,8 +81,25 @@
 }
 
 .pagination__dropdown-menu {
-  min-width: 86px;
   width: 100%;
+  min-width: 86px;
+  max-height: 86px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-border-strong) transparent;
+}
+
+.pagination__dropdown-menu::-webkit-scrollbar {
+  width: 6px;
+}
+
+.pagination__dropdown-menu::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.pagination__dropdown-menu::-webkit-scrollbar-thumb {
+  border-radius: 999px;
+  background: var(--color-border-strong);
 }
 
 .pagination__dropdown-menu .app-dropdown__item {
@@ -112,7 +127,6 @@
   box-shadow: none;
 }
 
-.pagination-icon-swap,
 .chevron-swap {
   position: relative;
   width: var(--icon-size-sm);
@@ -120,7 +134,6 @@
   flex: 0 0 auto;
 }
 
-.pagination-icon-swap__icon,
 .chevron-swap__icon {
   position: absolute;
   inset: 0;
@@ -131,31 +144,18 @@
     transform var(--button-hover-transition);
 }
 
-.pagination-icon-swap__icon--hover,
 .chevron-swap__icon--hover {
   opacity: 0;
 }
 
-.pagination__icon-button:hover .pagination-icon-swap__icon--default,
-.pagination__icon-button:focus-visible .pagination-icon-swap__icon--default,
 .app-button:hover .chevron-swap__icon--default,
 .app-button:focus-visible .chevron-swap__icon--default {
   opacity: 0;
 }
 
-.pagination__icon-button:hover .pagination-icon-swap__icon--hover,
-.pagination__icon-button:focus-visible .pagination-icon-swap__icon--hover,
 .app-button:hover .chevron-swap__icon--hover,
 .app-button:focus-visible .chevron-swap__icon--hover {
   opacity: 1;
-}
-
-.pagination__icon-button:disabled .pagination-icon-swap__icon--default {
-  opacity: 1;
-}
-
-.pagination__icon-button:disabled .pagination-icon-swap__icon--hover {
-  opacity: 0;
 }
 
 .chevron-swap__icon--open {
@@ -164,8 +164,11 @@
 
 @media (max-width: 560px) {
   .pagination {
-    width: 100%;
-    justify-content: space-between;
+    grid-template-columns: var(--button-height) 1fr var(--button-height);
+  }
+
+  .pagination__center {
+    gap: 10px;
   }
 
   .pagination__dropdown {
