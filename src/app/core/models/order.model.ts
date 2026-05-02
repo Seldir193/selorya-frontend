@@ -1,3 +1,5 @@
+export type PaymentProvider = 'stripe' | 'paypal' | 'manual';
+
 export type OrderItem = {
   id: number;
   listing: number;
@@ -19,6 +21,8 @@ export type Order = {
   currency: string;
   subtotal: string;
   total_amount: string;
+  payment_provider: PaymentProvider | null;
+  payment_status: string | null;
   items: OrderItem[];
   created_at: string;
   updated_at: string;

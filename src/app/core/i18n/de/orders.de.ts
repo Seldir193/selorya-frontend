@@ -17,4 +17,17 @@ export const deOrdersTexts = {
   ordersStatusRefunded: 'Erstattet',
   ordersStatusCompleted: 'Abgeschlossen',
   ordersStatusUnknown: 'Unbekannt',
+
+  ordersPaymentProviderStripe: 'Stripe',
+  ordersPaymentProviderPaypal: 'PayPal',
+  ordersPaymentProviderManual: 'Manuell',
+  ordersPaymentProviderMissing: 'Kein Zahlungsanbieter',
+  ordersPaymentStatusPending: 'Zahlung ausstehend',
+  ordersPaymentStatusAuthorized: 'Zahlung autorisiert',
+  ordersPaymentStatusPaid: 'Zahlung bezahlt',
+  ordersPaymentStatusFailed: 'Zahlung fehlgeschlagen',
+  ordersPaymentStatusCancelled: 'Zahlung storniert',
+  ordersPaymentStatusRefunded: 'Zahlung erstattet',
+  ordersPaymentStatusPartiallyRefunded: 'Teilweise erstattet',
+  ordersPaymentStatusMissing: 'Kein Zahlungsstatus',
 } as const;

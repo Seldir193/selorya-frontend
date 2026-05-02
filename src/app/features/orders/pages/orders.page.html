@@ -48,9 +48,23 @@
               <p>{{ orderDate(order) }}</p>
             </div>
 
-            <span class="order-status">
+            <!-- <span class="order-status">
               {{ statusLabel(order.status) }}
-            </span>
+            </span> -->
+
+            <div class="order-card__badges">
+              <span class="order-status">
+                {{ statusLabel(order.status) }}
+              </span>
+
+              <span class="order-payment">
+                {{ paymentProviderLabel(order.payment_provider) }}
+              </span>
+
+              <span class="order-payment order-payment--status">
+                {{ paymentStatusLabel(order.payment_status) }}
+              </span>
+            </div>
           </div>
 
           <div class="order-items">

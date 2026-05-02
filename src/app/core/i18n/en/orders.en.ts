@@ -17,4 +17,17 @@ export const enOrdersTexts = {
   ordersStatusRefunded: 'Refunded',
   ordersStatusCompleted: 'Completed',
   ordersStatusUnknown: 'Unknown',
+
+  ordersPaymentProviderStripe: 'Stripe',
+  ordersPaymentProviderPaypal: 'PayPal',
+  ordersPaymentProviderManual: 'Manual',
+  ordersPaymentProviderMissing: 'No payment provider',
+  ordersPaymentStatusPending: 'Payment pending',
+  ordersPaymentStatusAuthorized: 'Payment authorized',
+  ordersPaymentStatusPaid: 'Payment paid',
+  ordersPaymentStatusFailed: 'Payment failed',
+  ordersPaymentStatusCancelled: 'Payment cancelled',
+  ordersPaymentStatusRefunded: 'Payment refunded',
+  ordersPaymentStatusPartiallyRefunded: 'Partially refunded',
+  ordersPaymentStatusMissing: 'No payment status',
 } as const;

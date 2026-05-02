@@ -17,4 +17,17 @@ export const trOrdersTexts = {
   ordersStatusRefunded: 'İade edildi',
   ordersStatusCompleted: 'Tamamlandı',
   ordersStatusUnknown: 'Bilinmiyor',
+
+  ordersPaymentProviderStripe: 'Stripe',
+  ordersPaymentProviderPaypal: 'PayPal',
+  ordersPaymentProviderManual: 'Manuel',
+  ordersPaymentProviderMissing: 'Ödeme sağlayıcısı yok',
+  ordersPaymentStatusPending: 'Ödeme beklemede',
+  ordersPaymentStatusAuthorized: 'Ödeme yetkilendirildi',
+  ordersPaymentStatusPaid: 'Ödeme ödendi',
+  ordersPaymentStatusFailed: 'Ödeme başarısız',
+  ordersPaymentStatusCancelled: 'Ödeme iptal edildi',
+  ordersPaymentStatusRefunded: 'Ödeme iade edildi',
+  ordersPaymentStatusPartiallyRefunded: 'Kısmen iade edildi',
+  ordersPaymentStatusMissing: 'Ödeme durumu yok',
 } as const;
