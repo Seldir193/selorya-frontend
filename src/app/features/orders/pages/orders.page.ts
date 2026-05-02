@@ -4,6 +4,7 @@ import { Order, OrderItem, OrderScope, PaymentProvider } from '../../../core/mod
 import { I18nService } from '../../../core/services/i18n.service';
 import { OrdersService } from '../../../core/services/orders.service';
 import { formatDisplayDate, formatMoney } from '../../../core/utils/format.utils';
+import { PaginationComponent } from '../../../shared/components/pagination/pagination.component';
 
 type OrderStatusFilter =
   | 'all'
@@ -19,7 +20,7 @@ type OrderSortOption = 'newest' | 'oldest' | 'highest' | 'lowest' | 'az' | 'za';
 @Component({
   selector: 'app-orders-page',
   standalone: true,
-  imports: [RouterLink],
+  imports: [RouterLink, PaginationComponent],
   templateUrl: './orders.page.html',
   styleUrl: './orders.page.scss',
 })
@@ -37,6 +38,9 @@ export class OrdersPage {
   readonly sortOption = signal<OrderSortOption>('newest');
   readonly isStatusMenuOpen = signal(false);
   readonly isSortMenuOpen = signal(false);
+  readonly currentPage = signal(1);
+  readonly pageSize = signal(10);
+  readonly pageSizeOptions = [10, 20, 50, 100];
 
   readonly statusFilters: OrderStatusFilter[] = [
     'all',
@@ -53,6 +57,12 @@ export class OrdersPage {
   readonly filteredOrders = computed(() => {
     const filteredOrders = this.filterOrders(this.orders());
     return this.sortOrders(filteredOrders);
+  });
+
+  readonly paginatedOrders = computed(() => {
+    const start = (this.currentPage() - 1) * this.pageSize();
+    const end = start + this.pageSize();
+    return this.filteredOrders().slice(start, end);
   });
 
   readonly hasActiveFilters = computed(() => {
@@ -80,20 +90,24 @@ export class OrdersPage {
       return;
     }
     this.activeScope.set(scope);
+    this.resetPage();
     this.loadOrders();
   }
 
   updateSearchQuery(value: string): void {
     this.searchQuery.set(value);
+    this.resetPage();
   }
 
   changeStatusFilter(value: OrderStatusFilter): void {
     this.statusFilter.set(value);
+    this.resetPage();
     this.closeFilterMenus();
   }
 
   changeSortOption(value: OrderSortOption): void {
     this.sortOption.set(value);
+    this.resetPage();
     this.closeFilterMenus();
   }
 
@@ -101,6 +115,19 @@ export class OrdersPage {
     this.searchQuery.set('');
     this.statusFilter.set('all');
     this.sortOption.set('newest');
+  }
+
+  changePage(page: number): void {
+    this.currentPage.set(page);
+  }
+
+  changePageSize(pageSize: number): void {
+    this.pageSize.set(pageSize);
+    this.resetPage();
+  }
+
+  private resetPage(): void {
+    this.currentPage.set(1);
   }
 
   @HostListener('document:click', ['$event'])

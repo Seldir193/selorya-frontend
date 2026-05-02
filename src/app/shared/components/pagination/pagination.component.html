@@ -1,0 +1,95 @@
+@if (hasItems()) {
+  <nav class="pagination" [attr.aria-label]="text('paginationLabel')">
+    <button
+      type="button"
+      class="pagination__icon-button"
+      [disabled]="page() === 1"
+      [attr.aria-label]="text('paginationPrevious')"
+      (click)="previousPage()"
+    >
+      <span class="pagination-icon-swap">
+        <img
+          class="pagination-icon-swap__icon pagination-icon-swap__icon--default"
+          src="assets/icons/pagination/arrow-left.svg"
+          alt=""
+          aria-hidden="true"
+        />
+        <img
+          class="pagination-icon-swap__icon pagination-icon-swap__icon--hover"
+          src="assets/icons/pagination/arrow-left-light.svg"
+          alt=""
+          aria-hidden="true"
+        />
+      </span>
+    </button>
+
+    <span class="pagination__page"> {{ page() }} / {{ totalPages() }} </span>
+
+    <div class="app-dropdown pagination__dropdown" data-pagination-dropdown>
+      <button
+        type="button"
+        class="app-button app-button--checkout app-dropdown__trigger pagination__dropdown-trigger"
+        [attr.aria-expanded]="isPageSizeMenuOpen()"
+        [attr.aria-label]="text('paginationPageSize')"
+        (click)="togglePageSizeMenu()"
+      >
+        <span>{{ pageSize() }}</span>
+
+        <span class="chevron-swap">
+          <img
+            class="chevron-swap__icon chevron-swap__icon--default"
+            [class.chevron-swap__icon--open]="isPageSizeMenuOpen()"
+            src="assets/icons/header/chevron-down.svg"
+            alt=""
+            aria-hidden="true"
+          />
+          <img
+            class="chevron-swap__icon chevron-swap__icon--hover"
+            [class.chevron-swap__icon--open]="isPageSizeMenuOpen()"
+            src="assets/icons/header/chevron-down-light.svg"
+            alt=""
+            aria-hidden="true"
+          />
+        </span>
+      </button>
+
+      @if (isPageSizeMenuOpen()) {
+        <div class="app-dropdown__menu pagination__dropdown-menu">
+          @for (option of pageSizeOptions(); track option) {
+            <button
+              type="button"
+              class="app-dropdown__item"
+              [class.pagination__dropdown-item--active]="pageSize() === option"
+              (click)="changePageSize(option)"
+            >
+              {{ option }}
+            </button>
+          }
+        </div>
+      }
+    </div>
+
+    <button
+      type="button"
+      class="pagination__icon-button"
+      [disabled]="page() === totalPages()"
+      [attr.aria-label]="text('paginationNext')"
+      (click)="nextPage()"
+    >
+      <span class="pagination-icon-swap">
+        <img
+          class="pagination-icon-swap__icon pagination-icon-swap__icon--default"
+          src="assets/icons/pagination/arrow-right.svg"
+          alt=""
+          aria-hidden="true"
+        />
+        <img
+          class="pagination-icon-swap__icon pagination-icon-swap__icon--hover"
+          src="assets/icons/pagination/arrow-right-light.svg"
+          alt=""
+          aria-hidden="true"
+        />
+      </span>
+    </button>
+  </nav>
+}

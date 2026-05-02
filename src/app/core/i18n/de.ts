@@ -4,6 +4,7 @@ import { deLoginTexts } from './de/login.de';
 import { deSignupTexts } from './de/signup.de';
 import { deCheckoutTexts } from './de/checkout.de';
 import { deOrdersTexts } from './de/orders.de';
+import { dePaginationTexts } from './de/pagination.de';
 
 export const deTexts = {
   ...deFeedbackTexts,
@@ -12,4 +13,5 @@ export const deTexts = {
   ...deSignupTexts,
   ...deCheckoutTexts,
   ...deOrdersTexts,
+  ...dePaginationTexts,
 } as const;

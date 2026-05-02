@@ -170,7 +170,7 @@
     </div>
   } @else {
     <div class="orders-list">
-      @for (order of filteredOrders(); track order.id) {
+      @for (order of paginatedOrders(); track order.id) {
         <article class="order-card">
           <div class="order-card__head">
             <div>
@@ -219,5 +219,13 @@
         </article>
       }
     </div>
+    <app-pagination
+      [page]="currentPage()"
+      [pageSize]="pageSize()"
+      [totalItems]="filteredOrders().length"
+      [pageSizeOptions]="pageSizeOptions"
+      (pageChange)="changePage($event)"
+      (pageSizeChange)="changePageSize($event)"
+    />
   }
 </section>
