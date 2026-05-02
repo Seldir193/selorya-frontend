@@ -6,6 +6,7 @@ import { deCheckoutTexts } from './de/checkout.de';
 import { deOrdersTexts } from './de/orders.de';
 import { dePaginationTexts } from './de/pagination.de';
 import { deHomeTexts } from './de/home.de';
+import { deFooterTexts } from './de/footer.de';
 
 export const deTexts = {
   ...deFeedbackTexts,
@@ -16,4 +17,5 @@ export const deTexts = {
   ...deOrdersTexts,
   ...dePaginationTexts,
   ...deHomeTexts,
+  ...deFooterTexts,
 } as const;

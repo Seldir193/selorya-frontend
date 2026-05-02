@@ -6,6 +6,7 @@ import { enCheckoutTexts } from './en/checkout.en';
 import { enOrdersTexts } from './en/orders.en';
 import { enPaginationTexts } from './en/pagination.en';
 import { enHomeTexts } from './en/home.en';
+import { enFooterTexts } from './en/footer.en';
 
 export const enTexts = {
   ...enFeedbackTexts,
@@ -16,4 +17,5 @@ export const enTexts = {
   ...enOrdersTexts,
   ...enPaginationTexts,
   ...enHomeTexts,
+  ...enFooterTexts,
 } as const;

@@ -9,11 +9,18 @@ import {
   DropdownOption,
 } from '../../shared/components/dropdown/dropdown.component';
 import { GlobalSearchComponent } from '../../shared/components/global-search/global-search.component';
-
+import { FooterComponent } from '../footer/footer.component';
 @Component({
   selector: 'app-shell',
   standalone: true,
-  imports: [RouterLink, RouterOutlet, TranslatePipe, DropdownComponent, GlobalSearchComponent],
+  imports: [
+    RouterLink,
+    RouterOutlet,
+    TranslatePipe,
+    DropdownComponent,
+    GlobalSearchComponent,
+    FooterComponent,
+  ],
   templateUrl: './shell.component.html',
   styleUrl: './shell.component.scss',
 })
