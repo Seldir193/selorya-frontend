@@ -12,4 +12,7 @@ export const enHeaderTexts = {
   authLogout: 'Logout',
   languageSelectLabel: 'Language',
   userMenuLabel: 'Open user menu',
+
+  globalSearchLabel: 'Product search',
+  globalSearchPlaceholder: 'Search products',
 } as const;

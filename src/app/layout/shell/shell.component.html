@@ -1,5 +1,5 @@
 <div class="shell">
-  <header class="topbar">
+  <header class="topbar" [class.topbar--has-search]="showGlobalSearch()">
     <a routerLink="/" class="brand">
       <img src="assets/icons/brand-mark.svg" alt="Selorya" />
       <span>Selorya</span>
@@ -14,6 +14,10 @@
         <a routerLink="/sell/create">{{ 'navSell' | translate }}</a>
       }
     </nav>
+
+    @if (showGlobalSearch()) {
+      <app-global-search class="topbar__search" />
+    }
 
     <div class="topbar__actions">
       <app-dropdown
@@ -122,49 +126,16 @@
     </nav>
 
     <div class="topbar__actions">
-      <div class="app-dropdown language-select" data-language-dropdown>
-        <button
-          type="button"
-          class="app-button app-button--checkout app-dropdown__trigger topbar__control"
-          (click)="toggleLanguageMenu()"
-          [attr.aria-label]="'languageSelectLabel' | translate"
-          [attr.aria-expanded]="isLanguageMenuOpen()"
-        >
-          <span class="app-dropdown__label">{{ 'languageSelectLabel' | translate }}</span>
-          <strong>{{ currentLanguage().toUpperCase() }}</strong>
-
-          <span class="chevron-swap">
-            <img
-              class="chevron-swap__icon chevron-swap__icon--default"
-              [class.chevron-swap__icon--open]="isLanguageMenuOpen()"
-              src="assets/icons/header/chevron-down.svg"
-              alt=""
-              aria-hidden="true"
-            />
-            <img
-              class="chevron-swap__icon chevron-swap__icon--hover"
-              [class.chevron-swap__icon--open]="isLanguageMenuOpen()"
-              src="assets/icons/header/chevron-down-light.svg"
-              alt=""
-              aria-hidden="true"
-            />
-          </span>
-        </button>
-
-        @if (isLanguageMenuOpen()) {
-          <div class="app-dropdown__menu">
-            <button type="button" class="app-dropdown__item" (click)="selectLanguage('de')">
-              DE
-            </button>
-            <button type="button" class="app-dropdown__item" (click)="selectLanguage('en')">
-              EN
-            </button>
-            <button type="button" class="app-dropdown__item" (click)="selectLanguage('tr')">
-              TR
-            </button>
-          </div>
-        }
-      </div>
+      <app-dropdown
+        class="language-select"
+        [value]="currentLanguage()"
+        [options]="languageOptions"
+        [ariaLabel]="'languageSelectLabel' | translate"
+        minWidth="132px"
+        maxMenuHeight="none"
+        itemAlign="left"
+        (valueChange)="selectLanguage($event)"
+      />
 
       @if (authService.isAuthReady()) {
         @if (!authService.isAuthenticated()) {

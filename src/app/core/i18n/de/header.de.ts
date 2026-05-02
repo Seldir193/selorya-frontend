@@ -12,4 +12,7 @@ export const deHeaderTexts = {
   authLogout: 'Abmelden',
   languageSelectLabel: 'Sprache',
   userMenuLabel: 'Benutzermenü öffnen',
+
+  globalSearchLabel: 'Produktsuche',
+  globalSearchPlaceholder: 'Produkte suchen',
 } as const;

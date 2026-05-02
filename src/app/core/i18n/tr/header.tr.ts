@@ -11,4 +11,7 @@ export const trHeaderTexts = {
   authRegister: 'Kayıt ol',
   authLogout: 'Çıkış yap',
   languageSelectLabel: 'Dil',
+
+  globalSearchLabel: 'Ürün arama',
+  globalSearchPlaceholder: 'Ürün ara',
 } as const;

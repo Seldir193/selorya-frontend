@@ -1,0 +1,11 @@
+<form class="global-search" role="search" (submit)="submitSearch(); $event.preventDefault()">
+  <img class="global-search__icon" src="assets/icons/header/search.svg" alt="" aria-hidden="true" />
+
+  <input
+    type="search"
+    [value]="query()"
+    [placeholder]="'globalSearchPlaceholder' | translate"
+    [attr.aria-label]="'globalSearchLabel' | translate"
+    (input)="updateQuery($any($event.target).value)"
+  />
+</form>

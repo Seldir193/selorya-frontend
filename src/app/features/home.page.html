@@ -1,4 +1,85 @@
-<section class="hero">
+<section class="home-page">
+  <section class="home-hero">
+    <div class="home-hero__content">
+      <span class="home-hero__badge">
+        {{ text('homeHeroBadge') }}
+      </span>
+
+      <h1>{{ text('homeHeroTitle') }}</h1>
+
+      <p>
+        {{ text('homeHeroDescription') }}
+      </p>
+
+      <div class="home-hero__actions">
+        <a routerLink="/listings" class="app-button app-button--primary">
+          {{ text('homeHeroExploreAction') }}
+        </a>
+
+        <a routerLink="/sell/create" class="app-button app-button--secondary">
+          {{ text('homeHeroSellAction') }}
+        </a>
+      </div>
+    </div>
+
+    <div class="home-hero__panel">
+      <span>{{ text('homeHeroPanelLabel') }}</span>
+      <strong>{{ text('homeHeroPanelTitle') }}</strong>
+      <p>{{ text('homeHeroPanelDescription') }}</p>
+    </div>
+  </section>
+
+  <section class="home-listings">
+    <div class="home-listings__head">
+      <div>
+        <span>{{ text('homeListingsEyebrow') }}</span>
+        <h2>{{ text('homeListingsTitle') }}</h2>
+      </div>
+
+      <a routerLink="/listings" class="app-button app-button--secondary">
+        {{ text('homeListingsViewAll') }}
+      </a>
+    </div>
+
+    @if (isLoading()) {
+      <div class="home-listings__state">
+        <h3>{{ text('homeListingsLoadingTitle') }}</h3>
+        <p>{{ text('homeListingsLoadingDescription') }}</p>
+      </div>
+    } @else if (!previewListings().length) {
+      <div class="home-listings__state">
+        <h3>{{ text('homeListingsEmptyTitle') }}</h3>
+        <p>{{ text('homeListingsEmptyDescription') }}</p>
+
+        <a routerLink="/sell/create" class="app-button app-button--primary">
+          {{ text('homeListingsEmptyAction') }}
+        </a>
+      </div>
+    } @else {
+      <div class="home-listings__grid">
+        @for (listing of previewListings(); track listing.id) {
+          <a class="home-listing-card" [routerLink]="['/listings', listing.slug]">
+            <div class="home-listing-card__image">
+              <img [src]="listingImage(listing)" [alt]="listingAlt(listing)" />
+            </div>
+
+            <div class="home-listing-card__body">
+              <span>{{ listing.category_data.name }}</span>
+              <h3>{{ listing.title }}</h3>
+
+              <div class="home-listing-card__meta">
+                <strong>{{ listingPrice(listing) }}</strong>
+                <small>{{ listing.city }}</small>
+              </div>
+            </div>
+          </a>
+        }
+      </div>
+    }
+  </section>
+</section>
+
+<!-- <section class="hero">
   <div class="hero__content">
     <span class="hero__badge">Premium Recommerce Platform</span>
     <h1>Buy and sell with trust.</h1>
@@ -12,4 +93,4 @@
       <a mat-stroked-button routerLink="/register">Create Account</a>
     </div>
   </div>
-</section>
+</section> -->
