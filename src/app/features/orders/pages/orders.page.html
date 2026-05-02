@@ -111,7 +111,14 @@
       </div>
 
       @for (order of paginatedOrders(); track order.id) {
-        <article class="order-row">
+        <article
+          class="order-row"
+          role="button"
+          tabindex="0"
+          (click)="openOrderDetails(order)"
+          (keydown.enter)="openOrderDetails(order)"
+          (keydown.space)="openOrderDetails(order)"
+        >
           <div class="order-row__cell order-row__cell--order">
             <span class="order-row__mobile-label">
               {{ text('ordersColumnOrder') }}
@@ -166,7 +173,7 @@
             <button
               type="button"
               class="app-button app-button--secondary order-row__action"
-              (click)="openOrderDetails(order)"
+              (click)="openOrderDetails(order); $event.stopPropagation()"
             >
               {{ text('ordersDetailsAction') }}
             </button>

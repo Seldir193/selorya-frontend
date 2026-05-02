@@ -89,7 +89,7 @@
     minmax(150px, 1.25fr)
     minmax(120px, 0.8fr)
     minmax(110px, 0.75fr)
-    minmax(120px, 0.85fr)
+    minmax(142px, 0.9fr)
     minmax(180px, 1.2fr)
     minmax(108px, auto);
   align-items: center;
@@ -112,6 +112,19 @@
   border-radius: 24px;
   background: var(--color-surface);
   box-shadow: var(--shadow-md);
+  cursor: pointer;
+  transition:
+    border-color var(--button-hover-transition),
+    box-shadow var(--button-hover-transition),
+    transform var(--button-hover-transition);
+}
+
+.order-row:hover,
+.order-row:focus-visible {
+  border-color: var(--color-border-strong);
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-2px);
+  outline: none;
 }
 
 .order-row__cell {
@@ -166,7 +179,8 @@
 }
 
 .order-status {
-  min-width: 112px;
+  width: 142px;
+  min-width: 142px;
   min-height: 36px;
   display: inline-flex;
   align-items: center;
