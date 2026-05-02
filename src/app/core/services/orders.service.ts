@@ -2,7 +2,12 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { API_BASE_URL } from '../config/api.config';
-import { Order, PayPalCheckoutResponse, StripeCheckoutResponse } from '../models/order.model';
+import {
+  Order,
+  OrderScope,
+  PayPalCheckoutResponse,
+  StripeCheckoutResponse,
+} from '../models/order.model';
 
 @Injectable({
   providedIn: 'root',
@@ -10,8 +15,10 @@ import { Order, PayPalCheckoutResponse, StripeCheckoutResponse } from '../models
 export class OrdersService {
   private readonly http = inject(HttpClient);
 
-  list(): Observable<Order[]> {
-    return this.http.get<Order[]>(`${API_BASE_URL}/orders/`);
+  list(scope: OrderScope = 'purchased'): Observable<Order[]> {
+    return this.http.get<Order[]>(`${API_BASE_URL}/orders/`, {
+      params: { scope },
+    });
   }
 
   detail(id: number): Observable<Order> {

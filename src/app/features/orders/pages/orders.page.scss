@@ -7,7 +7,7 @@
 .orders-page__head {
   display: grid;
   gap: 10px;
-  margin-bottom: 30px;
+  margin-bottom: 24px;
 }
 
 .orders-page__eyebrow,
@@ -34,6 +34,53 @@
   max-width: 620px;
   color: var(--color-text-soft);
   line-height: 1.7;
+}
+
+.orders-tabs {
+  width: fit-content;
+  display: flex;
+  gap: 6px;
+  padding: 6px;
+  margin-bottom: 30px;
+  border: 1px solid var(--color-border-soft);
+  border-radius: 999px;
+  background: var(--color-surface-soft);
+}
+
+.orders-tabs__button {
+  min-height: 42px;
+  padding: 0 18px;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--color-text-soft);
+  font: inherit;
+  font-size: 0.92rem;
+  font-weight: 800;
+  cursor: pointer;
+  transition:
+    background var(--button-hover-transition),
+    color var(--button-hover-transition),
+    box-shadow var(--button-hover-transition);
+}
+
+.orders-tabs__button:hover,
+.orders-tabs__button:focus-visible {
+  background: var(--color-surface);
+  color: var(--color-text);
+  outline: none;
+}
+
+.orders-tabs__button--active {
+  background: var(--color-primary);
+  color: var(--color-surface);
+  box-shadow: var(--shadow-sm);
+}
+
+.orders-tabs__button--active:hover,
+.orders-tabs__button--active:focus-visible {
+  background: var(--color-primary);
+  color: var(--color-surface);
 }
 
 .orders-list {
@@ -79,9 +126,15 @@
   line-height: 1;
 }
 
-.order-card__head p {
+.order-card__head p,
+.order-card__context {
   margin: 0;
   color: var(--color-text-soft);
+}
+
+.order-card__context {
+  margin-top: 6px;
+  font-weight: 700;
 }
 
 .order-card__badges {
@@ -108,7 +161,6 @@
 
 .order-status {
   background: var(--color-primary);
-
   color: var(--color-surface);
 }
 
@@ -203,6 +255,15 @@
 }
 
 @media (max-width: 680px) {
+  .orders-tabs {
+    width: 100%;
+  }
+
+  .orders-tabs__button {
+    flex: 1;
+    padding: 0 10px;
+  }
+
   .order-card__head,
   .order-item,
   .order-total {

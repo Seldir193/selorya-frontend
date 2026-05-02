@@ -1,4 +1,5 @@
 export type PaymentProvider = 'stripe' | 'paypal' | 'manual';
+export type OrderScope = 'purchased' | 'sold' | 'all';
 
 export type OrderItem = {
   id: number;

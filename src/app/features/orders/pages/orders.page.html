@@ -11,6 +11,19 @@
     </p>
   </div>
 
+  <div class="orders-tabs" role="tablist" aria-label="Orders filter">
+    @for (scope of orderScopes; track scope) {
+      <button
+        type="button"
+        class="orders-tabs__button"
+        [class.orders-tabs__button--active]="activeScope() === scope"
+        (click)="changeScope(scope)"
+      >
+        {{ scopeLabel(scope) }}
+      </button>
+    }
+  </div>
+
   @if (isLoading()) {
     <div class="orders-state-card">
       <div class="orders-state-card__icon" aria-hidden="true">
@@ -26,8 +39,8 @@
         <img src="assets/icons/orders/orders.svg" alt="" />
       </div>
 
-      <h2>{{ text('ordersEmptyTitle') }}</h2>
-      <p>{{ text('ordersEmptyDescription') }}</p>
+      <h2>{{ emptyTitle() }}</h2>
+      <p>{{ emptyDescription() }}</p>
 
       <a routerLink="/listings" class="app-button app-button--primary">
         {{ text('ordersEmptyAction') }}
@@ -46,11 +59,8 @@
               <h2>#{{ order.id }}</h2>
 
               <p>{{ orderDate(order) }}</p>
+              <p class="order-card__context">{{ contextLabel(order) }}</p>
             </div>
-
-            <!-- <span class="order-status">
-              {{ statusLabel(order.status) }}
-            </span> -->
 
             <div class="order-card__badges">
               <span class="order-status">
