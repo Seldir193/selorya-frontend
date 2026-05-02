@@ -1,4 +1,84 @@
 <section class="checkout-state-page">
+  <article class="checkout-success-card">
+    <div class="checkout-success-card__icon" aria-hidden="true">
+      <img src="assets/icons/checkout/check.svg" alt="" />
+    </div>
+
+    <div class="checkout-success-card__header">
+      <p class="checkout-success-card__eyebrow">
+        {{ text('checkoutSuccessEyebrow') }}
+      </p>
+
+      <h1>{{ text('checkoutSuccessTitle') }}</h1>
+
+      <p>
+        {{ text('checkoutSuccessDescription') }}
+      </p>
+    </div>
+
+    <div class="checkout-success-card__badges">
+      <span class="checkout-badge checkout-badge--provider">
+        {{ providerLabel() }}
+      </span>
+
+      @if (order()) {
+        <span class="checkout-badge checkout-badge--status">
+          {{ statusLabel() }}
+        </span>
+      }
+    </div>
+
+    @if (isLoading()) {
+      <div class="checkout-loading">
+        {{ text('checkoutLoadingOrder') }}
+      </div>
+    } @else if (order()) {
+      <div class="checkout-summary">
+        <div class="checkout-summary__row">
+          <span>{{ text('checkoutOrderId') }}</span>
+          <strong>#{{ order()!.id }}</strong>
+        </div>
+
+        <div class="checkout-summary__row">
+          <span>{{ text('checkoutOrderTotal') }}</span>
+          <strong>{{ order()!.total_amount }} {{ order()!.currency }}</strong>
+        </div>
+
+        <div class="checkout-summary__row">
+          <span>{{ text('checkoutOrderItems') }}</span>
+          <strong>{{ itemCount() }}</strong>
+        </div>
+
+        @if (firstItem()) {
+          <div class="checkout-product">
+            <span>{{ text('checkoutMainItem') }}</span>
+            <strong>{{ firstItem()!.title_snapshot }}</strong>
+          </div>
+        }
+      </div>
+    } @else {
+      <div class="checkout-loading">
+        {{ text('checkoutOrderUnavailable') }}
+      </div>
+    }
+
+    <div class="checkout-success-card__actions">
+      <a routerLink="/orders" class="app-button app-button--primary">
+        {{ text('checkoutViewOrders') }}
+      </a>
+
+      <a routerLink="/documents" class="app-button app-button--secondary">
+        {{ text('checkoutViewDocuments') }}
+      </a>
+
+      <a routerLink="/listings" class="app-button app-button--checkout">
+        {{ text('checkoutContinueShopping') }}
+      </a>
+    </div>
+  </article>
+</section>
+
+<!-- <section class="checkout-state-page">
   <div class="state-card">
     <h1>Payment successful</h1>
     <p>Your payment was completed successfully.</p>
@@ -26,4 +106,4 @@
       <a routerLink="/documents" class="secondary-link">View Documents</a>
     </div>
   </div>
-</section>
+</section> -->

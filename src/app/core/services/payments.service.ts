@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { API_BASE_URL } from '../config/api.config';
 import { Order } from '../models/order.model';
 
-type PaymentItem = {
+export type PaymentItem = {
   id: number;
   order: number;
   order_id: number;
@@ -33,14 +33,7 @@ export class PaymentsService {
     return this.http.post(`${API_BASE_URL}/payments/paypal/${paymentId}/capture/`, {});
   }
 
-  // findOrderBySessionId(sessionId: string): Observable<PaymentItem[]> {
-  //   return this.list();
-  // }
   findPaymentByReference(reference: string): Observable<PaymentItem[]> {
     return this.list();
-  }
-
-  orderDetail(orderId: number): Observable<Order> {
-    return this.http.get<Order>(`${API_BASE_URL}/orders/${orderId}/`);
   }
 }
