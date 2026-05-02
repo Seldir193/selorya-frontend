@@ -18,49 +18,14 @@
     <div class="pagination__center">
       <span class="pagination__page"> {{ page() }} / {{ totalPages() }} </span>
 
-      <div class="app-dropdown pagination__dropdown" data-pagination-dropdown>
-        <button
-          type="button"
-          class="app-button app-button--checkout app-dropdown__trigger pagination__dropdown-trigger"
-          [attr.aria-expanded]="isPageSizeMenuOpen()"
-          [attr.aria-label]="text('paginationPageSize')"
-          (click)="togglePageSizeMenu()"
-        >
-          <span>{{ pageSize() }}</span>
-
-          <span class="chevron-swap">
-            <img
-              class="chevron-swap__icon chevron-swap__icon--default"
-              [class.chevron-swap__icon--open]="isPageSizeMenuOpen()"
-              src="assets/icons/header/chevron-down.svg"
-              alt=""
-              aria-hidden="true"
-            />
-            <img
-              class="chevron-swap__icon chevron-swap__icon--hover"
-              [class.chevron-swap__icon--open]="isPageSizeMenuOpen()"
-              src="assets/icons/header/chevron-down-light.svg"
-              alt=""
-              aria-hidden="true"
-            />
-          </span>
-        </button>
-
-        @if (isPageSizeMenuOpen()) {
-          <div class="app-dropdown__menu pagination__dropdown-menu">
-            @for (option of pageSizeOptions(); track option) {
-              <button
-                type="button"
-                class="app-dropdown__item"
-                [class.pagination__dropdown-item--active]="pageSize() === option"
-                (click)="changePageSize(option)"
-              >
-                {{ option }}
-              </button>
-            }
-          </div>
-        }
-      </div>
+      <app-dropdown
+        [value]="pageSize()"
+        [options]="pageSizeDropdownOptions()"
+        [ariaLabel]="text('paginationPageSize')"
+        minWidth="86px"
+        maxMenuHeight="86px"
+        (valueChange)="changePageSize($event)"
+      />
     </div>
 
     <button

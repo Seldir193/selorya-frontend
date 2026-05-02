@@ -1,9 +1,11 @@
-import { Component, HostListener, computed, input, output, signal } from '@angular/core';
+import { Component, computed, input, output } from '@angular/core';
 import { I18nService } from '../../../core/services/i18n.service';
+import { DropdownComponent, DropdownOption } from '../dropdown/dropdown.component';
 
 @Component({
   selector: 'app-pagination',
   standalone: true,
+  imports: [DropdownComponent],
   templateUrl: './pagination.component.html',
   styleUrl: './pagination.component.scss',
 })
@@ -16,9 +18,14 @@ export class PaginationComponent {
   readonly pageChange = output<number>();
   readonly pageSizeChange = output<number>();
 
-  readonly isPageSizeMenuOpen = signal(false);
   readonly totalPages = computed(() => this.getTotalPages());
   readonly hasItems = computed(() => this.totalItems() > 0);
+  readonly pageSizeDropdownOptions = computed<DropdownOption<number>[]>(() => {
+    return this.pageSizeOptions().map((option) => ({
+      value: option,
+      label: String(option),
+    }));
+  });
 
   constructor(private readonly i18n: I18nService) {}
 
@@ -34,26 +41,8 @@ export class PaginationComponent {
     this.emitPage(this.page() + 1);
   }
 
-  togglePageSizeMenu(): void {
-    this.isPageSizeMenuOpen.update((isOpen) => !isOpen);
-  }
-
   changePageSize(value: number): void {
     this.pageSizeChange.emit(value);
-    this.closePageSizeMenu();
-  }
-
-  closePageSizeMenu(): void {
-    this.isPageSizeMenuOpen.set(false);
-  }
-
-  @HostListener('document:click', ['$event'])
-  closeMenuOnOutsideClick(event: MouseEvent): void {
-    const target = event.target as HTMLElement;
-
-    if (!target.closest('[data-pagination-dropdown]')) {
-      this.closePageSizeMenu();
-    }
   }
 
   private emitPage(page: number): void {
