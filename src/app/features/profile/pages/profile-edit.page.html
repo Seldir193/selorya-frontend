@@ -1,5 +1,84 @@
 <section class="profile-page">
   <div class="page-head">
+    <p class="page-head__eyebrow">
+      {{ 'profileEditEyebrow' | translate }}
+    </p>
+
+    <h1>{{ 'profileEditTitle' | translate }}</h1>
+
+    <p>{{ 'profileEditSubtitle' | translate }}</p>
+  </div>
+
+  <form [formGroup]="form" (ngSubmit)="submit()" class="profile-card">
+    <div class="profile-card__header">
+      <div>
+        <h2>{{ 'profileEditPersonalTitle' | translate }}</h2>
+        <p>{{ 'profileEditPersonalSubtitle' | translate }}</p>
+      </div>
+    </div>
+
+    <div class="profile-form-grid">
+      <mat-form-field appearance="outline">
+        <mat-label>{{ 'profilePhone' | translate }}</mat-label>
+        <input matInput formControlName="phone" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>{{ 'profileCustomerCity' | translate }}</mat-label>
+        <input matInput formControlName="customerCity" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>{{ 'profileCustomerCountry' | translate }}</mat-label>
+        <input matInput formControlName="customerCountry" />
+      </mat-form-field>
+    </div>
+
+    <div class="profile-card__divider"></div>
+
+    <div class="profile-card__header">
+      <div>
+        <h2>{{ 'profileEditSellerTitle' | translate }}</h2>
+        <p>{{ 'profileEditSellerSubtitle' | translate }}</p>
+      </div>
+    </div>
+
+    <div class="profile-form-grid">
+      <mat-form-field appearance="outline">
+        <mat-label>{{ 'profileSellerDisplayName' | translate }}</mat-label>
+        <input matInput formControlName="display_name" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="profile-form-grid__full">
+        <mat-label>{{ 'profileBio' | translate }}</mat-label>
+        <textarea matInput rows="4" formControlName="bio"></textarea>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>{{ 'profileSellerCity' | translate }}</mat-label>
+        <input matInput formControlName="sellerCity" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>{{ 'profileSellerCountry' | translate }}</mat-label>
+        <input matInput formControlName="sellerCountry" />
+      </mat-form-field>
+    </div>
+
+    <div class="profile-card__actions">
+      <button
+        class="app-button app-button--primary profile-card__submit"
+        type="submit"
+        [disabled]="isSubmitting()"
+      >
+        {{ (isSubmitting() ? 'profileSaving' : 'profileSave') | translate }}
+      </button>
+    </div>
+  </form>
+</section>
+
+<!-- <section class="profile-page">
+  <div class="page-head">
     <h1>Edit Profile</h1>
     <p>Update your buyer and seller profile information.</p>
   </div>
@@ -44,4 +123,4 @@
       {{ isSubmitting() ? 'Saving...' : 'Save Profile' }}
     </button>
   </form>
-</section>
+</section> -->

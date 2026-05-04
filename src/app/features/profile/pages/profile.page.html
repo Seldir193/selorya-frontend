@@ -1,4 +1,159 @@
 <section class="profile-page">
+  <div class="profile-hero">
+    <div>
+      <p class="profile-hero__eyebrow">
+        {{ 'profileOverviewEyebrow' | translate }}
+      </p>
+
+      <h1>{{ 'profileOverviewTitle' | translate }}</h1>
+
+      <p>{{ 'profileOverviewSubtitle' | translate }}</p>
+    </div>
+
+    <a routerLink="/profile/edit" class="app-button app-button--primary profile-hero__action">
+      {{ 'profileEditAction' | translate }}
+    </a>
+  </div>
+
+  <div class="profile-grid">
+    <article class="profile-card profile-card--identity">
+      <div class="profile-card__top">
+        <div class="profile-avatar" aria-hidden="true">
+          {{ authService.user()?.full_name?.charAt(0) || 'U' }}
+        </div>
+
+        <div>
+          <p class="profile-card__kicker">
+            {{ 'profileAccountCardLabel' | translate }}
+          </p>
+
+          <h2>{{ authService.user()?.full_name || ('profileEmptyValue' | translate) }}</h2>
+
+          <p>{{ authService.user()?.email }}</p>
+        </div>
+      </div>
+
+      <div class="profile-status-row">
+        <span class="profile-pill">
+          {{ authService.user()?.role || ('profileEmptyValue' | translate) }}
+        </span>
+
+        <span class="profile-pill profile-pill--soft">
+          {{ authService.user()?.language || ('profileEmptyValue' | translate) }}
+        </span>
+      </div>
+    </article>
+
+    <article class="profile-card">
+      <div class="profile-card__header">
+        <div>
+          <p class="profile-card__kicker">
+            {{ 'profileAccountDetailsLabel' | translate }}
+          </p>
+
+          <h2>{{ 'profileAccountDetailsTitle' | translate }}</h2>
+        </div>
+      </div>
+
+      <div class="profile-list">
+        <div class="profile-row">
+          <span>{{ 'profileFullName' | translate }}</span>
+          <strong>{{ authService.user()?.full_name || ('profileEmptyValue' | translate) }}</strong>
+        </div>
+
+        <div class="profile-row">
+          <span>{{ 'profileEmail' | translate }}</span>
+          <strong>{{ authService.user()?.email || ('profileEmptyValue' | translate) }}</strong>
+        </div>
+
+        <div class="profile-row">
+          <span>{{ 'profileRole' | translate }}</span>
+          <strong>{{ authService.user()?.role || ('profileEmptyValue' | translate) }}</strong>
+        </div>
+
+        <div class="profile-row">
+          <span>{{ 'profileLanguage' | translate }}</span>
+          <strong>{{ authService.user()?.language || ('profileEmptyValue' | translate) }}</strong>
+        </div>
+      </div>
+    </article>
+
+    <article class="profile-card">
+      <div class="profile-card__header">
+        <div>
+          <p class="profile-card__kicker">
+            {{ 'profileSellerCardLabel' | translate }}
+          </p>
+
+          <h2>{{ 'profileSellerCardTitle' | translate }}</h2>
+        </div>
+      </div>
+
+      <div class="profile-list">
+        <div class="profile-row">
+          <span>{{ 'profileSellerDisplayName' | translate }}</span>
+          <strong>
+            {{
+              authService.user()?.seller_profile?.display_name || ('profileEmptyValue' | translate)
+            }}
+          </strong>
+        </div>
+
+        <div class="profile-row">
+          <span>{{ 'profileSellerCity' | translate }}</span>
+          <strong>
+            {{ authService.user()?.seller_profile?.city || ('profileEmptyValue' | translate) }}
+          </strong>
+        </div>
+
+        <div class="profile-row">
+          <span>{{ 'profileSellerCountry' | translate }}</span>
+          <strong>
+            {{ authService.user()?.seller_profile?.country || ('profileEmptyValue' | translate) }}
+          </strong>
+        </div>
+
+        <div class="profile-row profile-row--stacked">
+          <span>{{ 'profileBio' | translate }}</span>
+          <strong>
+            {{ authService.user()?.seller_profile?.bio || ('profileEmptyValue' | translate) }}
+          </strong>
+        </div>
+      </div>
+    </article>
+
+    <article class="profile-card profile-card--trust">
+      <div class="profile-card__header">
+        <div>
+          <p class="profile-card__kicker">
+            {{ 'profileTrustCardLabel' | translate }}
+          </p>
+
+          <h2>{{ 'profileTrustCardTitle' | translate }}</h2>
+        </div>
+      </div>
+
+      <div class="profile-trust-list">
+        <div class="profile-trust-item">
+          <span>{{ 'profileTrustUnifiedAccount' | translate }}</span>
+          <strong>{{ 'profileTrustUnifiedAccountValue' | translate }}</strong>
+        </div>
+
+        <div class="profile-trust-item">
+          <span>{{ 'profileTrustOrders' | translate }}</span>
+          <strong>{{ 'profileTrustOrdersValue' | translate }}</strong>
+        </div>
+
+        <div class="profile-trust-item">
+          <span>{{ 'profileTrustDocuments' | translate }}</span>
+          <strong>{{ 'profileTrustDocumentsValue' | translate }}</strong>
+        </div>
+      </div>
+    </article>
+  </div>
+</section>
+
+<!-- <section class="profile-page">
   <div class="page-head">
     <h1>Your Profile</h1>
     <p>Account and profile information for Selorya.</p>
@@ -37,4 +192,4 @@
   </div>
 
   <a routerLink="/profile/edit" class="edit-link">Edit Profile</a>
-</section>
+</section> -->
