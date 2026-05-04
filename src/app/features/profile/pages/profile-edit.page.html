@@ -15,6 +15,86 @@
     </div>
 
     <div class="profile-form-grid">
+      <label class="profile-field">
+        <span>{{ 'profilePhone' | translate }}</span>
+        <input class="profile-input" type="tel" formControlName="phone" />
+      </label>
+
+      <label class="profile-field">
+        <span>{{ 'profileCustomerCity' | translate }}</span>
+        <input class="profile-input" type="text" formControlName="customerCity" />
+      </label>
+
+      <label class="profile-field">
+        <span>{{ 'profileCustomerCountry' | translate }}</span>
+        <input class="profile-input" type="text" formControlName="customerCountry" />
+      </label>
+    </div>
+
+    <div class="profile-card__divider"></div>
+
+    <div class="profile-card__header">
+      <div>
+        <h2>{{ 'profileEditSellerTitle' | translate }}</h2>
+        <p>{{ 'profileEditSellerSubtitle' | translate }}</p>
+      </div>
+    </div>
+
+    <div class="profile-form-grid">
+      <label class="profile-field">
+        <span>{{ 'profileSellerDisplayName' | translate }}</span>
+        <input class="profile-input" type="text" formControlName="display_name" />
+      </label>
+
+      <label class="profile-field profile-form-grid__full">
+        <span>{{ 'profileBio' | translate }}</span>
+        <textarea
+          class="profile-input profile-input--textarea"
+          rows="4"
+          formControlName="bio"
+        ></textarea>
+      </label>
+
+      <label class="profile-field">
+        <span>{{ 'profileSellerCity' | translate }}</span>
+        <input class="profile-input" type="text" formControlName="sellerCity" />
+      </label>
+
+      <label class="profile-field">
+        <span>{{ 'profileSellerCountry' | translate }}</span>
+        <input class="profile-input" type="text" formControlName="sellerCountry" />
+      </label>
+    </div>
+
+    <div class="profile-card__actions">
+      <button
+        class="app-button app-button--primary profile-card__submit"
+        type="submit"
+        [disabled]="isSubmitting()"
+      >
+        {{ (isSubmitting() ? 'profileSaving' : 'profileSave') | translate }}
+      </button>
+    </div>
+  </form>
+</section>
+
+<!-- <section class="profile-page">
+  <div class="page-head page-head--compact">
+    <div>
+      <h1>{{ 'profileEditTitle' | translate }}</h1>
+      <p>{{ 'profileEditSubtitle' | translate }}</p>
+    </div>
+  </div>
+
+  <form [formGroup]="form" (ngSubmit)="submit()" class="profile-card">
+    <div class="profile-card__header">
+      <div>
+        <h2>{{ 'profileEditPersonalTitle' | translate }}</h2>
+        <p>{{ 'profileEditPersonalSubtitle' | translate }}</p>
+      </div>
+    </div>
+
+    <div class="profile-form-grid">
       <mat-form-field appearance="outline">
         <mat-label>{{ 'profilePhone' | translate }}</mat-label>
         <input matInput formControlName="phone" />
@@ -71,53 +151,5 @@
         {{ (isSubmitting() ? 'profileSaving' : 'profileSave') | translate }}
       </button>
     </div>
-  </form>
-</section>
-
-<!-- <section class="profile-page">
-  <div class="page-head">
-    <h1>Edit Profile</h1>
-    <p>Update your buyer and seller profile information.</p>
-  </div>
-
-  <form [formGroup]="form" (ngSubmit)="submit()" class="profile-card">
-    <mat-form-field appearance="outline">
-      <mat-label>Phone</mat-label>
-      <input matInput formControlName="phone" />
-    </mat-form-field>
-
-    <mat-form-field appearance="outline">
-      <mat-label>Customer city</mat-label>
-      <input matInput formControlName="customerCity" />
-    </mat-form-field>
-
-    <mat-form-field appearance="outline">
-      <mat-label>Customer country</mat-label>
-      <input matInput formControlName="customerCountry" />
-    </mat-form-field>
-
-    <mat-form-field appearance="outline">
-      <mat-label>Seller display name</mat-label>
-      <input matInput formControlName="display_name" />
-    </mat-form-field>
-
-    <mat-form-field appearance="outline">
-      <mat-label>Bio</mat-label>
-      <textarea matInput rows="4" formControlName="bio"></textarea>
-    </mat-form-field>
-
-    <mat-form-field appearance="outline">
-      <mat-label>Seller city</mat-label>
-      <input matInput formControlName="sellerCity" />
-    </mat-form-field>
-
-    <mat-form-field appearance="outline">
-      <mat-label>Seller country</mat-label>
-      <input matInput formControlName="sellerCountry" />
-    </mat-form-field>
-
-    <button mat-flat-button type="submit" [disabled]="isSubmitting()">
-      {{ isSubmitting() ? 'Saving...' : 'Save Profile' }}
-    </button>
   </form>
 </section> -->
