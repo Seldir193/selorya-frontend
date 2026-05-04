@@ -12,13 +12,6 @@ type CategoryColumn = {
   links: CategoryLink[];
 };
 
-type CategoryPromo = {
-  imageSrc: string;
-  titleKey: string;
-  textKey: string;
-  ctaKey: string;
-};
-
 type CategoryBenefit = {
   iconSrc: string;
   titleKey: string;
@@ -31,8 +24,6 @@ type CategoryMenuItem = {
   value: string;
   iconSrc: string;
   columns: CategoryColumn[];
-  promo?: CategoryPromo;
-  benefits?: CategoryBenefit[];
 };
 
 @Component({
@@ -47,6 +38,29 @@ export class CategoryMenuComponent {
 
   readonly isOpen = signal(false);
   readonly activeIndex = signal(0);
+
+  readonly benefits: CategoryBenefit[] = [
+    {
+      iconSrc: 'assets/icons/categories/shield.svg',
+      titleKey: 'categoryBenefitSecureTitle',
+      textKey: 'categoryBenefitSecureText',
+    },
+    {
+      iconSrc: 'assets/icons/categories/check-badge.svg',
+      titleKey: 'categoryBenefitQualityTitle',
+      textKey: 'categoryBenefitQualityText',
+    },
+    {
+      iconSrc: 'assets/icons/categories/truck.svg',
+      titleKey: 'categoryBenefitSustainableTitle',
+      textKey: 'categoryBenefitSustainableText',
+    },
+    {
+      iconSrc: 'assets/icons/categories/headset.svg',
+      titleKey: 'categoryBenefitSupportTitle',
+      textKey: 'categoryBenefitSupportText',
+    },
+  ];
 
   readonly popularLinks: CategoryLink[] = [
     { labelKey: 'categoryPopularJackets', value: 'jackets' },
@@ -106,34 +120,6 @@ export class CategoryMenuComponent {
             { labelKey: 'categoryBrandOverview', value: 'brand-overview' },
             { labelKey: 'categorySaleOffers', value: 'sale-offers' },
           ],
-        },
-      ],
-      promo: {
-        imageSrc: 'assets/images/category-fashion-card.jpg',
-        titleKey: 'categoryFashionPromoTitle',
-        textKey: 'categoryFashionPromoText',
-        ctaKey: 'categoryFashionPromoCta',
-      },
-      benefits: [
-        {
-          iconSrc: 'assets/icons/categories/shield.svg',
-          titleKey: 'categoryBenefitSecureTitle',
-          textKey: 'categoryBenefitSecureText',
-        },
-        {
-          iconSrc: 'assets/icons/categories/check-badge.svg',
-          titleKey: 'categoryBenefitQualityTitle',
-          textKey: 'categoryBenefitQualityText',
-        },
-        {
-          iconSrc: 'assets/icons/categories/truck.svg',
-          titleKey: 'categoryBenefitSustainableTitle',
-          textKey: 'categoryBenefitSustainableText',
-        },
-        {
-          iconSrc: 'assets/icons/categories/headset.svg',
-          titleKey: 'categoryBenefitSupportTitle',
-          textKey: 'categoryBenefitSupportText',
         },
       ],
     },
@@ -319,25 +305,11 @@ export class CategoryMenuComponent {
 //   links: CategoryLink[];
 // };
 
-// // type CategoryMenuItem = {
-// //   titleKey: string;
-// //   descriptionKey: string;
-// //   value: string;
-// //   iconSrc: string;
-// //   columns: CategoryColumn[];
-// // };
-
 // type CategoryPromo = {
 //   imageSrc: string;
 //   titleKey: string;
 //   textKey: string;
 //   ctaKey: string;
-// };
-
-// type CategoryBenefit = {
-//   iconSrc: string;
-//   titleKey: string;
-//   textKey: string;
 // };
 
 // type CategoryMenuItem = {
@@ -347,7 +319,6 @@ export class CategoryMenuComponent {
 //   iconSrc: string;
 //   columns: CategoryColumn[];
 //   promo?: CategoryPromo;
-//   benefits?: CategoryBenefit[];
 // };
 
 // @Component({
@@ -385,6 +356,12 @@ export class CategoryMenuComponent {
 //             { labelKey: 'categoryWomenShoes', value: 'women-shoes' },
 //             { labelKey: 'categoryWomenBags', value: 'women-bags' },
 //             { labelKey: 'categoryJewelry', value: 'jewelry' },
+//             { labelKey: 'categoryAccessories', value: 'accessories' },
+//             { labelKey: 'categorySportswear', value: 'sportswear' },
+//             { labelKey: 'categorySwimwear', value: 'swimwear' },
+//             { labelKey: 'categoryLingerie', value: 'lingerie' },
+//             { labelKey: 'categoryMaternity', value: 'maternity' },
+//             { labelKey: 'categoryVintageFashion', value: 'vintage-fashion' },
 //           ],
 //         },
 //         {
@@ -393,18 +370,36 @@ export class CategoryMenuComponent {
 //             { labelKey: 'categoryMenClothing', value: 'men-clothing' },
 //             { labelKey: 'categoryMenShoes', value: 'men-shoes' },
 //             { labelKey: 'categoryWatches', value: 'watches' },
-//             { labelKey: 'categoryAccessories', value: 'accessories' },
+//             { labelKey: 'categoryAccessories', value: 'accessories-men' },
+//             { labelKey: 'categoryJacketsCoats', value: 'jackets-coats' },
+//             { labelKey: 'categorySuitsBlazers', value: 'suits-blazers' },
+//             { labelKey: 'categoryShirts', value: 'shirts' },
+//             { labelKey: 'categoryJeans', value: 'jeans' },
+//             { labelKey: 'categoryUnderwear', value: 'underwear' },
 //           ],
 //         },
 //         {
-//           titleKey: 'categoryColumnHighlights',
+//           titleKey: 'categoryColumnMore',
 //           links: [
-//             { labelKey: 'categorySneakers', value: 'sneakers' },
-//             { labelKey: 'categoryVintage', value: 'vintage' },
-//             { labelKey: 'categoryPremiumBrands', value: 'premium-brands' },
+//             { labelKey: 'categoryKidsClothing', value: 'kids-clothing' },
+//             { labelKey: 'categoryKidsShoes', value: 'kids-shoes' },
+//             { labelKey: 'categoryBackpacks', value: 'backpacks' },
+//             { labelKey: 'categoryCapsHats', value: 'caps-hats' },
+//             { labelKey: 'categoryBelts', value: 'belts' },
+//             { labelKey: 'categorySunglasses', value: 'sunglasses' },
+//             { labelKey: 'categoryCostumes', value: 'costumes' },
+//             { labelKey: 'categorySustainableFashion', value: 'sustainable-fashion' },
+//             { labelKey: 'categoryBrandOverview', value: 'brand-overview' },
+//             { labelKey: 'categorySaleOffers', value: 'sale-offers' },
 //           ],
 //         },
 //       ],
+//       promo: {
+//         imageSrc: 'assets/images/category-fashion-card.jpg',
+//         titleKey: 'categoryFashionPromoTitle',
+//         textKey: 'categoryFashionPromoText',
+//         ctaKey: 'categoryFashionPromoCta',
+//       },
 //     },
 //     {
 //       titleKey: 'categoryElectronicsTitle',
@@ -530,86 +525,6 @@ export class CategoryMenuComponent {
 //             { labelKey: 'categoryArt', value: 'art' },
 //             { labelKey: 'categoryTradingCards', value: 'trading-cards' },
 //           ],
-//         },
-//       ],
-//     },
-//     {
-//       titleKey: 'categoryFashionTitle',
-//       descriptionKey: 'categoryFashionDescription',
-//       value: 'fashion',
-//       iconSrc: 'assets/icons/categories/fashion.svg',
-//       columns: [
-//         {
-//           titleKey: 'categoryColumnWomen',
-//           links: [
-//             { labelKey: 'categoryWomenClothing', value: 'women-clothing' },
-//             { labelKey: 'categoryWomenShoes', value: 'women-shoes' },
-//             { labelKey: 'categoryWomenBags', value: 'women-bags' },
-//             { labelKey: 'categoryJewelry', value: 'jewelry' },
-//             { labelKey: 'categoryAccessories', value: 'accessories' },
-//             { labelKey: 'categorySportswear', value: 'sportswear' },
-//             { labelKey: 'categorySwimwear', value: 'swimwear' },
-//             { labelKey: 'categoryLingerie', value: 'lingerie' },
-//             { labelKey: 'categoryMaternity', value: 'maternity' },
-//             { labelKey: 'categoryVintageFashion', value: 'vintage-fashion' },
-//           ],
-//         },
-//         {
-//           titleKey: 'categoryColumnMen',
-//           links: [
-//             { labelKey: 'categoryMenClothing', value: 'men-clothing' },
-//             { labelKey: 'categoryMenShoes', value: 'men-shoes' },
-//             { labelKey: 'categoryWatches', value: 'watches' },
-//             { labelKey: 'categoryAccessories', value: 'accessories-men' },
-//             { labelKey: 'categoryJacketsCoats', value: 'jackets-coats' },
-//             { labelKey: 'categorySuitsBlazers', value: 'suits-blazers' },
-//             { labelKey: 'categoryShirts', value: 'shirts' },
-//             { labelKey: 'categoryJeans', value: 'jeans' },
-//             { labelKey: 'categoryUnderwear', value: 'underwear' },
-//           ],
-//         },
-//         {
-//           titleKey: 'categoryColumnMore',
-//           links: [
-//             { labelKey: 'categoryKidsClothing', value: 'kids-clothing' },
-//             { labelKey: 'categoryKidsShoes', value: 'kids-shoes' },
-//             { labelKey: 'categoryBackpacks', value: 'backpacks' },
-//             { labelKey: 'categoryCapsHats', value: 'caps-hats' },
-//             { labelKey: 'categoryBelts', value: 'belts' },
-//             { labelKey: 'categorySunglasses', value: 'sunglasses' },
-//             { labelKey: 'categoryCostumes', value: 'costumes' },
-//             { labelKey: 'categorySustainableFashion', value: 'sustainable-fashion' },
-//             { labelKey: 'categoryBrandOverview', value: 'brand-overview' },
-//             { labelKey: 'categorySaleOffers', value: 'sale-offers' },
-//           ],
-//         },
-//       ],
-//       promo: {
-//         imageSrc: 'assets/images/category-fashion-card.jpg',
-//         titleKey: 'categoryFashionPromoTitle',
-//         textKey: 'categoryFashionPromoText',
-//         ctaKey: 'categoryFashionPromoCta',
-//       },
-//       benefits: [
-//         {
-//           iconSrc: 'assets/icons/categories/shield.svg',
-//           titleKey: 'categoryBenefitSecureTitle',
-//           textKey: 'categoryBenefitSecureText',
-//         },
-//         {
-//           iconSrc: 'assets/icons/categories/check-badge.svg',
-//           titleKey: 'categoryBenefitQualityTitle',
-//           textKey: 'categoryBenefitQualityText',
-//         },
-//         {
-//           iconSrc: 'assets/icons/categories/truck.svg',
-//           titleKey: 'categoryBenefitSustainableTitle',
-//           textKey: 'categoryBenefitSustainableText',
-//         },
-//         {
-//           iconSrc: 'assets/icons/categories/headset.svg',
-//           titleKey: 'categoryBenefitSupportTitle',
-//           textKey: 'categoryBenefitSupportText',
 //         },
 //       ],
 //     },

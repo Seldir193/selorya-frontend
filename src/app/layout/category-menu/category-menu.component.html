@@ -30,6 +30,128 @@
               (focus)="setActiveCategory(index)"
               (click)="setActiveCategory(index)"
             >
+              <span
+                class="category-menu__icon"
+                [style.--category-icon-url]="'url(' + category.iconSrc + ')'"
+                aria-hidden="true"
+              ></span>
+
+              <span>
+                <strong>{{ category.titleKey | translate }}</strong>
+                <small>{{ category.descriptionKey | translate }}</small>
+              </span>
+            </button>
+          }
+        </div>
+
+        <div class="category-menu__detail">
+          <div class="category-menu__detail-top">
+            <div>
+              <p>{{ activeCategory().titleKey | translate }}</p>
+              <h3>{{ activeCategory().descriptionKey | translate }}</h3>
+            </div>
+
+            <a
+              routerLink="/listings"
+              [queryParams]="{ category: activeCategory().value }"
+              class="category-menu__detail-link"
+              (click)="closeMenu()"
+            >
+              {{ 'categoryViewCategory' | translate }}
+            </a>
+          </div>
+
+          <div class="category-menu__detail-main">
+            <div class="category-menu__columns">
+              @for (column of activeCategory().columns; track column.titleKey) {
+                <div class="category-menu__column">
+                  <h4>{{ column.titleKey | translate }}</h4>
+
+                  @for (link of column.links; track link.value) {
+                    <a
+                      routerLink="/listings"
+                      [queryParams]="{
+                        category: activeCategory().value,
+                        subcategory: link.value,
+                      }"
+                      (click)="closeMenu()"
+                    >
+                      {{ link.labelKey | translate }}
+                    </a>
+                  }
+                </div>
+              }
+            </div>
+          </div>
+
+          <div class="category-menu__popular">
+            <span>{{ 'categoryPopularLabel' | translate }}</span>
+
+            @for (link of popularLinks; track link.value) {
+              <a
+                routerLink="/listings"
+                [queryParams]="{ search: link.value }"
+                (click)="closeMenu()"
+              >
+                {{ link.labelKey | translate }}
+              </a>
+            }
+          </div>
+
+          <div class="category-menu__benefits">
+            @for (benefit of benefits; track benefit.titleKey) {
+              <div class="category-menu__benefit">
+                <span
+                  class="category-menu__benefit-icon"
+                  [style.--category-benefit-icon-url]="'url(' + benefit.iconSrc + ')'"
+                  aria-hidden="true"
+                ></span>
+
+                <div>
+                  <strong>{{ benefit.titleKey | translate }}</strong>
+                  <p>{{ benefit.textKey | translate }}</p>
+                </div>
+              </div>
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+  }
+</div>
+
+<!-- <div class="category-menu" data-category-menu>
+  <button
+    type="button"
+    class="category-menu__trigger"
+    (click)="toggleMenu()"
+    [attr.aria-expanded]="isOpen()"
+    [attr.aria-label]="'categoryMenuLabel' | translate"
+  >
+    <span>{{ 'navCategories' | translate }}</span>
+
+    <img
+      class="category-menu__chevron"
+      [class.category-menu__chevron--open]="isOpen()"
+      src="assets/icons/header/chevron-down.svg"
+      alt=""
+      aria-hidden="true"
+    />
+  </button>
+
+  @if (isOpen()) {
+    <div class="category-menu__panel">
+      <div class="category-menu__content">
+        <div class="category-menu__sidebar">
+          @for (category of categories; track category.value; let index = $index) {
+            <button
+              type="button"
+              class="category-menu__category"
+              [class.category-menu__category--active]="activeIndex() === index"
+              (mouseenter)="setActiveCategory(index)"
+              (focus)="setActiveCategory(index)"
+              (click)="setActiveCategory(index)"
+            >
               <span class="category-menu__icon-wrap" aria-hidden="true">
                 <img class="category-menu__icon" [src]="category.iconSrc" alt="" />
               </span>
@@ -80,58 +202,41 @@
                 </div>
               }
             </div>
-
-            @if (activeCategory().promo; as promo) {
-              <div class="category-menu__promo">
-                <img class="category-menu__promo-image" [src]="promo.imageSrc" alt="" />
-
-                <div class="category-menu__promo-content">
-                  <strong>{{ promo.titleKey | translate }}</strong>
-                  <p>{{ promo.textKey | translate }}</p>
-
-                  <a
-                    routerLink="/listings"
-                    [queryParams]="{ category: activeCategory().value }"
-                    class="category-menu__promo-link"
-                    (click)="closeMenu()"
-                  >
-                    {{ promo.ctaKey | translate }}
-                  </a>
-                </div>
-              </div>
-            }
           </div>
 
-          <div class="category-menu__popular">
-            <span>{{ 'categoryPopularLabel' | translate }}</span>
+          <div class="category-menu__footer">
+            <div class="category-menu__popular">
+              <span>{{ 'categoryPopularLabel' | translate }}</span>
 
-            @for (link of popularLinks; track link.value) {
+              @for (link of popularLinks; track link.value) {
+                <a
+                  routerLink="/listings"
+                  [queryParams]="{ search: link.value }"
+                  (click)="closeMenu()"
+                >
+                  {{ link.labelKey | translate }}
+                </a>
+              }
+            </div>
+
+            @if (activeCategory().promo; as promo) {
               <a
                 routerLink="/listings"
-                [queryParams]="{ search: link.value }"
+                [queryParams]="{ category: activeCategory().value }"
+                class="category-menu__promo-strip"
                 (click)="closeMenu()"
               >
-                {{ link.labelKey | translate }}
+                <img class="category-menu__promo-strip-image" [src]="promo.imageSrc" alt="" />
+
+                <span>
+                  <strong>{{ promo.titleKey | translate }}</strong>
+                  <small>{{ promo.textKey | translate }}</small>
+                </span>
               </a>
             }
           </div>
-
-          @if (activeCategory().benefits?.length) {
-            <div class="category-menu__benefits">
-              @for (benefit of activeCategory().benefits; track benefit.titleKey) {
-                <div class="category-menu__benefit">
-                  <img [src]="benefit.iconSrc" alt="" aria-hidden="true" />
-
-                  <div>
-                    <strong>{{ benefit.titleKey | translate }}</strong>
-                    <p>{{ benefit.textKey | translate }}</p>
-                  </div>
-                </div>
-              }
-            </div>
-          }
         </div>
       </div>
     </div>
   }
-</div>
+</div> -->
