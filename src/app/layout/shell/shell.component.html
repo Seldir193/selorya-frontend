@@ -48,7 +48,13 @@
                 [attr.aria-label]="'userMenuLabel' | translate"
                 [attr.aria-expanded]="isUserMenuOpen()"
               >
-                <span class="user-menu__avatar">{{ userInitials() }}</span>
+                <span class="user-menu__avatar" aria-hidden="true">
+                  @if (authService.user()?.avatar_url) {
+                    <img [src]="authService.user()?.avatar_url" alt="" />
+                  } @else {
+                    <span>{{ userInitials() }}</span>
+                  }
+                </span>
                 <span class="user-menu__name">{{ authService.user()?.full_name }}</span>
 
                 <span class="chevron-swap">
