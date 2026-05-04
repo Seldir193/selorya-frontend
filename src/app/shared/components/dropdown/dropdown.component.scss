@@ -104,9 +104,13 @@
   transform: rotate(180deg);
 }
 
+.language-select {
+  --dropdown-icon-size: 20px;
+}
+
 .dropdown__icon {
-  width: var(--icon-size-sm);
-  height: var(--icon-size-sm);
+  width: var(--dropdown-icon-size, var(--icon-size-md));
+  height: var(--dropdown-icon-size, var(--icon-size-md));
   display: block;
   flex: 0 0 auto;
   background: currentColor;
