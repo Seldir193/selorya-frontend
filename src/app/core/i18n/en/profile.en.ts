@@ -48,4 +48,6 @@ export const enProfileTexts = {
   profileAvatarUploadTitle: 'Choose a profile image',
   profileAvatarUploadHint: 'PNG or JPG, maximum 3 MB. The image will be displayed as a circle.',
   profileAvatarChooseFile: 'Choose image',
+
+  profileAvatarRemoved: 'Profile image has been removed.',
 } as const;

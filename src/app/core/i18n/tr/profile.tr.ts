@@ -46,4 +46,6 @@ export const trProfileTexts = {
   profileAvatarUploadTitle: 'Profil görseli seç',
   profileAvatarUploadHint: 'PNG veya JPG, en fazla 3 MB. Görsel yuvarlak gösterilir.',
   profileAvatarChooseFile: 'Görsel seç',
+
+  profileAvatarRemoved: 'Profil görseli kaldırıldı.',
 } as const;

@@ -125,9 +125,33 @@ export class ProfileEditPage implements OnDestroy {
   }
 
   removeAvatar(): void {
+    if (this.isSubmitting()) {
+      return;
+    }
+
     this.selectedAvatar.set(null);
     this.clearAvatarPreview();
     this.shouldRemoveAvatar.set(true);
+    this.isSubmitting.set(true);
+
+    this.authService
+      .removeAvatar()
+      .pipe(finalize(() => this.isSubmitting.set(false)))
+      .subscribe({
+        next: () => this.handleAvatarRemoveSuccess(),
+        error: () => this.handleAvatarRemoveError(),
+      });
+  }
+
+  private handleAvatarRemoveSuccess(): void {
+    this.shouldRemoveAvatar.set(false);
+    this.toast.success(this.i18n.t('profileAvatarRemoved'));
+    this.authService.loadMe().subscribe();
+  }
+
+  private handleAvatarRemoveError(): void {
+    this.shouldRemoveAvatar.set(false);
+    this.toast.error(this.i18n.t('profileUpdateFailed'));
   }
 
   private updateSellerProfile(

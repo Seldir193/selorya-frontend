@@ -51,4 +51,5 @@ export const deProfileTexts = {
   profileAvatarChooseFile: 'Bild auswählen',
 
   profileAvatarRemove: 'Bild entfernen',
+  profileAvatarRemoved: 'Profilbild wurde entfernt.',
 } as const;

@@ -103,6 +103,47 @@
   pointer-events: none;
 }
 
+.profile-avatar-upload__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin-top: 4px;
+}
+
+.profile-avatar-upload__remove {
+  min-height: 40px;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 0 4px;
+  border: 0;
+  background: transparent;
+  color: var(--color-danger);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 800;
+  cursor: pointer;
+  transition:
+    color var(--button-hover-transition),
+    opacity var(--button-hover-transition),
+    transform var(--button-hover-transition);
+}
+.profile-avatar-upload__remove:hover,
+.profile-avatar-upload__remove:focus-visible {
+  opacity: 0.82;
+  transform: translateY(-1px);
+  outline: none;
+}
+
+.profile-avatar-upload__remove-icon {
+  width: 15px;
+  height: 15px;
+  flex: 0 0 auto;
+  background: currentColor;
+  mask: url('/assets/icons/profile/delete.svg') center / contain no-repeat;
+}
+
 .profile-form-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -216,6 +257,14 @@
 
   .profile-card__submit {
     width: 100%;
+  }
+
+  .profile-avatar-upload__actions {
+    width: 100%;
+  }
+
+  .profile-avatar-upload__remove {
+    min-height: 36px;
   }
 }
 
