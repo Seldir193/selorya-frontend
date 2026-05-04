@@ -19,7 +19,9 @@ export class DropdownComponent<T extends string | number = string | number> {
   readonly value = input.required<T>();
   readonly options = input.required<DropdownOption<T>[]>();
   readonly ariaLabel = input('');
+  readonly iconSrc = input('');
   readonly minWidth = input('154px');
+
   readonly maxMenuHeight = input('none');
   readonly align = input<DropdownAlign>('left');
   readonly itemAlign = input<DropdownItemAlign>('center');

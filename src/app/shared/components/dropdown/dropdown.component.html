@@ -14,6 +14,13 @@
     [attr.aria-label]="ariaLabel()"
     (click)="toggleMenu()"
   >
+    @if (iconSrc()) {
+      <span
+        class="dropdown__icon"
+        [style.--dropdown-icon-url]="'url(' + iconSrc() + ')'"
+        aria-hidden="true"
+      ></span>
+    }
     <span>{{ selectedTriggerLabel() }}</span>
 
     <span class="dropdown__chevron">

@@ -1,4 +1,3 @@
-// import { Component, HostListener, signal } from '@angular/core';
 import { Component, EventEmitter, HostListener, Output, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -17,7 +16,7 @@ type CategoryMenuItem = {
   titleKey: string;
   descriptionKey: string;
   value: string;
-  icon: string;
+  iconSrc: string;
   columns: CategoryColumn[];
 };
 
@@ -29,9 +28,10 @@ type CategoryMenuItem = {
   styleUrl: './category-menu.component.scss',
 })
 export class CategoryMenuComponent {
+  @Output() readonly menuOpenChange = new EventEmitter<boolean>();
+
   readonly isOpen = signal(false);
   readonly activeIndex = signal(0);
-  @Output() readonly menuOpenChange = new EventEmitter<boolean>();
 
   readonly popularLinks: CategoryLink[] = [
     { labelKey: 'categoryPopularJackets', value: 'jackets' },
@@ -46,7 +46,7 @@ export class CategoryMenuComponent {
       titleKey: 'categoryFashionTitle',
       descriptionKey: 'categoryFashionDescription',
       value: 'fashion',
-      icon: 'fashion',
+      iconSrc: 'assets/icons/categories/fashion.svg',
       columns: [
         {
           titleKey: 'categoryColumnWomen',
@@ -80,7 +80,7 @@ export class CategoryMenuComponent {
       titleKey: 'categoryElectronicsTitle',
       descriptionKey: 'categoryElectronicsDescription',
       value: 'electronics',
-      icon: 'electronics',
+      iconSrc: 'assets/icons/categories/electronics.svg',
       columns: [
         {
           titleKey: 'categoryColumnDevices',
@@ -111,7 +111,7 @@ export class CategoryMenuComponent {
       titleKey: 'categoryHomeTitle',
       descriptionKey: 'categoryHomeDescription',
       value: 'home-living',
-      icon: 'home',
+      iconSrc: 'assets/icons/categories/home.svg',
       columns: [
         {
           titleKey: 'categoryColumnLiving',
@@ -135,7 +135,7 @@ export class CategoryMenuComponent {
       titleKey: 'categorySportTitle',
       descriptionKey: 'categorySportDescription',
       value: 'sport-leisure',
-      icon: 'sport',
+      iconSrc: 'assets/icons/categories/sport.svg',
       columns: [
         {
           titleKey: 'categoryColumnSport',
@@ -159,7 +159,7 @@ export class CategoryMenuComponent {
       titleKey: 'categoryBeautyTitle',
       descriptionKey: 'categoryBeautyDescription',
       value: 'beauty',
-      icon: 'beauty',
+      iconSrc: 'assets/icons/categories/beauty.svg',
       columns: [
         {
           titleKey: 'categoryColumnBeauty',
@@ -175,7 +175,7 @@ export class CategoryMenuComponent {
       titleKey: 'categoryKidsTitle',
       descriptionKey: 'categoryKidsDescription',
       value: 'kids-baby',
-      icon: 'kids',
+      iconSrc: 'assets/icons/categories/kids.svg',
       columns: [
         {
           titleKey: 'categoryColumnKids',
@@ -191,7 +191,7 @@ export class CategoryMenuComponent {
       titleKey: 'categoryCollectiblesTitle',
       descriptionKey: 'categoryCollectiblesDescription',
       value: 'collectibles',
-      icon: 'collectibles',
+      iconSrc: 'assets/icons/categories/collectibles.svg',
       columns: [
         {
           titleKey: 'categoryColumnCollectibles',
@@ -209,16 +209,13 @@ export class CategoryMenuComponent {
     return this.categories[this.activeIndex()];
   }
 
-  //   toggleMenu(): void {
-  //     this.isOpen.update((isOpen) => !isOpen);
-  //   }
-
   toggleMenu(): void {
     const nextState = !this.isOpen();
 
     this.isOpen.set(nextState);
     this.menuOpenChange.emit(nextState);
   }
+
   closeMenu(): void {
     if (!this.isOpen()) {
       return;
@@ -227,9 +224,6 @@ export class CategoryMenuComponent {
     this.isOpen.set(false);
     this.menuOpenChange.emit(false);
   }
-  //   closeMenu(): void {
-  //     this.isOpen.set(false);
-  //   }
 
   setActiveCategory(index: number): void {
     this.activeIndex.set(index);

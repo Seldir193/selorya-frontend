@@ -38,14 +38,6 @@
   outline: none;
 }
 
-// .category-menu__chevron {
-//   width: 8px;
-//   height: 8px;
-//   border-right: 2px solid currentColor;
-//   border-bottom: 2px solid currentColor;
-//   transform: rotate(45deg) translateY(-2px);
-// }
-
 .category-menu__chevron {
   width: var(--icon-size-sm);
   height: var(--icon-size-sm);
@@ -55,16 +47,6 @@
 
 .category-menu__chevron--open {
   transform: rotate(180deg);
-}
-
-.category-menu__backdrop {
-  position: fixed;
-  inset: 72px 0 0;
-  z-index: 120;
-  border: 0;
-  background: rgba(15, 23, 42, 0.42);
-  cursor: default;
-  animation: categoryOverlayIn 0.18s ease-out;
 }
 
 .category-menu__panel {
@@ -158,43 +140,18 @@
   opacity: 0.76;
 }
 
-.category-menu__icon {
+.category-menu__icon-wrap {
   width: 34px;
   height: 34px;
-  display: inline-flex;
+  display: inline-grid;
+  place-items: center;
   flex: 0 0 auto;
-  background: currentColor;
-  mask-position: center;
-  mask-repeat: no-repeat;
-  mask-size: 19px;
 }
 
-.category-menu__icon--fashion {
-  mask-image: url('/assets/icons/categories/fashion.svg');
-}
-
-.category-menu__icon--electronics {
-  mask-image: url('/assets/icons/categories/electronics.svg');
-}
-
-.category-menu__icon--home {
-  mask-image: url('/assets/icons/categories/home.svg');
-}
-
-.category-menu__icon--sport {
-  mask-image: url('/assets/icons/categories/sport.svg');
-}
-
-.category-menu__icon--beauty {
-  mask-image: url('/assets/icons/categories/beauty.svg');
-}
-
-.category-menu__icon--kids {
-  mask-image: url('/assets/icons/categories/kids.svg');
-}
-
-.category-menu__icon--collectibles {
-  mask-image: url('/assets/icons/categories/collectibles.svg');
+.category-menu__icon {
+  width: 19px;
+  height: 19px;
+  display: block;
 }
 
 .category-menu__detail {
@@ -315,16 +272,6 @@
   font-weight: 900;
 }
 
-@keyframes categoryOverlayIn {
-  from {
-    opacity: 0;
-  }
-
-  to {
-    opacity: 1;
-  }
-}
-
 @media (max-width: 1180px) {
   .category-menu__panel {
     left: -70px;
@@ -348,11 +295,6 @@
   .category-menu__trigger {
     min-width: 0;
   }
-
-  //   .category-menu__page-scrim {
-  //     top: 72px;
-  //     background: rgba(15, 23, 42, 0.28);
-  //   }
 
   .category-menu__panel {
     position: fixed;

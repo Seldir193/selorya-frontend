@@ -103,3 +103,15 @@
 .dropdown__chevron-icon--open {
   transform: rotate(180deg);
 }
+
+.dropdown__icon {
+  width: var(--icon-size-sm);
+  height: var(--icon-size-sm);
+  display: block;
+  flex: 0 0 auto;
+  background: currentColor;
+  mask-image: var(--dropdown-icon-url);
+  mask-position: center;
+  mask-repeat: no-repeat;
+  mask-size: contain;
+}

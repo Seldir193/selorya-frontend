@@ -30,11 +30,9 @@
               (focus)="setActiveCategory(index)"
               (click)="setActiveCategory(index)"
             >
-              <span
-                class="category-menu__icon"
-                [class]="'category-menu__icon category-menu__icon--' + category.icon"
-                aria-hidden="true"
-              ></span>
+              <span class="category-menu__icon-wrap" aria-hidden="true">
+                <img class="category-menu__icon" [src]="category.iconSrc" alt="" />
+              </span>
 
               <span>
                 <strong>{{ category.titleKey | translate }}</strong>
