@@ -80,9 +80,8 @@ export class ProfileEditPage implements OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.revokeAvatarPreview();
+    this.clearAvatarPreview();
   }
-
   private saveProfileChanges(): Observable<unknown> {
     const value = this.form.getRawValue();
 
@@ -124,17 +123,19 @@ export class ProfileEditPage implements OnDestroy {
   }
 
   private setAvatarPreview(file: File): void {
-    this.revokeAvatarPreview();
+    this.clearAvatarPreview();
     this.selectedAvatar.set(file);
     this.avatarPreviewUrl.set(URL.createObjectURL(file));
   }
 
-  private revokeAvatarPreview(): void {
+  private clearAvatarPreview(): void {
     const previewUrl = this.avatarPreviewUrl();
 
     if (previewUrl) {
       URL.revokeObjectURL(previewUrl);
     }
+
+    this.avatarPreviewUrl.set(null);
   }
 
   private isValidAvatar(file: File): boolean {
@@ -157,7 +158,7 @@ export class ProfileEditPage implements OnDestroy {
 
   private handleSaveSuccess(): void {
     this.selectedAvatar.set(null);
-    this.revokeAvatarPreview();
+    this.clearAvatarPreview();
     this.toast.success(this.i18n.t('profileUpdated'));
     this.authService.loadMe().subscribe();
   }
