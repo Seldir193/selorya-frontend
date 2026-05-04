@@ -7,7 +7,14 @@
     [attr.aria-label]="'categoryMenuLabel' | translate"
   >
     <span>{{ 'navCategories' | translate }}</span>
-    <span class="category-menu__chevron" aria-hidden="true"></span>
+
+    <img
+      class="category-menu__chevron"
+      [class.category-menu__chevron--open]="isOpen()"
+      src="assets/icons/header/chevron-down.svg"
+      alt=""
+      aria-hidden="true"
+    />
   </button>
 
   @if (isOpen()) {

@@ -38,12 +38,23 @@
   outline: none;
 }
 
+// .category-menu__chevron {
+//   width: 8px;
+//   height: 8px;
+//   border-right: 2px solid currentColor;
+//   border-bottom: 2px solid currentColor;
+//   transform: rotate(45deg) translateY(-2px);
+// }
+
 .category-menu__chevron {
-  width: 8px;
-  height: 8px;
-  border-right: 2px solid currentColor;
-  border-bottom: 2px solid currentColor;
-  transform: rotate(45deg) translateY(-2px);
+  width: var(--icon-size-sm);
+  height: var(--icon-size-sm);
+  flex: 0 0 auto;
+  transition: transform var(--button-hover-transition);
+}
+
+.category-menu__chevron--open {
+  transform: rotate(180deg);
 }
 
 .category-menu__backdrop {
