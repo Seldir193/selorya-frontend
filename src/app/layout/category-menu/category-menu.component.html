@@ -59,23 +59,45 @@
             </a>
           </div>
 
-          <div class="category-menu__columns">
-            @for (column of activeCategory().columns; track column.titleKey) {
-              <div class="category-menu__column">
-                <h4>{{ column.titleKey | translate }}</h4>
+          <div class="category-menu__detail-main">
+            <div class="category-menu__columns">
+              @for (column of activeCategory().columns; track column.titleKey) {
+                <div class="category-menu__column">
+                  <h4>{{ column.titleKey | translate }}</h4>
 
-                @for (link of column.links; track link.value) {
+                  @for (link of column.links; track link.value) {
+                    <a
+                      routerLink="/listings"
+                      [queryParams]="{
+                        category: activeCategory().value,
+                        subcategory: link.value,
+                      }"
+                      (click)="closeMenu()"
+                    >
+                      {{ link.labelKey | translate }}
+                    </a>
+                  }
+                </div>
+              }
+            </div>
+
+            @if (activeCategory().promo; as promo) {
+              <div class="category-menu__promo">
+                <img class="category-menu__promo-image" [src]="promo.imageSrc" alt="" />
+
+                <div class="category-menu__promo-content">
+                  <strong>{{ promo.titleKey | translate }}</strong>
+                  <p>{{ promo.textKey | translate }}</p>
+
                   <a
                     routerLink="/listings"
-                    [queryParams]="{
-                      category: activeCategory().value,
-                      subcategory: link.value,
-                    }"
+                    [queryParams]="{ category: activeCategory().value }"
+                    class="category-menu__promo-link"
                     (click)="closeMenu()"
                   >
-                    {{ link.labelKey | translate }}
+                    {{ promo.ctaKey | translate }}
                   </a>
-                }
+                </div>
               </div>
             }
           </div>
@@ -93,6 +115,21 @@
               </a>
             }
           </div>
+
+          @if (activeCategory().benefits?.length) {
+            <div class="category-menu__benefits">
+              @for (benefit of activeCategory().benefits; track benefit.titleKey) {
+                <div class="category-menu__benefit">
+                  <img [src]="benefit.iconSrc" alt="" aria-hidden="true" />
+
+                  <div>
+                    <strong>{{ benefit.titleKey | translate }}</strong>
+                    <p>{{ benefit.textKey | translate }}</p>
+                  </div>
+                </div>
+              }
+            </div>
+          }
         </div>
       </div>
     </div>

@@ -8,6 +8,7 @@ import { dePaginationTexts } from './de/pagination.de';
 import { deHomeTexts } from './de/home.de';
 import { deFooterTexts } from './de/footer.de';
 import { deProfileTexts } from './de/profile.de';
+import { deCategoryMenuTexts } from './de/category.de';
 
 export const deTexts = {
   ...deFeedbackTexts,
@@ -20,4 +21,5 @@ export const deTexts = {
   ...deHomeTexts,
   ...deFooterTexts,
   ...deProfileTexts,
+  ...deCategoryMenuTexts,
 } as const;

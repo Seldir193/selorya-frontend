@@ -8,6 +8,7 @@ import { enPaginationTexts } from './en/pagination.en';
 import { enHomeTexts } from './en/home.en';
 import { enFooterTexts } from './en/footer.en';
 import { enProfileTexts } from './en/profile.en';
+import { enCategoryMenuTexts } from './en/category.en';
 
 export const enTexts = {
   ...enFeedbackTexts,
@@ -20,4 +21,5 @@ export const enTexts = {
   ...enHomeTexts,
   ...enFooterTexts,
   ...enProfileTexts,
+  ...enCategoryMenuTexts,
 } as const;

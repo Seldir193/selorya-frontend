@@ -7,6 +7,7 @@ import { trOrdersTexts } from './tr/orders.tr';
 import { trPaginationTexts } from './tr/pagination.tr';
 import { trHomeTexts } from './tr/home.tr';
 import { trProfileTexts } from './tr/profile.tr';
+import { trCategoryMenuTexts } from './tr/category.tr';
 
 export const trTexts = {
   ...trFeedbackTexts,
@@ -18,4 +19,5 @@ export const trTexts = {
   ...trPaginationTexts,
   ...trHomeTexts,
   ...trProfileTexts,
+  ...trCategoryMenuTexts,
 } as const;
