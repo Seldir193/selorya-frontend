@@ -1,7 +1,6 @@
 export const deProfileTexts = {
-  profileEditEyebrow: 'Profil bearbeiten',
-  profileEditTitle: 'Dein Profil aktualisieren',
-  profileEditSubtitle: 'Pflege deine Käufer- und Verkäuferinformationen an einem zentralen Ort.',
+  profileEditTitle: 'Profil bearbeiten',
+  profileEditSubtitle: 'Aktualisiere deine Käufer- und Verkäuferinformationen.',
   profileEditPersonalTitle: 'Persönliche Informationen',
   profileEditPersonalSubtitle:
     'Diese Daten helfen dir bei Käufen, Bestellungen und der Kommunikation.',

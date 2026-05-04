@@ -1,7 +1,6 @@
 export const enProfileTexts = {
-  profileEditEyebrow: 'Edit profile',
-  profileEditTitle: 'Update your profile',
-  profileEditSubtitle: 'Manage your buyer and seller information in one central place.',
+  profileEditTitle: 'Edit profile',
+  profileEditSubtitle: 'Update your buyer and seller information.',
   profileEditPersonalTitle: 'Personal information',
   profileEditPersonalSubtitle:
     'These details support purchases, orders, and account communication.',

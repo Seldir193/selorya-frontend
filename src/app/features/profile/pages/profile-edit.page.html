@@ -1,12 +1,9 @@
 <section class="profile-page">
-  <div class="page-head">
-    <p class="page-head__eyebrow">
-      {{ 'profileEditEyebrow' | translate }}
-    </p>
-
-    <h1>{{ 'profileEditTitle' | translate }}</h1>
-
-    <p>{{ 'profileEditSubtitle' | translate }}</p>
+  <div class="page-head page-head--compact">
+    <div>
+      <h1>{{ 'profileEditTitle' | translate }}</h1>
+      <p>{{ 'profileEditSubtitle' | translate }}</p>
+    </div>
   </div>
 
   <form [formGroup]="form" (ngSubmit)="submit()" class="profile-card">

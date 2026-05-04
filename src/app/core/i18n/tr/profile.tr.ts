@@ -1,7 +1,6 @@
 export const trProfileTexts = {
-  profileEditEyebrow: 'Profili düzenle',
-  profileEditTitle: 'Profilini güncelle',
-  profileEditSubtitle: 'Alıcı ve satıcı bilgilerini tek bir merkezi alanda yönet.',
+  profileEditTitle: 'Profili düzenle',
+  profileEditSubtitle: 'Alıcı ve satıcı bilgilerini güncelle.',
   profileEditPersonalTitle: 'Kişisel bilgiler',
   profileEditPersonalSubtitle: 'Bu bilgiler satın alma, sipariş ve hesap iletişiminde kullanılır.',
   profileEditSellerTitle: 'Satıcı profili',

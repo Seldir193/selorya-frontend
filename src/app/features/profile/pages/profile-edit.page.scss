@@ -89,6 +89,21 @@
   color: var(--color-primary) !important;
 }
 
+.page-head--compact {
+  align-items: flex-start;
+  margin-bottom: 22px;
+}
+
+.page-head--compact h1 {
+  font-size: clamp(32px, 4vw, 44px);
+  line-height: 1.05;
+}
+
+.page-head--compact p {
+  max-width: 620px;
+  margin-top: 10px;
+}
+
 @media (max-width: 760px) {
   .profile-card__header {
     display: grid;
