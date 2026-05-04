@@ -5,7 +5,7 @@
         <img src="assets/icons/brand-mark.svg" alt="Selorya" />
         <span>Selorya</span>
       </a>
-      <app-category-menu class="topbar__category" />
+      <app-category-menu class="topbar__category" (menuOpenChange)="setCategoryMenuOpen($event)" />
       @if (authService.isAuthenticated()) {
         <nav class="topbar__nav">
           <a routerLink="/favorites">{{ 'navFavorites' | translate }}</a>
@@ -104,6 +104,15 @@
       </div>
     </div>
   </header>
+
+  @if (isCategoryMenuOpen()) {
+    <button
+      type="button"
+      class="shell__backdrop"
+      aria-label="Close category menu"
+      (click)="closeCategoryMenu()"
+    ></button>
+  }
 
   <main class="shell__content">
     <router-outlet />

@@ -1,4 +1,5 @@
-import { Component, HostListener, signal } from '@angular/core';
+// import { Component, HostListener, signal } from '@angular/core';
+import { Component, EventEmitter, HostListener, Output, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
 
@@ -30,6 +31,7 @@ type CategoryMenuItem = {
 export class CategoryMenuComponent {
   readonly isOpen = signal(false);
   readonly activeIndex = signal(0);
+  @Output() readonly menuOpenChange = new EventEmitter<boolean>();
 
   readonly popularLinks: CategoryLink[] = [
     { labelKey: 'categoryPopularJackets', value: 'jackets' },
@@ -207,13 +209,27 @@ export class CategoryMenuComponent {
     return this.categories[this.activeIndex()];
   }
 
-  toggleMenu(): void {
-    this.isOpen.update((isOpen) => !isOpen);
-  }
+  //   toggleMenu(): void {
+  //     this.isOpen.update((isOpen) => !isOpen);
+  //   }
 
-  closeMenu(): void {
-    this.isOpen.set(false);
+  toggleMenu(): void {
+    const nextState = !this.isOpen();
+
+    this.isOpen.set(nextState);
+    this.menuOpenChange.emit(nextState);
   }
+  closeMenu(): void {
+    if (!this.isOpen()) {
+      return;
+    }
+
+    this.isOpen.set(false);
+    this.menuOpenChange.emit(false);
+  }
+  //   closeMenu(): void {
+  //     this.isOpen.set(false);
+  //   }
 
   setActiveCategory(index: number): void {
     this.activeIndex.set(index);

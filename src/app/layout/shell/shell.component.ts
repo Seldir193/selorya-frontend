@@ -1,4 +1,5 @@
-import { Component, HostListener, inject, signal } from '@angular/core';
+// import { Component, HostListener, inject, signal } from '@angular/core';
+import { Component, HostListener, ViewChild, inject, signal } from '@angular/core';
 import { NavigationEnd, Router, RouterLink, RouterOutlet } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
 import { filter } from 'rxjs';
@@ -33,6 +34,10 @@ export class ShellComponent {
 
   readonly isUserMenuOpen = signal(false);
   readonly currentUrl = signal(this.router.url);
+  @ViewChild(CategoryMenuComponent)
+  private readonly categoryMenu?: CategoryMenuComponent;
+
+  readonly isCategoryMenuOpen = signal(false);
 
   readonly languageOptions: DropdownOption<SeloryaLanguage>[] = [
     { value: 'de', label: 'Deutsch', triggerLabel: 'DE' },
@@ -43,6 +48,15 @@ export class ShellComponent {
   constructor() {
     this.authService.initialize();
     this.watchRouteChanges();
+  }
+
+  setCategoryMenuOpen(isOpen: boolean): void {
+    this.isCategoryMenuOpen.set(isOpen);
+  }
+
+  closeCategoryMenu(): void {
+    this.categoryMenu?.closeMenu();
+    this.isCategoryMenuOpen.set(false);
   }
 
   currentLanguage(): SeloryaLanguage {
