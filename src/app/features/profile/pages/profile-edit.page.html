@@ -9,6 +9,35 @@
   <form [formGroup]="form" (ngSubmit)="submit()" class="profile-card">
     <div class="profile-card__header">
       <div>
+        <h2>{{ 'profileEditAvatarTitle' | translate }}</h2>
+        <p>{{ 'profileEditAvatarSubtitle' | translate }}</p>
+      </div>
+    </div>
+
+    <div class="profile-avatar-upload">
+      <div class="profile-avatar-upload__preview" aria-hidden="true">
+        @if (visibleAvatarUrl()) {
+          <img [src]="visibleAvatarUrl()" alt="" />
+        } @else {
+          <span>{{ authService.user()?.full_name?.charAt(0) || 'U' }}</span>
+        }
+      </div>
+
+      <div class="profile-avatar-upload__content">
+        <strong>{{ 'profileAvatarUploadTitle' | translate }}</strong>
+        <p>{{ 'profileAvatarUploadHint' | translate }}</p>
+
+        <label class="app-button app-button--secondary profile-avatar-upload__button">
+          {{ 'profileAvatarChooseFile' | translate }}
+          <input type="file" accept="image/*" (change)="onAvatarSelected($event)" />
+        </label>
+      </div>
+    </div>
+
+    <div class="profile-card__divider"></div>
+
+    <div class="profile-card__header">
+      <div>
         <h2>{{ 'profileEditPersonalTitle' | translate }}</h2>
         <p>{{ 'profileEditPersonalSubtitle' | translate }}</p>
       </div>
@@ -95,20 +124,20 @@
     </div>
 
     <div class="profile-form-grid">
-      <mat-form-field appearance="outline">
-        <mat-label>{{ 'profilePhone' | translate }}</mat-label>
-        <input matInput formControlName="phone" />
-      </mat-form-field>
+      <label class="profile-field">
+        <span>{{ 'profilePhone' | translate }}</span>
+        <input class="profile-input" type="tel" formControlName="phone" />
+      </label>
 
-      <mat-form-field appearance="outline">
-        <mat-label>{{ 'profileCustomerCity' | translate }}</mat-label>
-        <input matInput formControlName="customerCity" />
-      </mat-form-field>
+      <label class="profile-field">
+        <span>{{ 'profileCustomerCity' | translate }}</span>
+        <input class="profile-input" type="text" formControlName="customerCity" />
+      </label>
 
-      <mat-form-field appearance="outline">
-        <mat-label>{{ 'profileCustomerCountry' | translate }}</mat-label>
-        <input matInput formControlName="customerCountry" />
-      </mat-form-field>
+      <label class="profile-field">
+        <span>{{ 'profileCustomerCountry' | translate }}</span>
+        <input class="profile-input" type="text" formControlName="customerCountry" />
+      </label>
     </div>
 
     <div class="profile-card__divider"></div>
@@ -121,25 +150,29 @@
     </div>
 
     <div class="profile-form-grid">
-      <mat-form-field appearance="outline">
-        <mat-label>{{ 'profileSellerDisplayName' | translate }}</mat-label>
-        <input matInput formControlName="display_name" />
-      </mat-form-field>
+      <label class="profile-field">
+        <span>{{ 'profileSellerDisplayName' | translate }}</span>
+        <input class="profile-input" type="text" formControlName="display_name" />
+      </label>
 
-      <mat-form-field appearance="outline" class="profile-form-grid__full">
-        <mat-label>{{ 'profileBio' | translate }}</mat-label>
-        <textarea matInput rows="4" formControlName="bio"></textarea>
-      </mat-form-field>
+      <label class="profile-field profile-form-grid__full">
+        <span>{{ 'profileBio' | translate }}</span>
+        <textarea
+          class="profile-input profile-input--textarea"
+          rows="4"
+          formControlName="bio"
+        ></textarea>
+      </label>
 
-      <mat-form-field appearance="outline">
-        <mat-label>{{ 'profileSellerCity' | translate }}</mat-label>
-        <input matInput formControlName="sellerCity" />
-      </mat-form-field>
+      <label class="profile-field">
+        <span>{{ 'profileSellerCity' | translate }}</span>
+        <input class="profile-input" type="text" formControlName="sellerCity" />
+      </label>
 
-      <mat-form-field appearance="outline">
-        <mat-label>{{ 'profileSellerCountry' | translate }}</mat-label>
-        <input matInput formControlName="sellerCountry" />
-      </mat-form-field>
+      <label class="profile-field">
+        <span>{{ 'profileSellerCountry' | translate }}</span>
+        <input class="profile-input" type="text" formControlName="sellerCountry" />
+      </label>
     </div>
 
     <div class="profile-card__actions">

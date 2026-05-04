@@ -40,4 +40,10 @@ export const trProfileTexts = {
 
   profileAvatarInvalid: 'Lütfen geçerli bir görsel dosyası seç.',
   profileAvatarTooLarge: 'Profil görseli en fazla 3 MB olabilir.',
+
+  profileEditAvatarTitle: 'Profil görseli',
+  profileEditAvatarSubtitle: 'Selorya hesabını temsil eden bir görsel yükle.',
+  profileAvatarUploadTitle: 'Profil görseli seç',
+  profileAvatarUploadHint: 'PNG veya JPG, en fazla 3 MB. Görsel yuvarlak gösterilir.',
+  profileAvatarChooseFile: 'Görsel seç',
 } as const;

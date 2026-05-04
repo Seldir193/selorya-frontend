@@ -43,4 +43,10 @@ export const deProfileTexts = {
 
   profileAvatarInvalid: 'Bitte wähle eine gültige Bilddatei aus.',
   profileAvatarTooLarge: 'Das Profilbild darf maximal 3 MB groß sein.',
+
+  profileEditAvatarTitle: 'Profilbild',
+  profileEditAvatarSubtitle: 'Lade ein Bild hoch, das dein Selorya Konto sichtbar macht.',
+  profileAvatarUploadTitle: 'Profilbild auswählen',
+  profileAvatarUploadHint: 'PNG oder JPG, maximal 3 MB. Das Bild wird rund dargestellt.',
+  profileAvatarChooseFile: 'Bild auswählen',
 } as const;

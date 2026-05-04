@@ -42,4 +42,10 @@ export const enProfileTexts = {
 
   profileAvatarInvalid: 'Please select a valid image file.',
   profileAvatarTooLarge: 'The profile image must not exceed 3 MB.',
+
+  profileEditAvatarTitle: 'Profile image',
+  profileEditAvatarSubtitle: 'Upload an image that represents your Selorya account.',
+  profileAvatarUploadTitle: 'Choose a profile image',
+  profileAvatarUploadHint: 'PNG or JPG, maximum 3 MB. The image will be displayed as a circle.',
+  profileAvatarChooseFile: 'Choose image',
 } as const;
