@@ -49,7 +49,11 @@ export class ProfileEditPage implements OnDestroy {
   });
 
   submit(): void {
-    if (this.form.invalid || this.isSubmitting()) {
+    if (this.isSubmitting()) {
+      return;
+    }
+
+    if (this.form.invalid && !this.selectedAvatar()) {
       this.form.markAllAsTouched();
       return;
     }

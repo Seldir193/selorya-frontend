@@ -67,6 +67,14 @@ export class AuthService {
     );
   }
 
+  removeAvatar(): Observable<AuthUser> {
+    return this.http.patch<AuthUser>(`${API_BASE_URL}/accounts/me/`, { avatar: null }).pipe(
+      tap((user) => {
+        this.userState.set(user);
+      }),
+    );
+  }
+
   initialize(): void {
     if (!this.tokenService.hasAccessToken()) {
       this.authReadyState.set(true);
