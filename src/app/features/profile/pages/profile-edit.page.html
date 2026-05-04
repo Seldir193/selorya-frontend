@@ -27,10 +27,24 @@
         <strong>{{ 'profileAvatarUploadTitle' | translate }}</strong>
         <p>{{ 'profileAvatarUploadHint' | translate }}</p>
 
-        <label class="app-button app-button--secondary profile-avatar-upload__button">
-          {{ 'profileAvatarChooseFile' | translate }}
-          <input type="file" accept="image/*" (change)="onAvatarSelected($event)" />
-        </label>
+        <div class="profile-avatar-upload__actions">
+          <label class="app-button app-button--secondary profile-avatar-upload__button">
+            {{ 'profileAvatarChooseFile' | translate }}
+            <input type="file" accept="image/*" (change)="onAvatarSelected($event)" />
+          </label>
+
+          @if (visibleAvatarUrl()) {
+            <button type="button" class="profile-avatar-upload__remove" (click)="removeAvatar()">
+              <img
+                class="profile-avatar-upload__remove-icon"
+                src="assets/icons/profile/delete.svg"
+                alt=""
+                aria-hidden="true"
+              />
+              <span>{{ 'profileAvatarRemove' | translate }}</span>
+            </button>
+          }
+        </div>
       </div>
     </div>
 

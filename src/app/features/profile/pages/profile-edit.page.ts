@@ -24,8 +24,13 @@ export class ProfileEditPage implements OnDestroy {
   readonly isSubmitting = signal(false);
   readonly selectedAvatar = signal<File | null>(null);
   readonly avatarPreviewUrl = signal<string | null>(null);
+  readonly shouldRemoveAvatar = signal(false);
 
   readonly visibleAvatarUrl = computed(() => {
+    if (this.shouldRemoveAvatar()) {
+      return null;
+    }
+
     return this.avatarPreviewUrl() || this.authService.user()?.avatar_url || null;
   });
 
@@ -89,20 +94,24 @@ export class ProfileEditPage implements OnDestroy {
   private saveProfileChanges(): Observable<unknown> {
     const value = this.form.getRawValue();
 
-    return this.uploadAvatarIfNeeded().pipe(
+    return this.updateAvatarIfNeeded().pipe(
       switchMap(() => this.updateCustomerProfile(value)),
       switchMap(() => this.updateSellerProfile(value)),
     );
   }
 
-  private uploadAvatarIfNeeded(): Observable<unknown> {
+  private updateAvatarIfNeeded(): Observable<unknown> {
     const avatar = this.selectedAvatar();
 
-    if (!avatar) {
-      return of(null);
+    if (avatar) {
+      return this.authService.uploadAvatar(avatar);
     }
 
-    return this.authService.uploadAvatar(avatar);
+    if (this.shouldRemoveAvatar()) {
+      return this.authService.removeAvatar();
+    }
+
+    return of(null);
   }
 
   private updateCustomerProfile(
@@ -113,6 +122,12 @@ export class ProfileEditPage implements OnDestroy {
       city: value.customerCity,
       country: value.customerCountry,
     });
+  }
+
+  removeAvatar(): void {
+    this.selectedAvatar.set(null);
+    this.clearAvatarPreview();
+    this.shouldRemoveAvatar.set(true);
   }
 
   private updateSellerProfile(
@@ -128,6 +143,7 @@ export class ProfileEditPage implements OnDestroy {
 
   private setAvatarPreview(file: File): void {
     this.clearAvatarPreview();
+    this.shouldRemoveAvatar.set(false);
     this.selectedAvatar.set(file);
     this.avatarPreviewUrl.set(URL.createObjectURL(file));
   }
@@ -162,6 +178,7 @@ export class ProfileEditPage implements OnDestroy {
 
   private handleSaveSuccess(): void {
     this.selectedAvatar.set(null);
+    this.shouldRemoveAvatar.set(false);
     this.clearAvatarPreview();
     this.toast.success(this.i18n.t('profileUpdated'));
     this.authService.loadMe().subscribe();

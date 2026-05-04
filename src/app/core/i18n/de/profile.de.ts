@@ -49,4 +49,6 @@ export const deProfileTexts = {
   profileAvatarUploadTitle: 'Profilbild auswählen',
   profileAvatarUploadHint: 'PNG oder JPG, maximal 3 MB. Das Bild wird rund dargestellt.',
   profileAvatarChooseFile: 'Bild auswählen',
+
+  profileAvatarRemove: 'Bild entfernen',
 } as const;
