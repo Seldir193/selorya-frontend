@@ -1,4 +1,4 @@
-<section class="profile-page">
+<section class="profile-page app-badge--soft">
   <div class="profile-hero">
     <div>
       <h1>{{ 'profileOverviewTitle' | translate }}</h1>
@@ -30,11 +30,11 @@
       </div>
 
       <div class="profile-status-row">
-        <span class="profile-pill">
+        <span class="app-badge">
           {{ authService.user()?.role || ('profileEmptyValue' | translate) }}
         </span>
 
-        <span class="profile-pill profile-pill--soft">
+        <span class="app-badge app-badge--soft">
           {{ authService.user()?.language || ('profileEmptyValue' | translate) }}
         </span>
       </div>

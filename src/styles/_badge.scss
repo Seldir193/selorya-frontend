@@ -1,0 +1,33 @@
+:root {
+  --badge-height: 34px;
+  --badge-padding-x: 13px;
+  --badge-radius: 999px;
+
+  --badge-primary-bg: var(--color-primary);
+  --badge-primary-color: #ffffff;
+  --badge-primary-border: var(--color-primary);
+
+  --badge-soft-bg: var(--color-surface);
+  --badge-soft-color: var(--color-primary);
+  --badge-soft-border: var(--color-border-soft);
+}
+
+.app-badge {
+  min-height: var(--badge-height);
+  display: inline-flex;
+  align-items: center;
+  padding: 0 var(--badge-padding-x);
+  border: 1px solid var(--badge-primary-border);
+  border-radius: var(--badge-radius);
+  background: var(--badge-primary-bg);
+  color: var(--badge-primary-color);
+  font-size: 13px;
+  font-weight: 900;
+  text-transform: capitalize;
+}
+
+.app-badge--soft {
+  border-color: var(--badge-soft-border);
+  background: var(--badge-soft-bg);
+  color: var(--badge-soft-color);
+}

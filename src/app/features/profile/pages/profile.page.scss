@@ -121,7 +121,7 @@
   border: 1px solid var(--color-border);
   border-radius: 999px;
   background: var(--color-primary);
-  color: var(--color-white);
+  color: #ffffff;
   font-size: 22px;
   font-weight: 900;
   text-transform: uppercase;
@@ -132,25 +132,6 @@
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
-}
-
-.profile-pill {
-  min-height: 34px;
-  display: inline-flex;
-  align-items: center;
-  padding: 0 13px;
-  border: 1px solid var(--color-border);
-  border-radius: 999px;
-  background: var(--color-primary);
-  color: var(--color-white);
-  font-size: 13px;
-  font-weight: 900;
-  text-transform: capitalize;
-}
-
-.profile-pill--soft {
-  background: var(--color-surface);
-  color: var(--color-primary);
 }
 
 .profile-list,
@@ -264,7 +245,7 @@
 // .profile-hero,
 // .page-head {
 //   display: grid;
-//   gap: 16px;
+//   gap: 12px;
 //   margin-bottom: 20px;
 // }
 
@@ -299,7 +280,7 @@
 
 // .profile-hero__action {
 //   justify-self: start;
-//   min-width: 176px;
+//   min-width: 0;
 // }
 
 // .profile-grid {
@@ -324,11 +305,11 @@
 
 // .profile-card--identity {
 //   align-content: start;
-//   min-height: 220px;
+//   min-height: 170px;
 // }
 
 // .profile-card--identity .profile-status-row {
-//   margin-top: 28px;
+//   margin-top: 18px;
 // }
 
 // .profile-card--trust {
@@ -395,19 +376,39 @@
 //   display: inline-flex;
 //   align-items: center;
 //   padding: 0 13px;
-//   border: 1px solid var(--color-border);
+//   border: 1px solid var(--color-primary);
 //   border-radius: 999px;
 //   background: var(--color-primary);
-//   color: var(--color-white);
+//   color: var(--button-primary-color);
 //   font-size: 13px;
 //   font-weight: 900;
 //   text-transform: capitalize;
 // }
 
+// // .profile-pill {
+// //   min-height: 34px;
+// //   display: inline-flex;
+// //   align-items: center;
+// //   padding: 0 13px;
+// //   border: 1px solid var(--color-border);
+// //   border-radius: 999px;
+// //   background: var(--color-primary);
+// //   color: var(--color-white);
+// //   font-size: 13px;
+// //   font-weight: 900;
+// //   text-transform: capitalize;
+// // }
+
 // .profile-pill--soft {
+//   border-color: var(--color-border-soft);
 //   background: var(--color-surface);
 //   color: var(--color-primary);
 // }
+
+// // .profile-pill--soft {
+// //   background: var(--color-surface);
+// //   color: var(--color-primary);
+// // }
 
 // .profile-list,
 // .profile-trust-list {
