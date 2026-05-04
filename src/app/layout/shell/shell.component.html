@@ -5,7 +5,7 @@
         <img src="assets/icons/brand-mark.svg" alt="Selorya" />
         <span>Selorya</span>
       </a>
-
+      <app-category-menu class="topbar__category" />
       @if (authService.isAuthenticated()) {
         <nav class="topbar__nav">
           <a routerLink="/favorites">{{ 'navFavorites' | translate }}</a>

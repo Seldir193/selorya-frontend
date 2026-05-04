@@ -10,6 +10,7 @@ import {
 } from '../../shared/components/dropdown/dropdown.component';
 import { GlobalSearchComponent } from '../../shared/components/global-search/global-search.component';
 import { FooterComponent } from '../footer/footer.component';
+import { CategoryMenuComponent } from '../category-menu/category-menu.component';
 @Component({
   selector: 'app-shell',
   standalone: true,
@@ -20,6 +21,7 @@ import { FooterComponent } from '../footer/footer.component';
     DropdownComponent,
     GlobalSearchComponent,
     FooterComponent,
+    CategoryMenuComponent,
   ],
   templateUrl: './shell.component.html',
   styleUrl: './shell.component.scss',
