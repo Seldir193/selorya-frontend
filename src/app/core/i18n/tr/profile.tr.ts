@@ -48,4 +48,6 @@ export const trProfileTexts = {
   profileAvatarChooseFile: 'Görsel seç',
 
   profileAvatarRemoved: 'Profil görseli kaldırıldı.',
+
+  profileAccountBadge: 'Selorya hesabı',
 } as const;

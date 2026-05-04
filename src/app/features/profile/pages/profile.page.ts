@@ -13,4 +13,28 @@ import { RouterLink } from '@angular/router';
 })
 export class ProfilePage {
   readonly authService = inject(AuthService);
+
+  roleLabel(): string {
+    const role = this.authService.user()?.role;
+
+    if (role === 'admin') {
+      return 'Administrator';
+    }
+
+    return 'Standardkonto';
+  }
+
+  languageLabel(): string {
+    const language = this.authService.user()?.language;
+
+    if (language === 'en') {
+      return 'English';
+    }
+
+    if (language === 'tr') {
+      return 'Türkçe';
+    }
+
+    return 'Deutsch';
+  }
 }

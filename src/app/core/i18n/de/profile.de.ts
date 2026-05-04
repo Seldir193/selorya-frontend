@@ -52,4 +52,6 @@ export const deProfileTexts = {
 
   profileAvatarRemove: 'Bild entfernen',
   profileAvatarRemoved: 'Profilbild wurde entfernt.',
+
+  profileAccountBadge: 'Selorya Konto',
 } as const;

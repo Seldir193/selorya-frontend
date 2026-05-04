@@ -50,4 +50,6 @@ export const enProfileTexts = {
   profileAvatarChooseFile: 'Choose image',
 
   profileAvatarRemoved: 'Profile image has been removed.',
+
+  profileAccountBadge: 'Selorya account',
 } as const;

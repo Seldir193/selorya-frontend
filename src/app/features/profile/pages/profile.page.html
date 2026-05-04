@@ -33,13 +33,22 @@
         </div>
       </div>
 
-      <div class="profile-status-row">
+      <!-- <div class="profile-status-row">
         <span class="app-badge">
           {{ authService.user()?.role || ('profileEmptyValue' | translate) }}
         </span>
 
         <span class="app-badge app-badge--soft">
           {{ authService.user()?.language || ('profileEmptyValue' | translate) }}
+        </span>
+      </div> -->
+      <div class="profile-status-row">
+        <span class="app-badge">
+          {{ 'profileAccountBadge' | translate }}
+        </span>
+
+        <span class="app-badge app-badge--soft">
+          {{ languageLabel() }}
         </span>
       </div>
     </article>
@@ -66,7 +75,7 @@
           <strong>{{ authService.user()?.email || ('profileEmptyValue' | translate) }}</strong>
         </div>
 
-        <div class="profile-row">
+        <!-- <div class="profile-row">
           <span>{{ 'profileRole' | translate }}</span>
           <strong>{{ authService.user()?.role || ('profileEmptyValue' | translate) }}</strong>
         </div>
@@ -74,6 +83,15 @@
         <div class="profile-row">
           <span>{{ 'profileLanguage' | translate }}</span>
           <strong>{{ authService.user()?.language || ('profileEmptyValue' | translate) }}</strong>
+        </div> -->
+        <div class="profile-row">
+          <span>{{ 'profileRole' | translate }}</span>
+          <strong>{{ roleLabel() }}</strong>
+        </div>
+
+        <div class="profile-row">
+          <span>{{ 'profileLanguage' | translate }}</span>
+          <strong>{{ languageLabel() }}</strong>
         </div>
       </div>
     </article>
