@@ -12,18 +12,6 @@
 
   @if (isOpen()) {
     <div class="category-menu__panel">
-      <div class="category-menu__head">
-        <div>
-          <p>{{ 'categoryMenuEyebrow' | translate }}</p>
-          <h2>{{ 'categoryMenuTitle' | translate }}</h2>
-          <span>{{ 'categoryMenuSubtitle' | translate }}</span>
-        </div>
-
-        <a routerLink="/listings" class="category-menu__all-link" (click)="closeMenu()">
-          {{ 'categoryAllCategories' | translate }}
-        </a>
-      </div>
-
       <div class="category-menu__content">
         <div class="category-menu__sidebar">
           @for (category of categories; track category.value; let index = $index) {
