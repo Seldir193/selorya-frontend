@@ -23,6 +23,8 @@ export type AuthUser = {
   id: number;
   email: string;
   full_name: string;
+  avatar: string | null;
+  avatar_url: string | null;
   role: UserRole;
   language: string;
   is_email_verified: boolean;

@@ -39,4 +39,7 @@ export const enProfileTexts = {
   profileTrustOrdersValue: 'Managed in orders',
   profileTrustDocuments: 'Documents',
   profileTrustDocumentsValue: 'Available in documents',
+
+  profileAvatarInvalid: 'Please select a valid image file.',
+  profileAvatarTooLarge: 'The profile image must not exceed 3 MB.',
 } as const;

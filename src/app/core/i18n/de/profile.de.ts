@@ -40,4 +40,7 @@ export const deProfileTexts = {
   profileTrustOrdersValue: 'Über Bestellungen verwalten',
   profileTrustDocuments: 'Dokumente',
   profileTrustDocumentsValue: 'Im Dokumentenbereich verfügbar',
+
+  profileAvatarInvalid: 'Bitte wähle eine gültige Bilddatei aus.',
+  profileAvatarTooLarge: 'Das Profilbild darf maximal 3 MB groß sein.',
 } as const;

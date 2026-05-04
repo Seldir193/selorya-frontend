@@ -56,6 +56,17 @@ export class AuthService {
     );
   }
 
+  uploadAvatar(file: File): Observable<AuthUser> {
+    const formData = new FormData();
+    formData.append('avatar', file);
+
+    return this.http.patch<AuthUser>(`${API_BASE_URL}/accounts/me/`, formData).pipe(
+      tap((user) => {
+        this.userState.set(user);
+      }),
+    );
+  }
+
   initialize(): void {
     if (!this.tokenService.hasAccessToken()) {
       this.authReadyState.set(true);

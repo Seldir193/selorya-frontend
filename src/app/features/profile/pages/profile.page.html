@@ -1,4 +1,4 @@
-<section class="profile-page app-badge--soft">
+<section class="profile-page">
   <div class="profile-hero">
     <div>
       <h1>{{ 'profileOverviewTitle' | translate }}</h1>
@@ -15,7 +15,11 @@
     <article class="profile-card profile-card--identity">
       <div class="profile-card__top">
         <div class="profile-avatar" aria-hidden="true">
-          {{ authService.user()?.full_name?.charAt(0) || 'U' }}
+          @if (authService.user()?.avatar_url) {
+            <img [src]="authService.user()?.avatar_url" alt="" />
+          } @else {
+            <span>{{ authService.user()?.full_name?.charAt(0) || 'U' }}</span>
+          }
         </div>
 
         <div>

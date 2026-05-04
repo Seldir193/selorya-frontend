@@ -37,4 +37,7 @@ export const trProfileTexts = {
   profileTrustOrdersValue: 'Siparişlerden yönetilir',
   profileTrustDocuments: 'Belgeler',
   profileTrustDocumentsValue: 'Belgeler alanında mevcut',
+
+  profileAvatarInvalid: 'Lütfen geçerli bir görsel dosyası seç.',
+  profileAvatarTooLarge: 'Profil görseli en fazla 3 MB olabilir.',
 } as const;
