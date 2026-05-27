@@ -94,7 +94,7 @@
                 </span>
               </button>
 
-              @if (isUserMenuOpen()) {
+              <!-- @if (isUserMenuOpen()) {
                 <div class="user-menu__panel">
                   <a routerLink="/profile" class="user-menu__item" (click)="closeUserMenu()">
                     {{ 'navProfile' | translate }}
@@ -115,6 +115,60 @@
                   >
                     {{ 'authLogout' | translate }}
                   </button>
+                </div>
+              } -->
+
+              @if (isUserMenuOpen()) {
+                <div class="user-menu__panel">
+                  <div class="user-menu__group">
+                    <p class="user-menu__group-title">{{ 'userMenuAccountGroup' | translate }}</p>
+
+                    <a routerLink="/profile" class="user-menu__item" (click)="closeUserMenu()">
+                      {{ 'navProfile' | translate }}
+                    </a>
+
+                    <a routerLink="/settings" class="user-menu__item" (click)="closeUserMenu()">
+                      {{ 'navSettings' | translate }}
+                    </a>
+
+                    <a routerLink="/security" class="user-menu__item" (click)="closeUserMenu()">
+                      {{ 'navSecurity' | translate }}
+                    </a>
+                  </div>
+
+                  <div class="user-menu__group">
+                    <p class="user-menu__group-title">{{ 'userMenuActivityGroup' | translate }}</p>
+
+                    <a routerLink="/orders" class="user-menu__item" (click)="closeUserMenu()">
+                      {{ 'navOrders' | translate }}
+                    </a>
+
+                    <a routerLink="/documents" class="user-menu__item" (click)="closeUserMenu()">
+                      {{ 'navDocuments' | translate }}
+                    </a>
+                  </div>
+
+                  <div class="user-menu__group">
+                    <p class="user-menu__group-title">{{ 'userMenuCommerceGroup' | translate }}</p>
+
+                    <a routerLink="/payments" class="user-menu__item" (click)="closeUserMenu()">
+                      {{ 'navPayments' | translate }}
+                    </a>
+
+                    <a routerLink="/shipping" class="user-menu__item" (click)="closeUserMenu()">
+                      {{ 'navShipping' | translate }}
+                    </a>
+                  </div>
+
+                  <div class="user-menu__group user-menu__group--danger">
+                    <button
+                      type="button"
+                      class="user-menu__item user-menu__item--danger"
+                      (click)="logout()"
+                    >
+                      {{ 'authLogout' | translate }}
+                    </button>
+                  </div>
                 </div>
               }
             </div>
