@@ -1,11 +1,15 @@
 <div class="shell">
-  <header class="topbar" [class.topbar--has-search]="showGlobalSearch()">
+  <header
+    class="topbar"
+    [class.topbar--has-search]="showGlobalSearch()"
+    [class.topbar--auth]="authService.isAuthenticated()"
+  >
     <div class="topbar__inner">
       <a routerLink="/" class="brand">
         <img src="assets/icons/brand-mark.svg" alt="Selorya" />
         <span>Selorya</span>
       </a>
-      <app-category-menu class="topbar__category" (menuOpenChange)="setCategoryMenuOpen($event)" />
+      <!-- <app-category-menu class="topbar__category" (menuOpenChange)="setCategoryMenuOpen($event)" />
       @if (authService.isAuthenticated()) {
         <nav class="topbar__nav">
           <a routerLink="/favorites">{{ 'navFavorites' | translate }}</a>
@@ -16,6 +20,20 @@
 
       @if (showGlobalSearch()) {
         <app-global-search class="topbar__search" />
+      } -->
+
+      <app-category-menu class="topbar__category" (menuOpenChange)="setCategoryMenuOpen($event)" />
+
+      @if (showGlobalSearch()) {
+        <app-global-search class="topbar__search" />
+      }
+
+      @if (authService.isAuthenticated()) {
+        <nav class="topbar__nav">
+          <a routerLink="/favorites">{{ 'navFavorites' | translate }}</a>
+          <a routerLink="/my-listings">{{ 'navMyListings' | translate }}</a>
+          <a routerLink="/sell/create" class="topbar__sell-link">{{ 'navSell' | translate }}</a>
+        </nav>
       }
 
       <div class="topbar__actions">
