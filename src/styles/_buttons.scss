@@ -33,6 +33,7 @@
   position: relative;
   isolation: isolate;
   overflow: hidden;
+  height: var(--button-height);
   min-height: var(--button-height);
   display: inline-flex;
   align-items: center;
@@ -43,7 +44,8 @@
   background: var(--button-bg);
   color: var(--button-color);
   box-shadow: var(--button-shadow);
-  font: inherit;
+  font-family: var(--font-sans);
+  font-size: 14px;
   font-weight: 700;
   line-height: 1;
   text-align: center;

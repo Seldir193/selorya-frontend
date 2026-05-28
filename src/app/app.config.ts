@@ -1,6 +1,8 @@
 import {
   ApplicationConfig,
   importProvidersFrom,
+  inject,
+  provideAppInitializer,
   provideBrowserGlobalErrorListeners,
 } from '@angular/core';
 import { provideRouter } from '@angular/router';
@@ -12,6 +14,7 @@ import { provideTranslateLoader, provideTranslateService } from '@ngx-translate/
 
 import { authInterceptor } from './core/interceptors/auth.interceptor';
 import { UiTextLoader } from './core/i18n/ui-text.loader';
+import { FontService } from './core/services/font.service';
 import { routes } from './app.routes';
 
 export const appConfig: ApplicationConfig = {
@@ -25,6 +28,9 @@ export const appConfig: ApplicationConfig = {
     provideTranslateService({
       fallbackLang: 'en',
       loader: provideTranslateLoader(UiTextLoader),
+    }),
+    provideAppInitializer(() => {
+      return inject(FontService).initialize();
     }),
   ],
 };
