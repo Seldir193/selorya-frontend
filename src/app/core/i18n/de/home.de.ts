@@ -18,4 +18,33 @@ export const deHomeTexts = {
   homeListingsEmptyDescription:
     'Sobald Produkte veröffentlicht werden, erscheinen sie direkt hier auf der Startseite.',
   homeListingsEmptyAction: 'Erste Anzeige erstellen',
+
+  homeTrustEyebrow: 'Recommerce mit Vertrauen',
+  homeTrustTitle: 'Alles, was gutes Kaufen und Verkaufen leichter macht.',
+  homeTrustDescription:
+    'Selorya verbindet hochwertige Produkte, klare Abläufe und eine ruhige Plattform-Erfahrung für Käufer und Verkäufer.',
+  homeTrustSafeTitle: 'Sicher handeln',
+  homeTrustSafeDescription:
+    'Entdecke Produkte mit einem klaren Bestellprozess und transparenter Kommunikation.',
+  homeTrustOrdersTitle: 'Alles im Blick',
+  homeTrustOrdersDescription:
+    'Bestellungen, Zahlungen und Dokumente bleiben übersichtlich an einem Ort.',
+  homeTrustSellTitle: 'Einfach verkaufen',
+  homeTrustSellDescription:
+    'Erstelle Angebote schnell und präsentiere deine Produkte in einem hochwertigen Umfeld.',
+  homeCategoriesEyebrow: 'Schneller Einstieg',
+  homeCategoriesTitle: 'Entdecke beliebte Bereiche.',
+  homeCategoriesAction: 'Alle Kategorien',
+  homeCategoryFashion: 'Fashion',
+  homeCategoryElectronics: 'Elektronik',
+  homeCategoryHome: 'Home & Living',
+  homeCategorySport: 'Sport',
+  homeCategoryKids: 'Kids',
+  homeCategoryBeauty: 'Beauty',
+  homeMarketplaceCtaEyebrow: 'Bereit für Selorya?',
+  homeMarketplaceCtaTitle: 'Kaufen und verkaufen mit einem besseren Gefühl.',
+  homeMarketplaceCtaDescription:
+    'Starte mit aktuellen Angeboten oder stelle dein erstes Produkt ein.',
+  homeMarketplaceCtaBuy: 'Produkte entdecken',
+  homeMarketplaceCtaSell: 'Artikel verkaufen',
 } as const;
