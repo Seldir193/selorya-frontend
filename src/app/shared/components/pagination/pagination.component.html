@@ -1,5 +1,9 @@
 @if (hasItems()) {
-  <nav class="pagination" [attr.aria-label]="text('paginationLabel')">
+  <nav
+    class="pagination"
+    [class.pagination--compact]="variant() === 'compact'"
+    [attr.aria-label]="text('paginationLabel')"
+  >
     <button
       type="button"
       class="pagination__icon-button"
@@ -46,3 +50,52 @@
     </button>
   </nav>
 }
+
+<!-- @if (hasItems()) {
+  <nav class="pagination" [attr.aria-label]="text('paginationLabel')">
+    <button
+      type="button"
+      class="pagination__icon-button"
+      [disabled]="page() === 1"
+      [attr.aria-label]="text('paginationPrevious')"
+      (click)="previousPage()"
+    >
+      <img
+        class="pagination__arrow"
+        src="assets/icons/pagination/arrow-left.svg"
+        alt=""
+        aria-hidden="true"
+      />
+    </button>
+
+    <div class="pagination__center">
+      <span class="pagination__page"> {{ page() }} / {{ totalPages() }} </span>
+
+      @if (showPageSize()) {
+        <app-dropdown
+          [value]="pageSize()"
+          [options]="pageSizeDropdownOptions()"
+          [ariaLabel]="text('paginationPageSize')"
+          minWidth="86px"
+          maxMenuHeight="86px"
+          (valueChange)="changePageSize($event)"
+        />
+      }
+    </div>
+
+    <button
+      type="button"
+      class="pagination__icon-button"
+      [disabled]="page() === totalPages()"
+      [attr.aria-label]="text('paginationNext')"
+      (click)="nextPage()"
+    >
+      <img
+        class="pagination__arrow"
+        src="assets/icons/pagination/arrow-right.svg"
+        alt=""
+        aria-hidden="true"
+      />
+    </button>
+  </nav>
+} -->
