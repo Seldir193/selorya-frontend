@@ -42,9 +42,9 @@ export const deHomeTexts = {
   homeCategoryKids: 'Kids',
   homeCategoryBeauty: 'Beauty',
   homeMarketplaceCtaEyebrow: 'Bereit für Selorya?',
-  homeMarketplaceCtaTitle: 'Kaufen und verkaufen mit einem besseren Gefühl.',
+  homeMarketplaceCtaTitle: 'Finde Besonderes. Gib Gutem ein neues Zuhause.',
   homeMarketplaceCtaDescription:
-    'Starte mit aktuellen Angeboten oder stelle dein erstes Produkt ein.',
+    'Entdecke aktuelle Angebote oder veröffentliche dein erstes Produkt in wenigen Schritten.',
   homeMarketplaceCtaBuy: 'Produkte entdecken',
   homeMarketplaceCtaSell: 'Artikel verkaufen',
 } as const;

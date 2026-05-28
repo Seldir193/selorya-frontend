@@ -41,8 +41,9 @@ export const enHomeTexts = {
   homeCategoryKids: 'Kids',
   homeCategoryBeauty: 'Beauty',
   homeMarketplaceCtaEyebrow: 'Ready for Selorya?',
-  homeMarketplaceCtaTitle: 'Buy and sell with more confidence.',
-  homeMarketplaceCtaDescription: 'Start with current listings or publish your first product.',
+  homeMarketplaceCtaTitle: 'Find something special. Give good things a new home.',
+  homeMarketplaceCtaDescription:
+    'Explore current listings or publish your first product in just a few steps.',
   homeMarketplaceCtaBuy: 'Explore products',
   homeMarketplaceCtaSell: 'Sell an item',
 } as const;

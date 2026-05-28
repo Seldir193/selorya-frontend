@@ -38,8 +38,8 @@ export const trHomeTexts = {
   homeCategoryKids: 'Çocuk',
   homeCategoryBeauty: 'Güzellik',
   homeMarketplaceCtaEyebrow: 'Selorya için hazır mısın?',
-  homeMarketplaceCtaTitle: 'Daha güvenli hissettiren alış ve satış deneyimi.',
-  homeMarketplaceCtaDescription: 'Güncel ilanları keşfet veya ilk ürününü yayınla.',
+  homeMarketplaceCtaTitle: 'Özel olanı bul. İyi ürünlere yeni bir yuva ver.',
+  homeMarketplaceCtaDescription: 'Güncel ilanları keşfet veya ilk ürününü birkaç adımda yayınla.',
   homeMarketplaceCtaBuy: 'Ürünleri keşfet',
   homeMarketplaceCtaSell: 'Ürün sat',
 } as const;
