@@ -42,7 +42,8 @@
             <div class="user-menu" data-user-dropdown>
               <button
                 type="button"
-                class="app-button app-button--checkout user-menu__trigger topbar__control"
+                class="app-button app-button--checkout app-dropdown-trigger user-menu__trigger topbar__control"
+                [class.app-dropdown-trigger--open]="isUserMenuOpen()"
                 (click)="toggleUserMenu()"
                 [attr.aria-label]="'userMenuLabel' | translate"
                 [attr.aria-expanded]="isUserMenuOpen()"

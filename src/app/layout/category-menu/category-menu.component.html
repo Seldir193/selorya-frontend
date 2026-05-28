@@ -1,7 +1,8 @@
 <div class="category-menu" data-category-menu>
   <button
     type="button"
-    class="app-button app-button--checkout category-menu__trigger"
+    class="app-button app-button--checkout app-dropdown-trigger category-menu__trigger"
+    [class.app-dropdown-trigger--open]="isOpen()"
     (click)="toggleMenu()"
     [attr.aria-expanded]="isOpen()"
     [attr.aria-label]="'categoryMenuLabel' | translate"

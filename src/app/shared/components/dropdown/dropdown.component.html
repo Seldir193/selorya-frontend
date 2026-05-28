@@ -8,7 +8,8 @@
 >
   <button
     type="button"
-    class="app-button app-button--checkout app-dropdown__trigger dropdown__trigger"
+    class="app-button app-button--checkout app-dropdown-trigger app-dropdown__trigger dropdown__trigger"
+    [class.app-dropdown-trigger--open]="isOpen()"
     [disabled]="disabled()"
     [attr.aria-expanded]="isOpen()"
     [attr.aria-label]="ariaLabel()"
