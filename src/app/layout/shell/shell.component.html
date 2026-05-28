@@ -84,15 +84,30 @@
                   <div class="user-menu__group">
                     <p class="user-menu__group-title">{{ 'userMenuAccountGroup' | translate }}</p>
 
-                    <a routerLink="/profile" class="user-menu__item" (click)="closeUserMenu()">
+                    <a
+                      routerLink="/profile"
+                      class="user-menu__item"
+                      (click)="closeUserMenu()"
+                      [class.user-menu__item--active]="isCurrentRoute('/profile')"
+                    >
                       {{ 'navProfile' | translate }}
                     </a>
 
-                    <a routerLink="/settings" class="user-menu__item" (click)="closeUserMenu()">
+                    <a
+                      routerLink="/settings"
+                      class="user-menu__item"
+                      (click)="closeUserMenu()"
+                      [class.user-menu__item--active]="isCurrentRoute('/settings')"
+                    >
                       {{ 'navSettings' | translate }}
                     </a>
 
-                    <a routerLink="/security" class="user-menu__item" (click)="closeUserMenu()">
+                    <a
+                      routerLink="/security"
+                      class="user-menu__item"
+                      (click)="closeUserMenu()"
+                      [class.user-menu__item--active]="isCurrentRoute('/security')"
+                    >
                       {{ 'navSecurity' | translate }}
                     </a>
                   </div>
@@ -100,11 +115,21 @@
                   <div class="user-menu__group">
                     <p class="user-menu__group-title">{{ 'userMenuActivityGroup' | translate }}</p>
 
-                    <a routerLink="/orders" class="user-menu__item" (click)="closeUserMenu()">
+                    <a
+                      routerLink="/orders"
+                      class="user-menu__item"
+                      (click)="closeUserMenu()"
+                      [class.user-menu__item--active]="isCurrentRoute('/orders')"
+                    >
                       {{ 'navOrders' | translate }}
                     </a>
 
-                    <a routerLink="/documents" class="user-menu__item" (click)="closeUserMenu()">
+                    <a
+                      routerLink="/documents"
+                      class="user-menu__item"
+                      (click)="closeUserMenu()"
+                      [class.user-menu__item--active]="isCurrentRoute('/documents')"
+                    >
                       {{ 'navDocuments' | translate }}
                     </a>
                   </div>
@@ -112,11 +137,21 @@
                   <div class="user-menu__group">
                     <p class="user-menu__group-title">{{ 'userMenuCommerceGroup' | translate }}</p>
 
-                    <a routerLink="/payments" class="user-menu__item" (click)="closeUserMenu()">
+                    <a
+                      routerLink="/payments"
+                      class="user-menu__item"
+                      (click)="closeUserMenu()"
+                      [class.user-menu__item--active]="isCurrentRoute('/payments')"
+                    >
                       {{ 'navPayments' | translate }}
                     </a>
 
-                    <a routerLink="/shipping" class="user-menu__item" (click)="closeUserMenu()">
+                    <a
+                      routerLink="/shipping"
+                      class="user-menu__item"
+                      (click)="closeUserMenu()"
+                      [class.user-menu__item--active]="isCurrentRoute('/shipping')"
+                    >
                       {{ 'navShipping' | translate }}
                     </a>
                   </div>

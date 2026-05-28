@@ -72,6 +72,10 @@ export class ShellComponent {
     return path === '/' || path === '/listings' || path.startsWith('/categories');
   }
 
+  isCurrentRoute(path: string): boolean {
+    return this.currentUrl().split('?')[0] === path;
+  }
+
   toggleUserMenu(): void {
     this.isUserMenuOpen.update((isOpen) => !isOpen);
   }

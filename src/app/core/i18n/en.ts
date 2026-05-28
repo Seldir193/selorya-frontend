@@ -9,6 +9,7 @@ import { enHomeTexts } from './en/home.en';
 import { enFooterTexts } from './en/footer.en';
 import { enProfileTexts } from './en/profile.en';
 import { enCategoryMenuTexts } from './en/category.en';
+import { enListingTexts } from './en/listing.en';
 
 export const enTexts = {
   ...enFeedbackTexts,
@@ -22,4 +23,5 @@ export const enTexts = {
   ...enFooterTexts,
   ...enProfileTexts,
   ...enCategoryMenuTexts,
+  ...enListingTexts,
 } as const;

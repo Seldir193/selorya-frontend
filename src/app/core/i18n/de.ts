@@ -9,6 +9,7 @@ import { deHomeTexts } from './de/home.de';
 import { deFooterTexts } from './de/footer.de';
 import { deProfileTexts } from './de/profile.de';
 import { deCategoryMenuTexts } from './de/category.de';
+import { deListingTexts } from './de/listing.de';
 
 export const deTexts = {
   ...deFeedbackTexts,
@@ -22,4 +23,5 @@ export const deTexts = {
   ...deFooterTexts,
   ...deProfileTexts,
   ...deCategoryMenuTexts,
+  ...deListingTexts,
 } as const;

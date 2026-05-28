@@ -1,5 +1,108 @@
 <section class="create-listing-page">
   <div class="page-head">
+    <div>
+      <span class="page-head__eyebrow">Sell on Selorya</span>
+      <h1>Create Listing</h1>
+    </div>
+
+    <p>Add product details, price, condition and images.</p>
+  </div>
+
+  <form [formGroup]="form" (ngSubmit)="submit()" class="listing-form">
+    <div class="listing-form__grid">
+      <app-form-select
+        label="Category"
+        [required]="true"
+        [options]="categoryOptions()"
+        formControlName="category"
+      />
+
+      <label class="form-field">
+        <span>Title*</span>
+        <input formControlName="title" />
+      </label>
+
+      <label class="form-field">
+        <span>Slug*</span>
+        <input formControlName="slug" />
+      </label>
+
+      <label class="form-field">
+        <span>Price*</span>
+        <input formControlName="price" />
+      </label>
+
+      <app-form-select
+        [label]="text('listingCondition')"
+        [required]="true"
+        [options]="conditionOptions()"
+        formControlName="condition"
+      />
+
+      <app-form-select
+        [label]="text('listingStatus')"
+        [required]="true"
+        [options]="statusOptions()"
+        formControlName="status"
+      />
+
+      <app-form-select
+        [label]="text('listingCategory')"
+        [required]="true"
+        [options]="categoryOptions()"
+        formControlName="category"
+      />
+
+      <label class="form-field">
+        <span>City*</span>
+        <input formControlName="city" />
+      </label>
+
+      <label class="form-field">
+        <span>Country*</span>
+        <input formControlName="country" />
+      </label>
+    </div>
+
+    <label class="form-field form-field--textarea">
+      <span>Description*</span>
+      <textarea rows="5" formControlName="description"></textarea>
+    </label>
+
+    <label class="upload-field">
+      <input type="file" multiple accept="image/*" (change)="onFilesSelected($event)" />
+
+      <span class="upload-field__icon" aria-hidden="true">
+        <img src="assets/icons/buy-sell/upload-image.svg" alt="" />
+      </span>
+
+      <span class="upload-field__content">
+        <strong>Images</strong>
+        <small>Choose one or more product photos.</small>
+      </span>
+    </label>
+
+    @if (selectedFiles().length) {
+      <p class="file-info">{{ selectedFiles().length }} image(s) selected.</p>
+    }
+
+    @if (errorText()) {
+      <p class="error-text">{{ errorText() }}</p>
+    }
+
+    <div class="listing-form__actions">
+      <button
+        class="app-button app-button--primary listing-form__submit"
+        type="submit"
+        [disabled]="isSubmitting()"
+      >
+        {{ isSubmitting() ? 'Creating...' : 'Create Listing' }}
+      </button>
+    </div>
+  </form>
+</section>
+<!-- <section class="create-listing-page">
+  <div class="page-head">
     <h1>Create Listing</h1>
     <p>Publish a premium product on Selorya.</p>
   </div>
@@ -82,4 +185,4 @@
       {{ isSubmitting() ? 'Creating...' : 'Create Listing' }}
     </button>
   </form>
-</section>
+</section> -->
