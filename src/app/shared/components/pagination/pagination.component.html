@@ -18,14 +18,16 @@
     <div class="pagination__center">
       <span class="pagination__page"> {{ page() }} / {{ totalPages() }} </span>
 
-      <app-dropdown
-        [value]="pageSize()"
-        [options]="pageSizeDropdownOptions()"
-        [ariaLabel]="text('paginationPageSize')"
-        minWidth="86px"
-        maxMenuHeight="86px"
-        (valueChange)="changePageSize($event)"
-      />
+      @if (showPageSize()) {
+        <app-dropdown
+          [value]="pageSize()"
+          [options]="pageSizeDropdownOptions()"
+          [ariaLabel]="text('paginationPageSize')"
+          minWidth="86px"
+          maxMenuHeight="86px"
+          (valueChange)="changePageSize($event)"
+        />
+      }
     </div>
 
     <button

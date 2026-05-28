@@ -4,11 +4,12 @@ import { Listing } from '../core/models/listing.model';
 import { I18nService } from '../core/services/i18n.service';
 import { ListingsService } from '../core/services/listings.service';
 import { formatMoney } from '../core/utils/format.utils';
+import { PaginationComponent } from '../shared/components/pagination/pagination.component';
 
 @Component({
   selector: 'app-home-page',
   standalone: true,
-  imports: [RouterLink],
+  imports: [RouterLink, PaginationComponent],
   templateUrl: './home.page.html',
   styleUrl: './home.page.scss',
 })
@@ -19,9 +20,18 @@ export class HomePage {
   readonly listings = signal<Listing[]>(this.listingsService.getCachedListings());
   readonly isLoading = signal(!this.listings().length);
   readonly skeletonListings = [1, 2, 3, 4, 5, 6, 7, 8];
+  readonly page = signal(1);
+  readonly pageSize = signal(8);
+
+  readonly totalItems = computed(() => {
+    return this.listings().length;
+  });
 
   readonly previewListings = computed(() => {
-    return this.listings().slice(0, 8);
+    const start = (this.page() - 1) * this.pageSize();
+    const end = start + this.pageSize();
+
+    return this.listings().slice(start, end);
   });
 
   constructor() {
@@ -44,6 +54,10 @@ export class HomePage {
     return formatMoney(listing.price, 'EUR', this.i18n.current());
   }
 
+  changePage(page: number): void {
+    this.page.set(page);
+  }
+
   private loadListings(): void {
     this.listingsService.list().subscribe({
       next: (listings) => this.setListings(listings),
@@ -52,6 +66,7 @@ export class HomePage {
   }
 
   private setListings(listings: Listing[]): void {
+    this.page.set(1);
     this.listings.set(listings);
     this.stopLoading();
   }
@@ -83,11 +98,18 @@ export class HomePage {
 //   private readonly listingsService = inject(ListingsService);
 //   private readonly i18n = inject(I18nService);
 
-//   readonly listings = signal<Listing[]>([]);
-//   readonly isLoading = signal(true);
+//   readonly listings = signal<Listing[]>(this.listingsService.getCachedListings());
+//   readonly isLoading = signal(!this.listings().length);
+//   readonly skeletonListings = [1, 2, 3, 4, 5, 6, 7, 8];
+//   readonly totalItems = computed(() => {
+//     return this.listings().length;
+//   });
 
 //   readonly previewListings = computed(() => {
+//     // const start = (this.page() - 1) * this.pageSize();
+//     // const end = start + this.pageSize();
 //     return this.listings().slice(0, 8);
+//     // return this.listings().slice(start, end);
 //   });
 
 //   constructor() {
@@ -118,6 +140,7 @@ export class HomePage {
 //   }
 
 //   private setListings(listings: Listing[]): void {
+//     // this.page.set(1);
 //     this.listings.set(listings);
 //     this.stopLoading();
 //   }
