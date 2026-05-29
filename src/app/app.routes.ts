@@ -82,6 +82,7 @@ export const routes: Routes = [
     component: EditListingPage,
     canActivate: [authGuard],
   },
+
   {
     path: 'profile/edit',
     component: ProfileEditPage,
