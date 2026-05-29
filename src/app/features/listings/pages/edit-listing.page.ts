@@ -1,27 +1,34 @@
-import { Component, inject, signal } from '@angular/core';
+//selorya-frontend\src\app\features\listings\pages\edit-listing.page.ts
+// import { Component, inject, signal } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { MatButtonModule } from '@angular/material/button';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatSelectModule } from '@angular/material/select';
+// import { MatButtonModule } from '@angular/material/button';
+// import { MatFormFieldModule } from '@angular/material/form-field';
+// import { MatInputModule } from '@angular/material/input';
+// import { MatSelectModule } from '@angular/material/select';
 import { ListingsService } from '../../../core/services/listings.service';
 import { CategoriesService } from '../../../core/services/categories.service';
 import { ToastService } from '../../../core/services/toast.service';
 import { I18nService } from '../../../core/services/i18n.service';
 import { Category } from '../../../core/models/category.model';
 import { Listing } from '../../../core/models/listing.model';
+import {
+  FormSelectComponent,
+  SelectOption,
+} from '../../../shared/components/form-select/form-select.component';
 
 @Component({
   selector: 'app-edit-listing-page',
   standalone: true,
-  imports: [
-    ReactiveFormsModule,
-    MatButtonModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatSelectModule,
-  ],
+  // imports: [
+  //   ReactiveFormsModule,
+  //   MatButtonModule,
+  //   MatFormFieldModule,
+  //   MatInputModule,
+  //   MatSelectModule,
+  // ],
+  imports: [ReactiveFormsModule, FormSelectComponent],
   templateUrl: './edit-listing.page.html',
   styleUrls: ['./edit-listing.page.scss'],
 })
@@ -41,6 +48,47 @@ export class EditListingPage {
   readonly listing = signal<Listing | null>(null);
 
   readonly selectedFiles = signal<File[]>([]);
+
+  readonly categoryOptions = computed<SelectOption[]>(() => {
+    return this.categories().map((category) => ({
+      value: category.id,
+      label: category.name,
+    }));
+  });
+
+  // readonly conditionOptions = computed<SelectOption[]>(() => [
+  //   { value: 'new', label: this.text('listingConditionNew') },
+  //   { value: 'like_new', label: this.text('listingConditionLikeNew') },
+  //   { value: 'very_good', label: this.text('listingConditionVeryGood') },
+  //   { value: 'good', label: this.text('listingConditionGood') },
+  //   { value: 'acceptable', label: this.text('listingConditionAcceptable') },
+  // ]);
+
+  // readonly statusOptions = computed<SelectOption[]>(() => [
+  //   { value: 'draft', label: this.text('listingStatusDraft') },
+  //   { value: 'published', label: this.text('listingStatusPublished') },
+  //   { value: 'sold', label: this.text('listingStatusSold') },
+  //   { value: 'archived', label: this.text('listingStatusArchived') },
+  // ]);
+
+  conditionOptions(): SelectOption[] {
+    return [
+      { value: 'new', label: this.text('listingConditionNew') },
+      { value: 'like_new', label: this.text('listingConditionLikeNew') },
+      { value: 'very_good', label: this.text('listingConditionVeryGood') },
+      { value: 'good', label: this.text('listingConditionGood') },
+      { value: 'acceptable', label: this.text('listingConditionAcceptable') },
+    ];
+  }
+
+  statusOptions(): SelectOption[] {
+    return [
+      { value: 'draft', label: this.text('listingStatusDraft') },
+      { value: 'published', label: this.text('listingStatusPublished') },
+      { value: 'sold', label: this.text('listingStatusSold') },
+      { value: 'archived', label: this.text('listingStatusArchived') },
+    ];
+  }
 
   readonly form = this.fb.nonNullable.group({
     category: [0, [Validators.required]],
@@ -155,6 +203,10 @@ export class EditListingPage {
         this.toast.error(this.i18n.t('listingUpdateFailed'));
       },
     });
+  }
+
+  text(key: string): string {
+    return this.i18n.t(key);
   }
 
   deleteListing(): void {

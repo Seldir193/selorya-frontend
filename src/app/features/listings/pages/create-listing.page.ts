@@ -39,20 +39,38 @@ export class CreateListingPage {
     }));
   });
 
-  readonly conditionOptions = computed<SelectOption[]>(() => [
-    { value: 'new', label: this.text('listingConditionNew') },
-    { value: 'like_new', label: this.text('listingConditionLikeNew') },
-    { value: 'very_good', label: this.text('listingConditionVeryGood') },
-    { value: 'good', label: this.text('listingConditionGood') },
-    { value: 'acceptable', label: this.text('listingConditionAcceptable') },
-  ]);
+  // readonly conditionOptions = computed<SelectOption[]>(() => [
+  //   { value: 'new', label: this.text('listingConditionNew') },
+  //   { value: 'like_new', label: this.text('listingConditionLikeNew') },
+  //   { value: 'very_good', label: this.text('listingConditionVeryGood') },
+  //   { value: 'good', label: this.text('listingConditionGood') },
+  //   { value: 'acceptable', label: this.text('listingConditionAcceptable') },
+  // ]);
 
-  readonly statusOptions = computed<SelectOption[]>(() => [
-    { value: 'draft', label: this.text('listingStatusDraft') },
-    { value: 'published', label: this.text('listingStatusPublished') },
-    { value: 'sold', label: this.text('listingStatusSold') },
-    { value: 'archived', label: this.text('listingStatusArchived') },
-  ]);
+  // readonly statusOptions = computed<SelectOption[]>(() => [
+  //   { value: 'draft', label: this.text('listingStatusDraft') },
+  //   { value: 'published', label: this.text('listingStatusPublished') },
+  //   { value: 'sold', label: this.text('listingStatusSold') },
+  //   { value: 'archived', label: this.text('listingStatusArchived') },
+  // ]);
+  conditionOptions(): SelectOption[] {
+    return [
+      { value: 'new', label: this.text('listingConditionNew') },
+      { value: 'like_new', label: this.text('listingConditionLikeNew') },
+      { value: 'very_good', label: this.text('listingConditionVeryGood') },
+      { value: 'good', label: this.text('listingConditionGood') },
+      { value: 'acceptable', label: this.text('listingConditionAcceptable') },
+    ];
+  }
+
+  statusOptions(): SelectOption[] {
+    return [
+      { value: 'draft', label: this.text('listingStatusDraft') },
+      { value: 'published', label: this.text('listingStatusPublished') },
+      { value: 'sold', label: this.text('listingStatusSold') },
+      { value: 'archived', label: this.text('listingStatusArchived') },
+    ];
+  }
   readonly form = this.fb.nonNullable.group({
     category: [0, [Validators.required]],
     title: ['', [Validators.required]],
