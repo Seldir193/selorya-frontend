@@ -34,7 +34,7 @@ export const trListingTexts = {
   createListingSubmitting: 'Oluşturuluyor...',
   editListingSaving: 'Kaydediliyor...',
   editListingSaveChanges: 'Değişiklikleri kaydet',
-  editListingMakePrimary: 'Ana görsel yap',
+  editListingMakePrimary: 'Ana görsel',
   editListingDeleteImage: 'Görseli sil',
   editListingDeleteListing: 'İlanı sil',
 
@@ -44,6 +44,7 @@ export const trListingTexts = {
     'En fazla 12 görsel yükleyebilirsin. Ana görsel öne çıkarılır ve ilanın en önemli görselidir.',
   listingMainImage: 'Ana görsel',
   listingMoreImages: 'Diğer görseller',
+  listingMoreImagesCount: 'diğer',
   listingImageLimitReached: 'Bir ilan için en fazla 12 görsel yükleyebilirsin.',
   previousImage: 'Önceki görseli göster',
   nextImage: 'Sonraki görseli göster',

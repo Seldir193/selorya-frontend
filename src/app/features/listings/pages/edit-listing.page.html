@@ -70,6 +70,260 @@
             <h2 id="edit-gallery-title">{{ text('listingImageManagerTitle') }}</h2>
           </div>
 
+          <span class="edit-gallery__counter" [class.is-over-limit]="isImageLimitExceeded()">
+            {{ imageCount() }} / {{ maxListingImages }}
+          </span>
+        </div>
+
+        <p class="edit-gallery__hint">{{ text('listingImageManagerHint') }}</p>
+
+        <div class="edit-gallery__layout">
+          <article class="edit-gallery__hero">
+            <button
+              class="edit-gallery__hero-preview"
+              type="button"
+              (click)="openImagePreview(primaryImage()!.id)"
+            >
+              <img
+                width="520"
+                height="640"
+                [src]="primaryImage()!.image_url"
+                [alt]="primaryImage()!.alt_text || listing()!.title"
+              />
+
+              <span class="edit-gallery__badge">{{ text('listingMainImage') }}</span>
+            </button>
+
+            <button
+              class="icon-button icon-button--danger edit-gallery__delete-icon"
+              type="button"
+              [attr.aria-label]="text('editListingDeleteImage')"
+              [title]="text('editListingDeleteImage')"
+              (click)="deleteImage(primaryImage()!.id)"
+            >
+              <img src="assets/icons/buy-sell/delete.svg" alt="" aria-hidden="true" />
+            </button>
+          </article>
+
+          <div class="edit-gallery__side">
+            <div class="edit-gallery__side-head">
+              <h3>{{ text('listingMoreImages') }}</h3>
+              <span>{{ secondaryImages().length }} {{ text('listingMoreImagesCount') }}</span>
+            </div>
+
+            <div class="edit-gallery__side-scroll scrollbar-thin scrollbar-thin--stable">
+              <div class="edit-gallery__grid">
+                @for (image of secondaryImages(); track image.id) {
+                  <article class="edit-gallery__card">
+                    <button
+                      class="edit-gallery__card-preview"
+                      type="button"
+                      (click)="openImagePreview(image.id)"
+                    >
+                      <img
+                        width="180"
+                        height="180"
+                        [src]="image.image_url"
+                        [alt]="image.alt_text || listing()!.title"
+                      />
+                    </button>
+
+                    <button
+                      class="icon-button icon-button--danger edit-gallery__delete-icon"
+                      type="button"
+                      [attr.aria-label]="text('editListingDeleteImage')"
+                      [title]="text('editListingDeleteImage')"
+                      (click)="deleteImage(image.id)"
+                    >
+                      <img src="assets/icons/buy-sell/delete.svg" alt="" aria-hidden="true" />
+                    </button>
+
+                    <button
+                      class="app-button app-button--secondary edit-gallery__primary-button"
+                      type="button"
+                      (click)="makePrimary(image.id, image.alt_text, image.sort_order)"
+                    >
+                      {{ text('editListingMakePrimary') }}
+                    </button>
+                  </article>
+                }
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    }
+
+    <label class="upload-field" [class.is-disabled]="!canSelectMoreImages()">
+      <input
+        type="file"
+        multiple
+        accept="image/*"
+        [disabled]="!canSelectMoreImages()"
+        (change)="onFilesSelected($event)"
+      />
+
+      <span class="upload-field__icon" aria-hidden="true">
+        <img src="assets/icons/buy-sell/upload-image.svg" alt="" />
+      </span>
+
+      <span class="upload-field__content">
+        <strong>{{ text('listingAddMoreImages') }}</strong>
+        <small>{{ imageCount() }} / {{ maxListingImages }} · {{ text('listingImagesHint') }}</small>
+      </span>
+    </label>
+
+    @if (selectedFiles().length) {
+      <button
+        class="app-button app-button--secondary listing-form__upload"
+        type="button"
+        [disabled]="!canUploadSelectedImages()"
+        (click)="uploadImages()"
+      >
+        {{ text('listingUploadSelectedImages') }}
+      </button>
+    }
+
+    <div class="edit-actions">
+      <button
+        class="app-button app-button--primary listing-form__submit"
+        type="submit"
+        [disabled]="isSubmitting()"
+      >
+        {{ isSubmitting() ? text('editListingSaving') : text('editListingSaveChanges') }}
+      </button>
+
+      <button
+        class="app-button app-button--danger edit-actions__delete"
+        type="button"
+        (click)="deleteListing()"
+      >
+        <img src="assets/icons/buy-sell/delete.svg" alt="" aria-hidden="true" />
+        <span>{{ text('editListingDeleteListing') }}</span>
+      </button>
+    </div>
+  </form>
+
+  @if (isImagePreviewOpen() && activePreviewImage()) {
+    <div class="image-preview" role="dialog" aria-modal="true" (click)="closeImagePreview()">
+      <div class="image-preview__panel" (click)="$event.stopPropagation()">
+        <button
+          class="icon-button icon-button--overlay image-preview__close"
+          type="button"
+          [attr.aria-label]="text('closeImagePreview')"
+          (click)="closeImagePreview()"
+        >
+          <img src="assets/icons/buy-sell/close.svg" alt="" aria-hidden="true" />
+        </button>
+
+        @if (imagePreviewTotal() > 1) {
+          <button
+            class="icon-button icon-button--overlay image-preview__nav image-preview__nav--previous"
+            type="button"
+            [attr.aria-label]="text('previousImage')"
+            (click)="showPreviousImage()"
+          >
+            <img src="assets/icons/buy-sell/chevron-left.svg" alt="" aria-hidden="true" />
+          </button>
+        }
+
+        <img
+          class="image-preview__image"
+          [src]="activePreviewImage()!.image_url"
+          [alt]="activePreviewImage()!.alt_text || listing()!.title"
+        />
+
+        @if (imagePreviewTotal() > 1) {
+          <button
+            class="icon-button icon-button--overlay image-preview__nav image-preview__nav--next"
+            type="button"
+            [attr.aria-label]="text('nextImage')"
+            (click)="showNextImage()"
+          >
+            <img src="assets/icons/buy-sell/chevron-right.svg" alt="" aria-hidden="true" />
+          </button>
+        }
+
+        <span class="image-preview__counter">
+          {{ currentPreviewPosition() }} / {{ imagePreviewTotal() }}
+        </span>
+      </div>
+    </div>
+  }
+</section>
+
+<!-- <section class="create-listing-page edit-listing-page">
+  <div class="page-head">
+    <div>
+      <span class="page-head__eyebrow">{{ text('listingSellEyebrow') }}</span>
+      <h1>{{ text('editListingTitle') }}</h1>
+    </div>
+
+    <p>{{ text('editListingDescription') }}</p>
+  </div>
+
+  <form [formGroup]="form" (ngSubmit)="submit()" class="listing-form">
+    <div class="listing-form__grid">
+      <app-form-select
+        [label]="text('listingCategory')"
+        [required]="true"
+        [options]="categoryOptions()"
+        formControlName="category"
+      />
+
+      <label class="form-field">
+        <span>{{ text('listingTitle') }}*</span>
+        <input formControlName="title" />
+      </label>
+
+      <label class="form-field">
+        <span>{{ text('listingSlug') }}*</span>
+        <input formControlName="slug" />
+      </label>
+
+      <label class="form-field">
+        <span>{{ text('listingPrice') }}*</span>
+        <input formControlName="price" />
+      </label>
+
+      <app-form-select
+        [label]="text('listingCondition')"
+        [required]="true"
+        [options]="conditionOptions()"
+        formControlName="condition"
+      />
+
+      <app-form-select
+        [label]="text('listingStatus')"
+        [required]="true"
+        [options]="statusOptions()"
+        formControlName="status"
+      />
+
+      <label class="form-field">
+        <span>{{ text('listingCity') }}*</span>
+        <input formControlName="city" />
+      </label>
+
+      <label class="form-field">
+        <span>{{ text('listingCountry') }}*</span>
+        <input formControlName="country" />
+      </label>
+    </div>
+
+    <label class="form-field form-field--textarea">
+      <span>{{ text('listingDescription') }}*</span>
+      <textarea rows="5" formControlName="description"></textarea>
+    </label>
+
+    @if (primaryImage()) {
+      <section class="edit-gallery" aria-labelledby="edit-gallery-title">
+        <div class="edit-gallery__head">
+          <div>
+            <span class="edit-gallery__eyebrow">{{ text('listingImagesEyebrow') }}</span>
+            <h2 id="edit-gallery-title">{{ text('listingImageManagerTitle') }}</h2>
+          </div>
+
           <span class="edit-gallery__counter">{{ imageCount() }} / {{ maxListingImages }}</span>
         </div>
 
@@ -248,7 +502,7 @@
       </div>
     </div>
   }
-</section>
+</section> -->
 
 <!-- <section class="create-listing-page edit-listing-page">
   <div class="page-head">
