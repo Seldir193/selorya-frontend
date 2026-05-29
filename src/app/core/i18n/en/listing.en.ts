@@ -37,4 +37,14 @@ export const enListingTexts = {
   editListingMakePrimary: 'Make Primary',
   editListingDeleteImage: 'Delete Image',
   editListingDeleteListing: 'Delete Listing',
+
+  listingImagesEyebrow: 'Images',
+  listingImageManagerTitle: 'Manage images',
+  listingImageManagerHint:
+    'Upload up to 12 images. The main image is shown prominently and is the most important image of your listing.',
+  listingMainImage: 'Main image',
+  listingMoreImages: 'More images',
+  listingImageLimitReached: 'You can upload a maximum of 12 images per listing.',
+  previousImage: 'Show previous image',
+  nextImage: 'Show next image',
 } as const;

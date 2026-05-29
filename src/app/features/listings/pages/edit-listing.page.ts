@@ -13,6 +13,8 @@ import {
   SelectOption,
 } from '../../../shared/components/form-select/form-select.component';
 
+const MAX_LISTING_IMAGES = 12;
+
 @Component({
   selector: 'app-edit-listing-page',
   standalone: true,
@@ -35,9 +37,45 @@ export class EditListingPage {
   readonly isSubmitting = signal(false);
   readonly listing = signal<Listing | null>(null);
   readonly selectedFiles = signal<File[]>([]);
+  readonly maxListingImages = MAX_LISTING_IMAGES;
+  readonly previewImageIndex = signal<number | null>(null);
 
-  readonly previewImageUrl = signal('');
-  readonly previewImageAlt = signal('');
+  readonly listingImages = computed(() => this.listing()?.images ?? []);
+  readonly imageCount = computed(() => this.listingImages().length);
+
+  readonly remainingImageSlots = computed(() => {
+    return Math.max(MAX_LISTING_IMAGES - this.imageCount(), 0);
+  });
+
+  readonly canSelectMoreImages = computed(() => this.remainingImageSlots() > 0);
+
+  readonly canUploadSelectedImages = computed(() => {
+    const selectedCount = this.selectedFiles().length;
+    return selectedCount > 0 && selectedCount <= this.remainingImageSlots();
+  });
+
+  readonly primaryImage = computed(() => {
+    const images = this.listingImages();
+    return images.find((image) => image.is_primary) ?? images[0] ?? null;
+  });
+
+  readonly secondaryImages = computed(() => {
+    const primaryImage = this.primaryImage();
+    return this.listingImages().filter((image) => image.id !== primaryImage?.id);
+  });
+
+  readonly activePreviewImage = computed(() => {
+    const index = this.previewImageIndex();
+    return index === null ? null : (this.listingImages()[index] ?? null);
+  });
+
+  readonly isImagePreviewOpen = computed(() => this.activePreviewImage() !== null);
+  readonly imagePreviewTotal = computed(() => this.listingImages().length);
+
+  readonly currentPreviewPosition = computed(() => {
+    const index = this.previewImageIndex();
+    return index === null ? 0 : index + 1;
+  });
 
   readonly categoryOptions = computed<SelectOption[]>(() => {
     return this.categories().map((category) => ({
@@ -91,26 +129,19 @@ export class EditListingPage {
     });
   }
 
-  private initializeCachedCategories(): void {
-    const cachedCategories = this.categoriesService.getCachedCategories();
-
-    if (!cachedCategories.length) {
-      return;
-    }
-
-    this.categories.set(cachedCategories);
-  }
-
   onFilesSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
-    this.selectedFiles.set(Array.from(input.files ?? []));
+    const files = Array.from(input.files ?? []);
+
+    this.selectedFiles.set(this.getAllowedFiles(files));
+    input.value = '';
   }
 
   uploadImages(): void {
     const listing = this.listing();
     const files = this.selectedFiles();
 
-    if (!listing || !files.length) {
+    if (!listing || !this.canUploadSelectedImages()) {
       return;
     }
 
@@ -150,6 +181,36 @@ export class EditListingPage {
       next: () => this.handleListingDeleted(),
       error: () => this.toast.error(this.i18n.t('listingDeleteFailed')),
     });
+  }
+
+  openImagePreview(imageId: number): void {
+    const index = this.getPreviewImageIndex(imageId);
+
+    if (index >= 0) {
+      this.previewImageIndex.set(index);
+    }
+  }
+
+  closeImagePreview(): void {
+    this.previewImageIndex.set(null);
+  }
+
+  showPreviousImage(): void {
+    this.showImageAtOffset(-1);
+  }
+
+  showNextImage(): void {
+    this.showImageAtOffset(1);
+  }
+
+  private initializeCachedCategories(): void {
+    const cachedCategories = this.categoriesService.getCachedCategories();
+
+    if (!cachedCategories.length) {
+      return;
+    }
+
+    this.categories.set(cachedCategories);
   }
 
   private initializeCachedListing(): void {
@@ -201,6 +262,17 @@ export class EditListingPage {
     });
   }
 
+  private getAllowedFiles(files: File[]): File[] {
+    const remainingSlots = this.remainingImageSlots();
+
+    if (files.length <= remainingSlots) {
+      return files;
+    }
+
+    this.toast.error(this.text('listingImageLimitReached'));
+    return files.slice(0, remainingSlots);
+  }
+
   private uploadSelectedImages(listing: Listing, files: File[]): void {
     files.forEach((file, index) => {
       this.uploadSingleImage(listing, file, index);
@@ -208,9 +280,14 @@ export class EditListingPage {
   }
 
   private uploadSingleImage(listing: Listing, file: File, index: number): void {
-    this.listingsService.uploadImage(listing.slug, file, listing.title, index, false).subscribe({
-      next: () => this.handleImageUploaded(),
-    });
+    const sortOrder = this.imageCount() + index;
+    const isPrimary = this.imageCount() === 0 && index === 0;
+
+    this.listingsService
+      .uploadImage(listing.slug, file, listing.title, sortOrder, isPrimary)
+      .subscribe({
+        next: () => this.handleImageUploaded(),
+      });
   }
 
   private getPrimaryImagePayload(altText: string, sortOrder: number) {
@@ -219,6 +296,21 @@ export class EditListingPage {
       sort_order: sortOrder,
       is_primary: true,
     };
+  }
+
+  private getPreviewImageIndex(imageId: number): number {
+    return this.listingImages().findIndex((image) => image.id === imageId);
+  }
+
+  private showImageAtOffset(offset: number): void {
+    const currentIndex = this.previewImageIndex();
+    const totalImages = this.imagePreviewTotal();
+
+    if (currentIndex === null || !totalImages) {
+      return;
+    }
+
+    this.previewImageIndex.set((currentIndex + offset + totalImages) % totalImages);
   }
 
   private handleImageUploaded(): void {
@@ -259,25 +351,29 @@ export class EditListingPage {
     this.router.navigateByUrl('/my-listings');
   }
 
-  openImagePreview(imageUrl: string, altText: string): void {
-    this.previewImageUrl.set(imageUrl);
-    this.previewImageAlt.set(altText);
-  }
-
-  closeImagePreview(): void {
-    this.previewImageUrl.set('');
-    this.previewImageAlt.set('');
-  }
-
   @HostListener('document:keydown.escape')
   closePreviewOnEscape(): void {
-    if (this.previewImageUrl()) {
+    if (this.isImagePreviewOpen()) {
       this.closeImagePreview();
+    }
+  }
+
+  @HostListener('document:keydown.arrowleft')
+  showPreviousOnArrowLeft(): void {
+    if (this.isImagePreviewOpen()) {
+      this.showPreviousImage();
+    }
+  }
+
+  @HostListener('document:keydown.arrowright')
+  showNextOnArrowRight(): void {
+    if (this.isImagePreviewOpen()) {
+      this.showNextImage();
     }
   }
 }
 
-// import { Component, computed, inject, signal } from '@angular/core';
+// import { Component, HostListener, computed, inject, signal } from '@angular/core';
 // import { ActivatedRoute, Router } from '@angular/router';
 // import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 // import { forkJoin } from 'rxjs';
@@ -315,6 +411,9 @@ export class EditListingPage {
 //   readonly listing = signal<Listing | null>(null);
 //   readonly selectedFiles = signal<File[]>([]);
 
+//   readonly previewImageUrl = signal('');
+//   readonly previewImageAlt = signal('');
+
 //   readonly categoryOptions = computed<SelectOption[]>(() => {
 //     return this.categories().map((category) => ({
 //       value: category.id,
@@ -336,6 +435,8 @@ export class EditListingPage {
 //   });
 
 //   constructor() {
+//     this.initializeCachedCategories();
+//     this.initializeCachedListing();
 //     this.loadInitialData();
 //   }
 
@@ -360,9 +461,19 @@ export class EditListingPage {
 
 //   reloadListing(): void {
 //     this.listingsService.detail(this.slug).subscribe({
-//       next: (listing) => this.handleLoadedListing(listing),
+//       next: (listing) => this.handleReloadedListing(listing),
 //       error: () => this.isLoading.set(false),
 //     });
+//   }
+
+//   private initializeCachedCategories(): void {
+//     const cachedCategories = this.categoriesService.getCachedCategories();
+
+//     if (!cachedCategories.length) {
+//       return;
+//     }
+
+//     this.categories.set(cachedCategories);
 //   }
 
 //   onFilesSelected(event: Event): void {
@@ -416,6 +527,18 @@ export class EditListingPage {
 //     });
 //   }
 
+//   private initializeCachedListing(): void {
+//     const cachedListing = this.listingsService.getCachedListing(this.slug);
+
+//     if (!cachedListing) {
+//       return;
+//     }
+
+//     this.listing.set(cachedListing);
+//     this.patchListingForm(cachedListing);
+//     this.isLoading.set(false);
+//   }
+
 //   private loadInitialData(): void {
 //     forkJoin({
 //       categories: this.categoriesService.list(),
@@ -428,13 +551,14 @@ export class EditListingPage {
 
 //   private handleInitialData(categories: Category[], listing: Listing): void {
 //     this.categories.set(categories);
-//     this.handleLoadedListing(listing);
-//   }
-
-//   private handleLoadedListing(listing: Listing): void {
 //     this.listing.set(listing);
 //     this.patchListingForm(listing);
 //     this.isLoading.set(false);
+//   }
+
+//   private handleReloadedListing(listing: Listing): void {
+//     this.listing.set(listing);
+//     this.patchListingForm(listing);
 //   }
 
 //   private patchListingForm(listing: Listing): void {
@@ -508,5 +632,22 @@ export class EditListingPage {
 //   private handleListingDeleted(): void {
 //     this.toast.success(this.i18n.t('listingDeleted'));
 //     this.router.navigateByUrl('/my-listings');
+//   }
+
+//   openImagePreview(imageUrl: string, altText: string): void {
+//     this.previewImageUrl.set(imageUrl);
+//     this.previewImageAlt.set(altText);
+//   }
+
+//   closeImagePreview(): void {
+//     this.previewImageUrl.set('');
+//     this.previewImageAlt.set('');
+//   }
+
+//   @HostListener('document:keydown.escape')
+//   closePreviewOnEscape(): void {
+//     if (this.previewImageUrl()) {
+//       this.closeImagePreview();
+//     }
 //   }
 // }

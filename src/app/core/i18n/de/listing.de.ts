@@ -37,4 +37,14 @@ export const deListingTexts = {
   editListingMakePrimary: 'Als Hauptbild festlegen',
   editListingDeleteImage: 'Bild löschen',
   editListingDeleteListing: 'Anzeige löschen',
+
+  listingImagesEyebrow: 'Bilder',
+  listingImageManagerTitle: 'Bilder verwalten',
+  listingImageManagerHint:
+    'Bis zu 12 Bilder. Das Hauptbild wird prominent angezeigt und ist das wichtigste Bild deiner Anzeige.',
+  listingMainImage: 'Hauptbild',
+  listingMoreImages: 'Weitere Bilder',
+  listingImageLimitReached: 'Du kannst maximal 12 Bilder pro Anzeige hochladen.',
+  previousImage: 'Vorheriges Bild anzeigen',
+  nextImage: 'Nächstes Bild anzeigen',
 } as const;

@@ -68,3 +68,30 @@
 .icon-button--danger:focus-visible img {
   filter: none;
 }
+
+//
+.icon-button__mask {
+  width: var(--icon-size-sm);
+  height: var(--icon-size-sm);
+  display: block;
+  background: currentColor;
+  mask-position: center;
+  mask-repeat: no-repeat;
+  mask-size: contain;
+}
+
+.icon-button__mask--chevron-left {
+  mask-image: url('/assets/icons/buy-sell/chevron-left.svg');
+}
+
+.icon-button__mask--chevron-right {
+  mask-image: url('/assets/icons/buy-sell/chevron-right.svg');
+}
+
+.icon-button:disabled,
+.icon-button[aria-disabled='true'] {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+  transform: none;
+}

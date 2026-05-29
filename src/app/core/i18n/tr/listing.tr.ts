@@ -37,4 +37,14 @@ export const trListingTexts = {
   editListingMakePrimary: 'Ana görsel yap',
   editListingDeleteImage: 'Görseli sil',
   editListingDeleteListing: 'İlanı sil',
+
+  listingImagesEyebrow: 'Görseller',
+  listingImageManagerTitle: 'Görselleri yönet',
+  listingImageManagerHint:
+    'En fazla 12 görsel yükleyebilirsin. Ana görsel öne çıkarılır ve ilanın en önemli görselidir.',
+  listingMainImage: 'Ana görsel',
+  listingMoreImages: 'Diğer görseller',
+  listingImageLimitReached: 'Bir ilan için en fazla 12 görsel yükleyebilirsin.',
+  previousImage: 'Önceki görseli göster',
+  nextImage: 'Sonraki görseli göster',
 } as const;
