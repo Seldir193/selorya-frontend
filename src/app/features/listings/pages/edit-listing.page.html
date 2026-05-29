@@ -94,7 +94,7 @@
             </button>
 
             <button
-              class="icon-button icon-button--danger edit-gallery__delete-icon"
+              class="icon-button icon-button--image-danger edit-gallery__delete-icon"
               type="button"
               [attr.aria-label]="text('editListingDeleteImage')"
               [title]="text('editListingDeleteImage')"
@@ -128,7 +128,7 @@
                     </button>
 
                     <button
-                      class="icon-button icon-button--danger edit-gallery__delete-icon"
+                      class="icon-button icon-button--image-danger edit-gallery__delete-icon"
                       type="button"
                       [attr.aria-label]="text('editListingDeleteImage')"
                       [title]="text('editListingDeleteImage')"
@@ -228,8 +228,10 @@
 
         <img
           class="image-preview__image"
+          [class.image-preview__image--portrait]="isPreviewImagePortrait()"
           [src]="activePreviewImage()!.image_url"
           [alt]="activePreviewImage()!.alt_text || listing()!.title"
+          (load)="updatePreviewImageShape($event)"
         />
 
         @if (imagePreviewTotal() > 1) {

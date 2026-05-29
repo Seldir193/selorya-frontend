@@ -39,6 +39,7 @@ export class EditListingPage {
   readonly selectedFiles = signal<File[]>([]);
   readonly maxListingImages = MAX_LISTING_IMAGES;
   readonly previewImageIndex = signal<number | null>(null);
+  readonly isPreviewImagePortrait = signal(false);
 
   readonly listingImages = computed(() => this.listing()?.images ?? []);
   readonly imageCount = computed(() => this.listingImages().length);
@@ -184,16 +185,30 @@ export class EditListingPage {
     });
   }
 
+  // openImagePreview(imageId: number): void {
+  //   const index = this.getPreviewImageIndex(imageId);
+
+  //   if (index >= 0) {
+  //     this.previewImageIndex.set(index);
+  //   }
+  // }
+
   openImagePreview(imageId: number): void {
     const index = this.getPreviewImageIndex(imageId);
 
     if (index >= 0) {
+      this.isPreviewImagePortrait.set(false);
       this.previewImageIndex.set(index);
     }
   }
 
+  // closeImagePreview(): void {
+  //   this.previewImageIndex.set(null);
+  // }
+
   closeImagePreview(): void {
     this.previewImageIndex.set(null);
+    this.isPreviewImagePortrait.set(false);
   }
 
   showPreviousImage(): void {
@@ -202,6 +217,13 @@ export class EditListingPage {
 
   showNextImage(): void {
     this.showImageAtOffset(1);
+  }
+
+  updatePreviewImageShape(event: Event): void {
+    const image = event.target as HTMLImageElement;
+    const isPortrait = image.naturalHeight > image.naturalWidth * 1.35;
+
+    this.isPreviewImagePortrait.set(isPortrait);
   }
 
   private initializeCachedCategories(): void {
@@ -303,6 +325,17 @@ export class EditListingPage {
     return this.listingImages().findIndex((image) => image.id === imageId);
   }
 
+  // private showImageAtOffset(offset: number): void {
+  //   const currentIndex = this.previewImageIndex();
+  //   const totalImages = this.imagePreviewTotal();
+
+  //   if (currentIndex === null || !totalImages) {
+  //     return;
+  //   }
+
+  //   this.previewImageIndex.set((currentIndex + offset + totalImages) % totalImages);
+  // }
+
   private showImageAtOffset(offset: number): void {
     const currentIndex = this.previewImageIndex();
     const totalImages = this.imagePreviewTotal();
@@ -311,6 +344,7 @@ export class EditListingPage {
       return;
     }
 
+    this.isPreviewImagePortrait.set(false);
     this.previewImageIndex.set((currentIndex + offset + totalImages) % totalImages);
   }
 
