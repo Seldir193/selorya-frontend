@@ -1,4 +1,4 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, HostListener, computed, inject, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { forkJoin } from 'rxjs';
@@ -35,6 +35,9 @@ export class EditListingPage {
   readonly isSubmitting = signal(false);
   readonly listing = signal<Listing | null>(null);
   readonly selectedFiles = signal<File[]>([]);
+
+  readonly previewImageUrl = signal('');
+  readonly previewImageAlt = signal('');
 
   readonly categoryOptions = computed<SelectOption[]>(() => {
     return this.categories().map((category) => ({
@@ -254,6 +257,23 @@ export class EditListingPage {
   private handleListingDeleted(): void {
     this.toast.success(this.i18n.t('listingDeleted'));
     this.router.navigateByUrl('/my-listings');
+  }
+
+  openImagePreview(imageUrl: string, altText: string): void {
+    this.previewImageUrl.set(imageUrl);
+    this.previewImageAlt.set(altText);
+  }
+
+  closeImagePreview(): void {
+    this.previewImageUrl.set('');
+    this.previewImageAlt.set('');
+  }
+
+  @HostListener('document:keydown.escape')
+  closePreviewOnEscape(): void {
+    if (this.previewImageUrl()) {
+      this.closeImagePreview();
+    }
   }
 }
 

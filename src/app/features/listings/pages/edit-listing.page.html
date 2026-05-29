@@ -66,12 +66,25 @@
       <div class="edit-gallery">
         @for (image of listing()!.images; track image.id) {
           <article class="edit-gallery__item">
-            <img
+            <!-- <img
               width="180"
               height="140"
               [src]="image.image_url"
               [alt]="image.alt_text || listing()!.title"
-            />
+            /> -->
+
+            <button
+              class="edit-gallery__preview"
+              type="button"
+              (click)="openImagePreview(image.image_url, image.alt_text || listing()!.title)"
+            >
+              <img
+                width="180"
+                height="140"
+                [src]="image.image_url"
+                [alt]="image.alt_text || listing()!.title"
+              />
+            </button>
 
             <div class="edit-gallery__actions">
               <button
@@ -82,7 +95,7 @@
                 {{ text('editListingMakePrimary') }}
               </button>
 
-              <button
+              <!-- <button
                 class="edit-gallery__delete-icon"
                 type="button"
                 [attr.aria-label]="text('editListingDeleteImage')"
@@ -90,6 +103,15 @@
                 (click)="deleteImage(image.id)"
               >
                 <img src="assets/icons/buy-sell/delete.svg" alt="" />
+              </button> -->
+              <button
+                class="icon-button icon-button--danger edit-gallery__delete-icon"
+                type="button"
+                [attr.aria-label]="text('editListingDeleteImage')"
+                [title]="text('editListingDeleteImage')"
+                (click)="deleteImage(image.id)"
+              >
+                <img src="assets/icons/buy-sell/delete.svg" alt="" aria-hidden="true" />
               </button>
             </div>
           </article>
@@ -148,4 +170,21 @@
       </button>
     </div>
   </form>
+
+  @if (previewImageUrl()) {
+    <div class="image-preview" role="dialog" aria-modal="true" (click)="closeImagePreview()">
+      <div class="image-preview__panel" (click)="$event.stopPropagation()">
+        <button
+          class="icon-button icon-button--overlay image-preview__close"
+          type="button"
+          [attr.aria-label]="text('closeImagePreview')"
+          (click)="closeImagePreview()"
+        >
+          <img src="assets/icons/buy-sell/close.svg" alt="" aria-hidden="true" />
+        </button>
+
+        <img class="image-preview__image" [src]="previewImageUrl()" [alt]="previewImageAlt()" />
+      </div>
+    </div>
+  }
 </section>
