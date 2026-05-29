@@ -48,4 +48,7 @@ export const deListingTexts = {
   listingImageLimitReached: 'Du kannst maximal 12 Bilder pro Anzeige hochladen.',
   previousImage: 'Vorheriges Bild anzeigen',
   nextImage: 'Nächstes Bild anzeigen',
+
+  listingCreateImagesHint:
+    'Bis zu 12 Bilder. Das erste ausgewählte Bild wird als Hauptbild verwendet.',
 } as const;

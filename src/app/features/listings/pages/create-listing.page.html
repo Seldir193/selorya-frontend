@@ -1,7 +1,146 @@
 <section class="create-listing-page">
   <div class="page-head">
     <div>
-      <span class="page-head__eyebrow">{{ text('listingSellEyebrow') }}</span>
+      <h1>{{ text('createListingTitle') }}</h1>
+    </div>
+
+    <p>{{ text('createListingDescription') }}</p>
+  </div>
+
+  <form [formGroup]="form" (ngSubmit)="submit()" class="listing-form">
+    <div class="listing-form__grid">
+      <app-form-select
+        [label]="text('listingCategory')"
+        [required]="true"
+        [options]="categoryOptions()"
+        formControlName="category"
+      />
+
+      <label class="form-field">
+        <span>{{ text('listingTitle') }}*</span>
+        <input formControlName="title" />
+      </label>
+
+      <label class="form-field">
+        <span>{{ text('listingSlug') }}*</span>
+        <input formControlName="slug" />
+      </label>
+
+      <label class="form-field">
+        <span>{{ text('listingPrice') }}*</span>
+        <input formControlName="price" />
+      </label>
+
+      <app-form-select
+        [label]="text('listingCondition')"
+        [required]="true"
+        [options]="conditionOptions()"
+        formControlName="condition"
+      />
+
+      <app-form-select
+        [label]="text('listingStatus')"
+        [required]="true"
+        [options]="statusOptions()"
+        formControlName="status"
+      />
+
+      <label class="form-field">
+        <span>{{ text('listingCity') }}*</span>
+        <input formControlName="city" />
+      </label>
+
+      <label class="form-field">
+        <span>{{ text('listingCountry') }}*</span>
+        <input formControlName="country" />
+      </label>
+    </div>
+
+    <label class="form-field form-field--textarea">
+      <span>{{ text('listingDescription') }}*</span>
+      <textarea rows="5" formControlName="description"></textarea>
+    </label>
+
+    <section class="create-images" aria-labelledby="create-images-title">
+      <div class="create-images__head">
+        <div>
+          <span class="create-images__eyebrow">{{ text('listingImagesEyebrow') }}</span>
+          <h2 id="create-images-title">{{ text('listingImages') }}</h2>
+        </div>
+
+        <span class="create-images__counter">
+          {{ selectedFiles().length }} / {{ maxListingImages }}
+        </span>
+      </div>
+
+      <p class="create-images__hint">{{ text('listingCreateImagesHint') }}</p>
+
+      @if (selectedImagePreviews().length) {
+        <div class="create-images__preview scrollbar-thin scrollbar-thin--stable">
+          @for (preview of selectedImagePreviews(); track preview.url; let index = $index) {
+            <article class="create-images__card" [class.is-primary]="index === 0">
+              <img width="180" height="140" [src]="preview.url" [alt]="preview.file.name" />
+
+              @if (index === 0) {
+                <span class="create-images__badge">{{ text('listingMainImage') }}</span>
+              }
+
+              <button
+                class="icon-button icon-button--danger create-images__remove"
+                type="button"
+                [attr.aria-label]="text('editListingDeleteImage')"
+                [title]="text('editListingDeleteImage')"
+                (click)="removeSelectedImage(index)"
+              >
+                <img src="assets/icons/buy-sell/delete.svg" alt="" aria-hidden="true" />
+              </button>
+            </article>
+          }
+        </div>
+      }
+
+      <label class="upload-field" [class.is-disabled]="!canSelectMoreImages()">
+        <input
+          type="file"
+          multiple
+          accept="image/*"
+          [disabled]="!canSelectMoreImages()"
+          (change)="onFilesSelected($event)"
+        />
+
+        <span class="upload-field__icon" aria-hidden="true">
+          <img src="assets/icons/buy-sell/upload-image.svg" alt="" />
+        </span>
+
+        <span class="upload-field__content">
+          <strong>{{ text('listingAddMoreImages') }}</strong>
+          <small
+            >{{ selectedFiles().length }} / {{ maxListingImages }} ·
+            {{ text('listingImagesHint') }}</small
+          >
+        </span>
+      </label>
+    </section>
+
+    @if (errorText()) {
+      <p class="error-text">{{ errorText() }}</p>
+    }
+
+    <div class="listing-form__actions">
+      <button
+        class="app-button app-button--primary listing-form__submit"
+        type="submit"
+        [disabled]="isSubmitting()"
+      >
+        {{ isSubmitting() ? text('createListingSubmitting') : text('createListingSubmit') }}
+      </button>
+    </div>
+  </form>
+</section>
+
+<!-- <section class="create-listing-page">
+  <div class="page-head">
+    <div>
       <h1>{{ text('createListingTitle') }}</h1>
     </div>
 
@@ -90,110 +229,6 @@
         [disabled]="isSubmitting()"
       >
         {{ isSubmitting() ? text('createListingSubmitting') : text('createListingSubmit') }}
-      </button>
-    </div>
-  </form>
-</section>
-
-<!-- <section class="create-listing-page">
-  <div class="page-head">
-    <div>
-      <span class="page-head__eyebrow">Sell on Selorya</span>
-      <h1>Create Listing</h1>
-    </div>
-
-    <p>Add product details, price, condition and images.</p>
-  </div>
-
-  <form [formGroup]="form" (ngSubmit)="submit()" class="listing-form">
-    <div class="listing-form__grid">
-      <app-form-select
-        label="Category"
-        [required]="true"
-        [options]="categoryOptions()"
-        formControlName="category"
-      />
-
-      <label class="form-field">
-        <span>Title*</span>
-        <input formControlName="title" />
-      </label>
-
-      <label class="form-field">
-        <span>Slug*</span>
-        <input formControlName="slug" />
-      </label>
-
-      <label class="form-field">
-        <span>Price*</span>
-        <input formControlName="price" />
-      </label>
-
-      <app-form-select
-        [label]="text('listingCondition')"
-        [required]="true"
-        [options]="conditionOptions()"
-        formControlName="condition"
-      />
-
-      <app-form-select
-        [label]="text('listingStatus')"
-        [required]="true"
-        [options]="statusOptions()"
-        formControlName="status"
-      />
-
-      <app-form-select
-        [label]="text('listingCategory')"
-        [required]="true"
-        [options]="categoryOptions()"
-        formControlName="category"
-      />
-
-      <label class="form-field">
-        <span>City*</span>
-        <input formControlName="city" />
-      </label>
-
-      <label class="form-field">
-        <span>Country*</span>
-        <input formControlName="country" />
-      </label>
-    </div>
-
-    <label class="form-field form-field--textarea">
-      <span>Description*</span>
-      <textarea rows="5" formControlName="description"></textarea>
-    </label>
-
-    <label class="upload-field">
-      <input type="file" multiple accept="image/*" (change)="onFilesSelected($event)" />
-
-      <span class="upload-field__icon" aria-hidden="true">
-        <img src="assets/icons/buy-sell/upload-image.svg" alt="" />
-      </span>
-
-      <span class="upload-field__content">
-        <strong>Images</strong>
-        <small>Choose one or more product photos.</small>
-      </span>
-    </label>
-
-    @if (selectedFiles().length) {
-      <p class="file-info">{{ selectedFiles().length }} image(s) selected.</p>
-    }
-
-    @if (errorText()) {
-      <p class="error-text">{{ errorText() }}</p>
-    }
-
-    <div class="listing-form__actions">
-      <button
-        class="app-button app-button--primary listing-form__submit"
-        type="submit"
-        [disabled]="isSubmitting()"
-      >
-        {{ isSubmitting() ? 'Creating...' : 'Create Listing' }}
       </button>
     </div>
   </form>

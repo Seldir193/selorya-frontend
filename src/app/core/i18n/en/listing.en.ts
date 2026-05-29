@@ -48,4 +48,7 @@ export const enListingTexts = {
   listingImageLimitReached: 'You can upload a maximum of 12 images per listing.',
   previousImage: 'Show previous image',
   nextImage: 'Show next image',
+
+  listingCreateImagesHint:
+    'Upload up to 12 images. The first selected image will be used as the main image.',
 } as const;

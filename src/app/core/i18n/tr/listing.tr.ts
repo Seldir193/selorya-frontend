@@ -48,4 +48,7 @@ export const trListingTexts = {
   listingImageLimitReached: 'Bir ilan için en fazla 12 görsel yükleyebilirsin.',
   previousImage: 'Önceki görseli göster',
   nextImage: 'Sonraki görseli göster',
+
+  listingCreateImagesHint:
+    'En fazla 12 görsel yükleyebilirsin. İlk seçilen görsel ana görsel olarak kullanılır.',
 } as const;
