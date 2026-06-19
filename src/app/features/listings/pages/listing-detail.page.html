@@ -8,6 +8,294 @@
   } @else {
     <div class="detail-layout">
       <div class="detail-media">
+        <div class="detail-media__stage">
+          @if (selectedImage()) {
+            <button type="button" class="detail-media__trigger" (click)="openImagePreview()">
+              <img [src]="selectedImage()" [alt]="listing()!.title" />
+
+              @if (imagesCount() > 1) {
+                <span class="detail-media__badge">
+                  {{ selectedImageIndex() + 1 }} / {{ imagesCount() }}
+                </span>
+              }
+            </button>
+          } @else {
+            <div class="detail-media__placeholder">No image</div>
+          }
+        </div>
+
+        @if (listing()!.images.length > 1) {
+          <div class="detail-gallery">
+            @for (image of listing()!.images; track image.id; let imageIndex = $index) {
+              <button
+                type="button"
+                class="detail-gallery__thumb"
+                [class.detail-gallery__thumb--active]="image.image_url === selectedImage()"
+                (click)="selectImage(image.image_url)"
+              >
+                <img [src]="image.image_url" [alt]="image.alt_text || listing()!.title" />
+              </button>
+            }
+          </div>
+        }
+      </div>
+
+      <div class="detail-content">
+        <span class="detail-category">{{ listing()!.category_data.name }}</span>
+        <h1>{{ listing()!.title }}</h1>
+        <p class="detail-location">{{ listing()!.city }}, {{ listing()!.country }}</p>
+
+        <strong class="detail-price">
+          {{ +listing()!.price | currency: 'EUR' }}
+        </strong>
+
+        <p class="detail-description">{{ listing()!.description }}</p>
+
+        <div class="detail-meta">
+          <span>Condition: {{ listing()!.condition }}</span>
+          <span>Seller: {{ listing()!.seller_name }}</span>
+        </div>
+
+        <div class="detail-actions">
+          <button type="button" class="app-button app-button--secondary" (click)="addToFavorites()">
+            Add to Favorites
+          </button>
+
+          <button type="button" class="app-button app-button--checkout" (click)="buyWithStripe()">
+            Buy with Stripe
+          </button>
+
+          <button type="button" class="app-button app-button--checkout" (click)="buyWithPayPal()">
+            Buy with PayPal
+          </button>
+        </div>
+
+        @if (actionText()) {
+          <p class="action-text">{{ actionText() }}</p>
+        }
+      </div>
+    </div>
+
+    @if (isPreviewOpen()) {
+      @if (selectedPreviewImage(); as previewImage) {
+        <div class="image-preview" role="dialog" aria-modal="true" (click)="closeImagePreview()">
+          <div class="image-preview__panel" (click)="$event.stopPropagation()">
+            <button
+              type="button"
+              class="icon-button icon-button--overlay image-preview__close"
+              aria-label="Close image preview"
+              (click)="closeImagePreview()"
+            >
+              <img src="assets/icons/buy-sell/close.svg" alt="" aria-hidden="true" />
+            </button>
+
+            @if (imagesCount() > 1) {
+              <button
+                type="button"
+                class="icon-button icon-button--overlay image-preview__nav image-preview__nav--previous"
+                aria-label="Previous image"
+                (click)="showPreviousImage()"
+              >
+                <img src="assets/icons/buy-sell/chevron-left.svg" alt="" aria-hidden="true" />
+              </button>
+
+              <button
+                type="button"
+                class="icon-button icon-button--overlay image-preview__nav image-preview__nav--next"
+                aria-label="Next image"
+                (click)="showNextImage()"
+              >
+                <img src="assets/icons/buy-sell/chevron-right.svg" alt="" aria-hidden="true" />
+              </button>
+            }
+
+            <img
+              class="image-preview__image"
+              [src]="previewImage.image_url"
+              [alt]="previewImage.alt_text || listing()!.title"
+            />
+
+            <div class="image-preview__footer">
+              <span class="image-preview__counter">
+                {{ selectedImageIndex() + 1 }} / {{ imagesCount() }}
+              </span>
+
+              @if (imagesCount() > 1) {
+                <div class="image-preview__thumbs scrollbar-thin scrollbar-thin--stable">
+                  @for (image of listing()!.images; track image.id; let imageIndex = $index) {
+                    <button
+                      type="button"
+                      class="image-preview__thumb"
+                      [class.image-preview__thumb--active]="imageIndex === selectedImageIndex()"
+                      (click)="selectPreviewImage(imageIndex)"
+                    >
+                      <img [src]="image.image_url" [alt]="image.alt_text || listing()!.title" />
+                    </button>
+                  }
+                </div>
+              }
+            </div>
+          </div>
+        </div>
+      }
+    }
+  }
+</section>
+
+<!-- <section class="listing-detail-page">
+  <a routerLink="/listings" class="back-link">← Back to listings</a>
+
+  @if (isLoading()) {
+    <p class="detail-state">Loading listing...</p>
+  } @else if (!listing()) {
+    <p class="detail-state">Listing not found.</p>
+  } @else {
+    <div class="detail-layout">
+      <div class="detail-media">
+        <div class="detail-media__stage">
+          @if (selectedImage()) {
+            <button type="button" class="detail-media__trigger" (click)="openImagePreview()">
+              <img [src]="selectedImage()" [alt]="listing()!.title" />
+
+              @if (imagesCount() > 1) {
+                <span class="detail-media__badge">
+                  {{ selectedImageIndex() + 1 }} / {{ imagesCount() }}
+                </span>
+              }
+            </button>
+          } @else {
+            <div class="detail-media__placeholder">No image</div>
+          }
+        </div>
+
+        @if (listing()!.images.length > 1) {
+          <div class="detail-gallery">
+            @for (image of listing()!.images; track image.id; let imageIndex = $index) {
+              <button
+                type="button"
+                class="detail-gallery__thumb"
+                [class.detail-gallery__thumb--active]="image.image_url === selectedImage()"
+                (click)="selectImage(image.image_url)"
+              >
+                <img [src]="image.image_url" [alt]="image.alt_text || listing()!.title" />
+              </button>
+            }
+          </div>
+        }
+      </div>
+
+      <div class="detail-content">
+        <span class="detail-category">{{ listing()!.category_data.name }}</span>
+        <h1>{{ listing()!.title }}</h1>
+        <p class="detail-location">{{ listing()!.city }}, {{ listing()!.country }}</p>
+        <strong class="detail-price">
+          {{ +listing()!.price | currency: 'EUR' }}
+        </strong>
+        <p class="detail-description">{{ listing()!.description }}</p>
+
+        <div class="detail-meta">
+          <span>Condition: {{ listing()!.condition }}</span>
+          <span>Seller: {{ listing()!.seller_name }}</span>
+        </div>
+
+        <div class="detail-actions">
+          <button type="button" class="app-button app-button--secondary" (click)="addToFavorites()">
+            Add to Favorites
+          </button>
+
+          <button type="button" class="app-button app-button--checkout" (click)="buyWithStripe()">
+            Buy with Stripe
+          </button>
+
+          <button type="button" class="app-button app-button--checkout" (click)="buyWithPayPal()">
+            Buy with PayPal
+          </button>
+        </div>
+
+        @if (actionText()) {
+          <p class="action-text">{{ actionText() }}</p>
+        }
+      </div>
+    </div>
+
+    @if (isPreviewOpen()) {
+      @if (selectedPreviewImage(); as previewImage) {
+        <div class="detail-preview" (click)="closeImagePreview()">
+          <div class="detail-preview__panel" (click)="$event.stopPropagation()">
+            <button
+              type="button"
+              class="icon-button icon-button--overlay detail-preview__close"
+              aria-label="Close image preview"
+              (click)="closeImagePreview()"
+            >
+              <span></span>
+            </button>
+
+            @if (imagesCount() > 1) {
+              <button
+                type="button"
+                class="icon-button icon-button--overlay detail-preview__nav detail-preview__nav--prev"
+                aria-label="Previous image"
+                (click)="showPreviousImage()"
+              >
+                <span></span>
+              </button>
+
+              <button
+                type="button"
+                class="icon-button icon-button--overlay detail-preview__nav detail-preview__nav--next"
+                aria-label="Next image"
+                (click)="showNextImage()"
+              >
+                <span></span>
+              </button>
+            }
+
+            <div class="detail-preview__image-frame">
+              <img
+                class="detail-preview__image"
+                [src]="previewImage.image_url"
+                [alt]="previewImage.alt_text || listing()!.title"
+              />
+            </div>
+
+            <div class="detail-preview__footer">
+              <span class="detail-preview__counter">
+                {{ selectedImageIndex() + 1 }} / {{ imagesCount() }}
+              </span>
+
+              @if (imagesCount() > 1) {
+                <div class="detail-preview__thumbs scrollbar-thin scrollbar-thin--stable">
+                  @for (image of listing()!.images; track image.id; let imageIndex = $index) {
+                    <button
+                      type="button"
+                      class="detail-preview__thumb"
+                      [class.detail-preview__thumb--active]="imageIndex === selectedImageIndex()"
+                      (click)="selectPreviewImage(imageIndex)"
+                    >
+                      <img [src]="image.image_url" [alt]="image.alt_text || listing()!.title" />
+                    </button>
+                  }
+                </div>
+              }
+            </div>
+          </div>
+        </div>
+      }
+    }
+  }
+</section> -->
+
+<!-- <section class="listing-detail-page">
+  <a routerLink="/listings" class="back-link">← Back to listings</a>
+
+  @if (isLoading()) {
+    <p class="detail-state">Loading listing...</p>
+  } @else if (!listing()) {
+    <p class="detail-state">Listing not found.</p>
+  } @else {
+    <div class="detail-layout">
+      <div class="detail-media">
         @if (selectedImage()) {
           <img [src]="selectedImage()" [alt]="listing()!.title" />
         } @else {
@@ -61,4 +349,4 @@
       </div>
     </div>
   }
-</section>
+</section> -->

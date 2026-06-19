@@ -39,7 +39,7 @@ export class EditListingPage {
   readonly selectedFiles = signal<File[]>([]);
   readonly maxListingImages = MAX_LISTING_IMAGES;
   readonly previewImageIndex = signal<number | null>(null);
-  readonly isPreviewImagePortrait = signal(false);
+  // readonly isPreviewImagePortrait = signal(false);
 
   readonly listingImages = computed(() => this.listing()?.images ?? []);
   readonly imageCount = computed(() => this.listingImages().length);
@@ -197,7 +197,7 @@ export class EditListingPage {
     const index = this.getPreviewImageIndex(imageId);
 
     if (index >= 0) {
-      this.isPreviewImagePortrait.set(false);
+      // this.isPreviewImagePortrait.set(false);
       this.previewImageIndex.set(index);
     }
   }
@@ -208,7 +208,7 @@ export class EditListingPage {
 
   closeImagePreview(): void {
     this.previewImageIndex.set(null);
-    this.isPreviewImagePortrait.set(false);
+    // this.isPreviewImagePortrait.set(false);
   }
 
   showPreviousImage(): void {
@@ -219,12 +219,21 @@ export class EditListingPage {
     this.showImageAtOffset(1);
   }
 
-  updatePreviewImageShape(event: Event): void {
-    const image = event.target as HTMLImageElement;
-    const isPortrait = image.naturalHeight > image.naturalWidth * 1.35;
+  selectPreviewImage(index: number): void {
+    if (!this.listingImages()[index]) {
+      return;
+    }
 
-    this.isPreviewImagePortrait.set(isPortrait);
+    // this.isPreviewImagePortrait.set(false);
+    this.previewImageIndex.set(index);
   }
+
+  // updatePreviewImageShape(event: Event): void {
+  //   const image = event.target as HTMLImageElement;
+  //   const isPortrait = image.naturalHeight > image.naturalWidth * 1.35;
+
+  //   this.isPreviewImagePortrait.set(isPortrait);
+  // }
 
   private initializeCachedCategories(): void {
     const cachedCategories = this.categoriesService.getCachedCategories();
@@ -344,7 +353,7 @@ export class EditListingPage {
       return;
     }
 
-    this.isPreviewImagePortrait.set(false);
+    // this.isPreviewImagePortrait.set(false);
     this.previewImageIndex.set((currentIndex + offset + totalImages) % totalImages);
   }
 

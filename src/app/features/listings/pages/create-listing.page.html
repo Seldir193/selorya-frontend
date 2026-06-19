@@ -166,10 +166,18 @@
           </button>
         }
 
-        <img
+        <!-- <img
           class="image-preview__image"
           [src]="activeSelectedPreview()!.url"
           [alt]="activeSelectedPreview()!.file.name"
+        /> -->
+
+        <img
+          class="image-preview__image"
+          [class.image-preview__image--portrait]="isSelectedPreviewPortrait()"
+          [src]="activeSelectedPreview()!.url"
+          [alt]="activeSelectedPreview()!.file.name"
+          (load)="updateSelectedPreviewImageShape($event)"
         />
 
         @if (selectedPreviewTotal() > 1) {

@@ -40,6 +40,7 @@ export class CreateListingPage implements OnDestroy {
   readonly selectedFiles = signal<File[]>([]);
   readonly selectedImagePreviews = signal<SelectedImagePreview[]>([]);
   readonly selectedPreviewIndex = signal<number | null>(null);
+  readonly isSelectedPreviewPortrait = signal(false);
   readonly maxListingImages = MAX_LISTING_IMAGES;
 
   readonly remainingImageSlots = computed(() => {
@@ -130,14 +131,25 @@ export class CreateListingPage implements OnDestroy {
     this.removePreviewAtIndex(index, removedPreview);
   }
 
+  // openSelectedPreview(index: number): void {
+  //   if (this.selectedImagePreviews()[index]) {
+  //     this.selectedPreviewIndex.set(index);
+  //   }
+  // }
+
   openSelectedPreview(index: number): void {
     if (this.selectedImagePreviews()[index]) {
+      this.isSelectedPreviewPortrait.set(false);
       this.selectedPreviewIndex.set(index);
     }
   }
+  // closeSelectedPreview(): void {
+  //   this.selectedPreviewIndex.set(null);
+  // }
 
   closeSelectedPreview(): void {
     this.selectedPreviewIndex.set(null);
+    this.isSelectedPreviewPortrait.set(false);
   }
 
   showPreviousSelectedPreview(): void {
@@ -146,6 +158,13 @@ export class CreateListingPage implements OnDestroy {
 
   showNextSelectedPreview(): void {
     this.showSelectedPreviewAtOffset(1);
+  }
+
+  updateSelectedPreviewImageShape(event: Event): void {
+    const image = event.target as HTMLImageElement;
+    const isPortrait = image.naturalHeight > image.naturalWidth * 1.35;
+
+    this.isSelectedPreviewPortrait.set(isPortrait);
   }
 
   submit(): void {
@@ -237,6 +256,16 @@ export class CreateListingPage implements OnDestroy {
     previews.forEach((preview) => URL.revokeObjectURL(preview.url));
   }
 
+  // private showSelectedPreviewAtOffset(offset: number): void {
+  //   const currentIndex = this.selectedPreviewIndex();
+  //   const totalImages = this.selectedPreviewTotal();
+
+  //   if (currentIndex === null || !totalImages) {
+  //     return;
+  //   }
+
+  //   this.selectedPreviewIndex.set((currentIndex + offset + totalImages) % totalImages);
+  // }
   private showSelectedPreviewAtOffset(offset: number): void {
     const currentIndex = this.selectedPreviewIndex();
     const totalImages = this.selectedPreviewTotal();
@@ -245,6 +274,7 @@ export class CreateListingPage implements OnDestroy {
       return;
     }
 
+    this.isSelectedPreviewPortrait.set(false);
     this.selectedPreviewIndex.set((currentIndex + offset + totalImages) % totalImages);
   }
 

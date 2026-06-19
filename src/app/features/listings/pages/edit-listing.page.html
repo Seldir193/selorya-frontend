@@ -226,12 +226,18 @@
           </button>
         }
 
-        <img
+        <!-- <img
           class="image-preview__image"
           [class.image-preview__image--portrait]="isPreviewImagePortrait()"
           [src]="activePreviewImage()!.image_url"
           [alt]="activePreviewImage()!.alt_text || listing()!.title"
           (load)="updatePreviewImageShape($event)"
+        /> -->
+
+        <img
+          class="image-preview__image"
+          [src]="activePreviewImage()!.image_url"
+          [alt]="activePreviewImage()!.alt_text || listing()!.title"
         />
 
         @if (imagePreviewTotal() > 1) {
@@ -245,9 +251,29 @@
           </button>
         }
 
-        <span class="image-preview__counter">
+        <!-- <span class="image-preview__counter">
           {{ currentPreviewPosition() }} / {{ imagePreviewTotal() }}
-        </span>
+        </span> -->
+        <div class="image-preview__footer">
+          <span class="image-preview__counter">
+            {{ currentPreviewPosition() }} / {{ imagePreviewTotal() }}
+          </span>
+
+          @if (imagePreviewTotal() > 1) {
+            <div class="image-preview__thumbs scrollbar-thin scrollbar-thin--stable">
+              @for (image of listingImages(); track image.id; let imageIndex = $index) {
+                <button
+                  class="image-preview__thumb"
+                  type="button"
+                  [class.image-preview__thumb--active]="imageIndex === previewImageIndex()"
+                  (click)="selectPreviewImage(imageIndex)"
+                >
+                  <img [src]="image.image_url" [alt]="image.alt_text || listing()!.title" />
+                </button>
+              }
+            </div>
+          }
+        </div>
       </div>
     </div>
   }

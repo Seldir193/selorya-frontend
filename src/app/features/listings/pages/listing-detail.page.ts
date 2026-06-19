@@ -1,12 +1,12 @@
-import { Component, inject, signal } from '@angular/core';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { CurrencyPipe } from '@angular/common';
-import { ListingsService } from '../../../core/services/listings.service';
-import { FavoritesService } from '../../../core/services/favorites.service';
-import { OrdersService } from '../../../core/services/orders.service';
+import { Component, HostListener, inject, signal } from '@angular/core';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
-import { ToastService } from '../../../core/services/toast.service';
+import { FavoritesService } from '../../../core/services/favorites.service';
 import { I18nService } from '../../../core/services/i18n.service';
+import { ListingsService } from '../../../core/services/listings.service';
+import { OrdersService } from '../../../core/services/orders.service';
+import { ToastService } from '../../../core/services/toast.service';
 import { Listing } from '../../../core/models/listing.model';
 
 @Component({
@@ -30,6 +30,8 @@ export class ListingDetailPage {
   readonly isLoading = signal(true);
   readonly actionText = signal('');
   readonly selectedImageUrl = signal('');
+  readonly selectedImageIndex = signal(0);
+  readonly isPreviewOpen = signal(false);
 
   constructor() {
     const slug = this.route.snapshot.paramMap.get('slug') ?? '';
@@ -38,16 +40,22 @@ export class ListingDetailPage {
 
   loadListing(slug: string): void {
     this.listingsService.detail(slug).subscribe({
-      next: (listing) => {
-        this.listing.set(listing);
-        this.selectedImageUrl.set(this.primaryImageFrom(listing));
-        this.isLoading.set(false);
-      },
-      error: () => {
-        this.listing.set(null);
-        this.isLoading.set(false);
-      },
+      next: (listing) => this.setLoadedListing(listing),
+      error: () => this.setMissingListing(),
     });
+  }
+
+  private setLoadedListing(listing: Listing): void {
+    const imageUrl = this.primaryImageFrom(listing);
+    this.listing.set(listing);
+    this.selectedImageUrl.set(imageUrl);
+    this.selectedImageIndex.set(this.imageIndexFromUrl(listing, imageUrl));
+    this.isLoading.set(false);
+  }
+
+  private setMissingListing(): void {
+    this.listing.set(null);
+    this.isLoading.set(false);
   }
 
   selectedImage(): string {
@@ -59,12 +67,89 @@ export class ListingDetailPage {
   }
 
   selectImage(imageUrl: string): void {
+    const listing = this.listing();
     this.selectedImageUrl.set(imageUrl);
+    if (listing) {
+      this.selectedImageIndex.set(this.imageIndexFromUrl(listing, imageUrl));
+    }
+  }
+
+  imagesCount(): number {
+    return this.listing()?.images.length ?? 0;
+  }
+
+  selectedPreviewImage() {
+    return this.listing()?.images[this.selectedImageIndex()] ?? null;
+  }
+
+  openImagePreview(index = this.selectedImageIndex()): void {
+    if (!this.imagesCount()) {
+      return;
+    }
+    this.selectPreviewImage(index);
+    this.isPreviewOpen.set(true);
+  }
+
+  closeImagePreview(): void {
+    this.isPreviewOpen.set(false);
+  }
+
+  showNextImage(): void {
+    this.showImageByOffset(1);
+  }
+
+  showPreviousImage(): void {
+    this.showImageByOffset(-1);
+  }
+
+  selectPreviewImage(index: number): void {
+    const listing = this.listing();
+    if (!listing?.images.length) {
+      return;
+    }
+    const nextIndex = this.normalizeImageIndex(index);
+    this.selectedImageIndex.set(nextIndex);
+    this.selectedImageUrl.set(listing.images[nextIndex].image_url);
+  }
+
+  @HostListener('window:keydown', ['$event'])
+  handlePreviewKeyboard(event: KeyboardEvent): void {
+    if (!this.isPreviewOpen()) {
+      return;
+    }
+    this.handlePreviewKey(event.key);
+  }
+
+  private handlePreviewKey(key: string): void {
+    if (key === 'Escape') {
+      this.closeImagePreview();
+    }
+    if (key === 'ArrowRight') {
+      this.showNextImage();
+    }
+    if (key === 'ArrowLeft') {
+      this.showPreviousImage();
+    }
   }
 
   private primaryImageFrom(listing: Listing): string {
     const primary = listing.images.find((image) => image.is_primary);
     return primary?.image_url || listing.images[0]?.image_url || '';
+  }
+
+  private imageIndexFromUrl(listing: Listing, imageUrl: string): number {
+    const index = listing.images.findIndex((image) => image.image_url === imageUrl);
+    return index >= 0 ? index : 0;
+  }
+
+  private showImageByOffset(offset: number): void {
+    const nextIndex = this.selectedImageIndex() + offset;
+    this.selectPreviewImage(nextIndex);
+  }
+
+  private normalizeImageIndex(index: number): number {
+    const count = this.imagesCount();
+    return count ? (index + count) % count : 0;
   }
 
   addToFavorites(): void {
@@ -110,34 +195,45 @@ export class ListingDetailPage {
     }
 
     this.ordersService.create(listing.id).subscribe({
-      next: (order) => {
-        if (provider === 'stripe') {
-          this.ordersService.startStripeCheckout(order.id).subscribe({
-            next: (response) => {
-              window.location.href = response.checkout_url;
-            },
-            error: () => {
-              this.actionText.set(this.i18n.t('stripeStartFailed'));
-              this.toast.error(this.i18n.t('stripeStartFailed'));
-            },
-          });
-          return;
-        }
+      next: (order) => this.startCheckout(provider, order.id),
+      error: () => this.handleOrderCreateError(),
+    });
+  }
 
-        this.ordersService.startPayPalCheckout(order.id).subscribe({
-          next: (response) => {
-            window.location.href = response.approve_url;
-          },
-          error: () => {
-            this.actionText.set(this.i18n.t('paypalStartFailed'));
-            this.toast.error(this.i18n.t('paypalStartFailed'));
-          },
-        });
+  private startCheckout(provider: 'stripe' | 'paypal', orderId: number): void {
+    if (provider === 'stripe') {
+      this.startStripeCheckout(orderId);
+      return;
+    }
+    this.startPayPalCheckout(orderId);
+  }
+
+  private startStripeCheckout(orderId: number): void {
+    this.ordersService.startStripeCheckout(orderId).subscribe({
+      next: (response) => {
+        window.location.href = response.checkout_url;
       },
       error: () => {
-        this.actionText.set(this.i18n.t('orderCreateFailed'));
-        this.toast.error(this.i18n.t('orderCreateFailed'));
+        this.actionText.set(this.i18n.t('stripeStartFailed'));
+        this.toast.error(this.i18n.t('stripeStartFailed'));
       },
     });
+  }
+
+  private startPayPalCheckout(orderId: number): void {
+    this.ordersService.startPayPalCheckout(orderId).subscribe({
+      next: (response) => {
+        window.location.href = response.approve_url;
+      },
+      error: () => {
+        this.actionText.set(this.i18n.t('paypalStartFailed'));
+        this.toast.error(this.i18n.t('paypalStartFailed'));
+      },
+    });
+  }
+
+  private handleOrderCreateError(): void {
+    this.actionText.set(this.i18n.t('orderCreateFailed'));
+    this.toast.error(this.i18n.t('orderCreateFailed'));
   }
 }
