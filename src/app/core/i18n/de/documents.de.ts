@@ -1,0 +1,18 @@
+export const deDocumentsTexts = {
+  documentsTitle: 'Deine Dokumente',
+  documentsIntro: 'Rechnungen, Gutschriften, Stornierungen, Erinnerungen und mehr.',
+  documentsLoading: 'Dokumente werden geladen...',
+  documentsEmpty: 'Keine Dokumente verfügbar.',
+  documentsDownloadPdf: 'PDF herunterladen',
+  documentsDownloading: 'Wird heruntergeladen...',
+  documentsPdfUnavailable: 'PDF noch nicht verfügbar.',
+  documentsDownloadFailed: 'Das Dokument konnte nicht heruntergeladen werden.',
+  documentsTypeInvoice: 'Rechnung',
+  documentsTypeCreditNote: 'Gutschrift',
+  documentsTypeCancellation: 'Stornierung',
+  documentsTypePaymentReminder: 'Zahlungserinnerung',
+  documentsTypeDunningNotice: 'Mahnung',
+  documentsStatusDraft: 'Entwurf',
+  documentsStatusGenerated: 'Erstellt',
+  documentsStatusSent: 'Versendet',
+} as const;

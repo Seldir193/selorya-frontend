@@ -1,0 +1,18 @@
+export const trDocumentsTexts = {
+  documentsTitle: 'Belgeleriniz',
+  documentsIntro: 'Faturalar, alacak dekontları, iptaller, hatırlatmalar ve daha fazlası.',
+  documentsLoading: 'Belgeler yükleniyor...',
+  documentsEmpty: 'Henüz belge mevcut değil.',
+  documentsDownloadPdf: 'PDF indir',
+  documentsDownloading: 'İndiriliyor...',
+  documentsPdfUnavailable: 'PDF henüz hazır değil.',
+  documentsDownloadFailed: 'Belge indirilemedi.',
+  documentsTypeInvoice: 'Fatura',
+  documentsTypeCreditNote: 'Alacak dekontu',
+  documentsTypeCancellation: 'İptal',
+  documentsTypePaymentReminder: 'Ödeme hatırlatması',
+  documentsTypeDunningNotice: 'Ödeme ihtarı',
+  documentsStatusDraft: 'Taslak',
+  documentsStatusGenerated: 'Oluşturuldu',
+  documentsStatusSent: 'Gönderildi',
+} as const;

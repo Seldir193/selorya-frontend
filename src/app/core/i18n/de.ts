@@ -11,6 +11,8 @@ import { deProfileTexts } from './de/profile.de';
 import { deCategoryMenuTexts } from './de/category.de';
 import { deListingTexts } from './de/listing.de';
 
+import { deDocumentsTexts } from './de/documents.de';
+
 export const deTexts = {
   ...deFeedbackTexts,
   ...deHeaderTexts,
@@ -24,4 +26,5 @@ export const deTexts = {
   ...deProfileTexts,
   ...deCategoryMenuTexts,
   ...deListingTexts,
+  ...deDocumentsTexts,
 } as const;

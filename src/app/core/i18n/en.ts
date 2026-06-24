@@ -11,6 +11,8 @@ import { enProfileTexts } from './en/profile.en';
 import { enCategoryMenuTexts } from './en/category.en';
 import { enListingTexts } from './en/listing.en';
 
+import { enDocumentsTexts } from './en/documents.en';
+
 export const enTexts = {
   ...enFeedbackTexts,
   ...enHeaderTexts,
@@ -24,4 +26,5 @@ export const enTexts = {
   ...enProfileTexts,
   ...enCategoryMenuTexts,
   ...enListingTexts,
+  ...enDocumentsTexts,
 } as const;

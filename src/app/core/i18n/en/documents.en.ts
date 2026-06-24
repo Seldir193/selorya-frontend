@@ -1,0 +1,18 @@
+export const enDocumentsTexts = {
+  documentsTitle: 'Your Documents',
+  documentsIntro: 'Invoices, credit notes, cancellations, reminders and more.',
+  documentsLoading: 'Loading documents...',
+  documentsEmpty: 'No documents available.',
+  documentsDownloadPdf: 'Download PDF',
+  documentsDownloading: 'Downloading...',
+  documentsPdfUnavailable: 'PDF is not available yet.',
+  documentsDownloadFailed: 'The document could not be downloaded.',
+  documentsTypeInvoice: 'Invoice',
+  documentsTypeCreditNote: 'Credit note',
+  documentsTypeCancellation: 'Cancellation',
+  documentsTypePaymentReminder: 'Payment reminder',
+  documentsTypeDunningNotice: 'Dunning notice',
+  documentsStatusDraft: 'Draft',
+  documentsStatusGenerated: 'Generated',
+  documentsStatusSent: 'Sent',
+} as const;

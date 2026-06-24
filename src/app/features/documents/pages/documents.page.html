@@ -1,5 +1,60 @@
 <section class="documents-page">
   <div class="page-head">
+    <h1>{{ 'documentsTitle' | translate }}</h1>
+    <p>{{ 'documentsIntro' | translate }}</p>
+  </div>
+
+  @if (isLoading()) {
+    <p class="state-text">{{ 'documentsLoading' | translate }}</p>
+  } @else if (!documents().length) {
+    <p class="state-text">{{ 'documentsEmpty' | translate }}</p>
+  } @else {
+    <div class="documents-list">
+      @for (document of documents(); track document.id) {
+        <article class="document-card">
+          <div>
+            <h2>{{ document.document_number }}</h2>
+            <p>{{ documentTypeKey(document.document_type) | translate }}</p>
+          </div>
+
+          <div class="document-meta">
+            <span>{{ document.issue_date | date: 'mediumDate' }}</span>
+            <span>{{ documentStatusKey(document.status) | translate }}</span>
+          </div>
+
+          <div class="document-actions">
+            <button
+              class="document-download"
+              type="button"
+              [disabled]="!document.file_url || isDownloading(document.id)"
+              [attr.aria-busy]="isDownloading(document.id)"
+              (click)="downloadDocument(document)"
+            >
+              <img class="document-download__icon" [src]="downloadIcon" alt="" />
+
+              <span>
+                {{
+                  isDownloading(document.id)
+                    ? ('documentsDownloading' | translate)
+                    : ('documentsDownloadPdf' | translate)
+                }}
+              </span>
+            </button>
+
+            @if (!document.file_url) {
+              <span class="document-pdf-unavailable">
+                {{ 'documentsPdfUnavailable' | translate }}
+              </span>
+            }
+          </div>
+        </article>
+      }
+    </div>
+  }
+</section>
+
+<!-- <section class="documents-page">
+  <div class="page-head">
     <h1>Your Documents</h1>
     <p>Invoices, credit notes, cancellations, reminders and more.</p>
   </div>
@@ -35,4 +90,4 @@
       }
     </div>
   }
-</section>
+</section> -->
