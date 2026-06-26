@@ -51,4 +51,36 @@ export const deListingTexts = {
 
   listingCreateImagesHint:
     'Bis zu 12 Bilder. Das erste ausgewählte Bild wird als Hauptbild verwendet.',
+
+  myListingsTitle: 'Meine Anzeigen',
+  myListingsDescription: 'Verwalte deine Produkte und deine Verkaufsaktivitäten.',
+  myListingsCreateAction: 'Anzeige erstellen',
+  myListingsTabsLabel: 'Anzeigen nach Status filtern',
+  myListingsTabAll: 'Alle',
+  myListingsSearchLabel: 'Eigene Anzeigen durchsuchen',
+  myListingsSearchPlaceholder: 'Nach Titel, Stadt, Land oder Status suchen',
+  myListingsSortLabel: 'Anzeigen sortieren',
+  myListingsPageSizeLabel: 'Anzahl der Anzeigen pro Seite',
+  myListingsSortRecentlyUpdated: 'Zuletzt aktualisiert',
+  myListingsSortOldestUpdated: 'Älteste Aktualisierung',
+  myListingsSortPriceHighToLow: 'Preis: absteigend',
+  myListingsSortPriceLowToHigh: 'Preis: aufsteigend',
+  myListingsSortTitleAz: 'Titel: A–Z',
+  myListingsSortTitleZa: 'Titel: Z–A',
+  myListingsClearFilters: 'Filter zurücksetzen',
+  myListingsResultsSummary: '{{from}}–{{to}} von {{total}} Anzeigen',
+  myListingsLocationMissing: 'Ort nicht angegeben',
+  myListingsUpdated: 'Aktualisiert',
+  myListingsEditAction: 'Anzeige bearbeiten',
+  myListingsLoadingTitle: 'Anzeigen werden geladen',
+  myListingsEmptyTitle: 'Du hast noch keine Anzeigen',
+  myListingsEmptyDescription: 'Erstelle deine erste Anzeige und beginne, auf Selorya zu verkaufen.',
+  myListingsFilterEmptyTitle: 'Keine passenden Anzeigen gefunden',
+  myListingsFilterEmptyDescription:
+    'Passe deine Suche oder Filter an, um weitere Anzeigen zu sehen.',
+  myListingsErrorTitle: 'Anzeigen konnten nicht geladen werden',
+  myListingsErrorDescription:
+    'Beim Abrufen deiner Anzeigen ist ein Fehler aufgetreten. Bitte versuche es erneut.',
+  myListingsRetryAction: 'Erneut versuchen',
+  myListingsImageFallbackAlt: 'Kein Bild verfügbar',
 } as const;

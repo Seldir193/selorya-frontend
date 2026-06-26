@@ -12,6 +12,7 @@ import { deCategoryMenuTexts } from './de/category.de';
 import { deListingTexts } from './de/listing.de';
 
 import { deDocumentsTexts } from './de/documents.de';
+import { favoritesDeTexts } from './de/favorites.de';
 
 export const deTexts = {
   ...deFeedbackTexts,
@@ -27,4 +28,5 @@ export const deTexts = {
   ...deCategoryMenuTexts,
   ...deListingTexts,
   ...deDocumentsTexts,
+  ...favoritesDeTexts,
 } as const;

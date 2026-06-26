@@ -56,7 +56,7 @@
                   }
                 </span>
 
-                <span class="user-menu__name">{{ authService.user()?.full_name || ' ' }}</span>
+                <span class="user-menu__name">{{ userDisplayName() || ' ' }}</span>
 
                 <span class="chevron-swap">
                   <img
@@ -218,6 +218,7 @@
       @if (showGlobalSearch()) {
         <app-global-search class="topbar__search" />
       }
+
       @if (authService.isAuthenticated()) {
         <nav class="topbar__nav">
           <a routerLink="/favorites">{{ 'navFavorites' | translate }}</a>
@@ -240,21 +241,12 @@
         />
 
         <div class="topbar__auth-slot">
-          @if (!authService.isAuthReady()) {
-            <div class="topbar__auth-placeholder" aria-hidden="true"></div>
-          } @else if (!authService.isAuthenticated()) {
-            <a class="app-button app-button--secondary topbar__control" routerLink="/login">
-              {{ 'authLogin' | translate }}
-            </a>
-
-            <a class="app-button app-button--primary topbar__control" routerLink="/register">
-              {{ 'authRegister' | translate }}
-            </a>
-          } @else {
+          @if (authService.isAuthenticated()) {
             <div class="user-menu" data-user-dropdown>
               <button
                 type="button"
-                class="app-button app-button--checkout user-menu__trigger topbar__control"
+                class="app-button app-button--checkout app-dropdown-trigger user-menu__trigger topbar__control"
+                [class.app-dropdown-trigger--open]="isUserMenuOpen()"
                 (click)="toggleUserMenu()"
                 [attr.aria-label]="'userMenuLabel' | translate"
                 [attr.aria-expanded]="isUserMenuOpen()"
@@ -267,7 +259,7 @@
                   }
                 </span>
 
-                <span class="user-menu__name">{{ authService.user()?.full_name || '' }}</span>
+                <span class="user-menu__name">{{ authService.user()?.full_name || ' ' }}</span>
 
                 <span class="chevron-swap">
                   <img
@@ -296,15 +288,30 @@
                   <div class="user-menu__group">
                     <p class="user-menu__group-title">{{ 'userMenuAccountGroup' | translate }}</p>
 
-                    <a routerLink="/profile" class="user-menu__item" (click)="closeUserMenu()">
+                    <a
+                      routerLink="/profile"
+                      class="user-menu__item"
+                      (click)="closeUserMenu()"
+                      [class.user-menu__item--active]="isCurrentRoute('/profile')"
+                    >
                       {{ 'navProfile' | translate }}
                     </a>
 
-                    <a routerLink="/settings" class="user-menu__item" (click)="closeUserMenu()">
+                    <a
+                      routerLink="/settings"
+                      class="user-menu__item"
+                      (click)="closeUserMenu()"
+                      [class.user-menu__item--active]="isCurrentRoute('/settings')"
+                    >
                       {{ 'navSettings' | translate }}
                     </a>
 
-                    <a routerLink="/security" class="user-menu__item" (click)="closeUserMenu()">
+                    <a
+                      routerLink="/security"
+                      class="user-menu__item"
+                      (click)="closeUserMenu()"
+                      [class.user-menu__item--active]="isCurrentRoute('/security')"
+                    >
                       {{ 'navSecurity' | translate }}
                     </a>
                   </div>
@@ -312,11 +319,21 @@
                   <div class="user-menu__group">
                     <p class="user-menu__group-title">{{ 'userMenuActivityGroup' | translate }}</p>
 
-                    <a routerLink="/orders" class="user-menu__item" (click)="closeUserMenu()">
+                    <a
+                      routerLink="/orders"
+                      class="user-menu__item"
+                      (click)="closeUserMenu()"
+                      [class.user-menu__item--active]="isCurrentRoute('/orders')"
+                    >
                       {{ 'navOrders' | translate }}
                     </a>
 
-                    <a routerLink="/documents" class="user-menu__item" (click)="closeUserMenu()">
+                    <a
+                      routerLink="/documents"
+                      class="user-menu__item"
+                      (click)="closeUserMenu()"
+                      [class.user-menu__item--active]="isCurrentRoute('/documents')"
+                    >
                       {{ 'navDocuments' | translate }}
                     </a>
                   </div>
@@ -324,11 +341,21 @@
                   <div class="user-menu__group">
                     <p class="user-menu__group-title">{{ 'userMenuCommerceGroup' | translate }}</p>
 
-                    <a routerLink="/payments" class="user-menu__item" (click)="closeUserMenu()">
+                    <a
+                      routerLink="/payments"
+                      class="user-menu__item"
+                      (click)="closeUserMenu()"
+                      [class.user-menu__item--active]="isCurrentRoute('/payments')"
+                    >
                       {{ 'navPayments' | translate }}
                     </a>
 
-                    <a routerLink="/shipping" class="user-menu__item" (click)="closeUserMenu()">
+                    <a
+                      routerLink="/shipping"
+                      class="user-menu__item"
+                      (click)="closeUserMenu()"
+                      [class.user-menu__item--active]="isCurrentRoute('/shipping')"
+                    >
                       {{ 'navShipping' | translate }}
                     </a>
                   </div>
@@ -345,6 +372,16 @@
                 </div>
               }
             </div>
+          } @else if (!authService.isAuthReady()) {
+            <div class="topbar__auth-placeholder" aria-hidden="true"></div>
+          } @else {
+            <a class="app-button app-button--secondary topbar__control" routerLink="/login">
+              {{ 'authLogin' | translate }}
+            </a>
+
+            <a class="app-button app-button--primary topbar__control" routerLink="/register">
+              {{ 'authRegister' | translate }}
+            </a>
           }
         </div>
       </div>

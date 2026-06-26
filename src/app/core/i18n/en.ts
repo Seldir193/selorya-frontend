@@ -12,6 +12,7 @@ import { enCategoryMenuTexts } from './en/category.en';
 import { enListingTexts } from './en/listing.en';
 
 import { enDocumentsTexts } from './en/documents.en';
+import { favoritesEnTexts } from './en/favorites.en';
 
 export const enTexts = {
   ...enFeedbackTexts,
@@ -27,4 +28,5 @@ export const enTexts = {
   ...enCategoryMenuTexts,
   ...enListingTexts,
   ...enDocumentsTexts,
+  ...favoritesEnTexts,
 } as const;

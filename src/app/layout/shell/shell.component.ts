@@ -1,4 +1,4 @@
-import { Component, HostListener, ViewChild, inject, signal } from '@angular/core';
+import { Component, HostListener, ViewChild, computed, inject, signal } from '@angular/core';
 import { NavigationEnd, Router, RouterLink, RouterOutlet } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
 import { filter } from 'rxjs';
@@ -35,6 +35,12 @@ export class ShellComponent {
   readonly isUserMenuOpen = signal(false);
   readonly currentUrl = signal(this.router.url);
   readonly isCategoryMenuOpen = signal(false);
+
+  readonly userDisplayName = computed(() => {
+    const user = this.authService.user();
+
+    return user?.seller_profile?.display_name?.trim() || user?.full_name?.trim() || '';
+  });
 
   @ViewChild(CategoryMenuComponent)
   private readonly categoryMenu?: CategoryMenuComponent;
@@ -85,8 +91,7 @@ export class ShellComponent {
   }
 
   userInitials(): string {
-    const fullName = this.authService.user()?.full_name ?? '';
-    const initials = fullName
+    const initials = this.userDisplayName()
       .split(' ')
       .filter(Boolean)
       .slice(0, 2)
@@ -130,8 +135,9 @@ export class ShellComponent {
 //   DropdownOption,
 // } from '../../shared/components/dropdown/dropdown.component';
 // import { GlobalSearchComponent } from '../../shared/components/global-search/global-search.component';
-// import { FooterComponent } from '../footer/footer.component';
 // import { CategoryMenuComponent } from '../category-menu/category-menu.component';
+// import { FooterComponent } from '../footer/footer.component';
+
 // @Component({
 //   selector: 'app-shell',
 //   standalone: true,
@@ -154,10 +160,10 @@ export class ShellComponent {
 
 //   readonly isUserMenuOpen = signal(false);
 //   readonly currentUrl = signal(this.router.url);
+//   readonly isCategoryMenuOpen = signal(false);
+
 //   @ViewChild(CategoryMenuComponent)
 //   private readonly categoryMenu?: CategoryMenuComponent;
-
-//   readonly isCategoryMenuOpen = signal(false);
 
 //   readonly languageOptions: DropdownOption<SeloryaLanguage>[] = [
 //     { value: 'de', label: 'Deutsch', triggerLabel: 'DE' },
@@ -190,6 +196,10 @@ export class ShellComponent {
 //   showGlobalSearch(): boolean {
 //     const path = this.currentUrl().split('?')[0];
 //     return path === '/' || path === '/listings' || path.startsWith('/categories');
+//   }
+
+//   isCurrentRoute(path: string): boolean {
+//     return this.currentUrl().split('?')[0] === path;
 //   }
 
 //   toggleUserMenu(): void {
