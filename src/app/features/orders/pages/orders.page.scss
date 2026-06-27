@@ -1,7 +1,9 @@
 .orders-page {
   max-width: 1120px;
   margin: 0 auto;
-  padding: clamp(16px, 2.6vw, 30px) 24px 56px;
+  // padding: clamp(16px, 2.6vw, 30px) 24px 56px;
+
+  padding: var(--page-padding-top) var(--page-padding-inline) var(--page-padding-bottom);
 }
 
 .orders-page__head {

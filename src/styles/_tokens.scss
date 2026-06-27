@@ -42,6 +42,10 @@
   --icon-size-sm: 16px;
   --icon-size-md: 20px;
   --icon-size-lg: 24px;
+
+  --page-padding-top: clamp(16px, 2.6vw, 30px);
+  --page-padding-inline: 24px;
+  --page-padding-bottom: 56px;
 }
 
 // :root {

@@ -1,7 +1,9 @@
 .listings-page {
   max-width: 1280px;
   margin: 0 auto;
-  padding: 32px 24px 56px;
+  // padding: 32px 24px 56px;
+
+  padding: var(--page-padding-top) var(--page-padding-inline) var(--page-padding-bottom);
 }
 
 .listings-head h1 {
@@ -166,7 +168,7 @@
   font-size: 0.98rem;
   line-height: 1.25;
   -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
+  // -webkit-line-clamp: 2;
 }
 
 .listing-card__price {

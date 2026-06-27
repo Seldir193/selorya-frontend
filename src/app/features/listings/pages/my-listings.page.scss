@@ -1,7 +1,9 @@
 .my-listings-page {
-  max-width: 1120px;
+  max-width: 1280px;
   margin: 0 auto;
-  padding: clamp(16px, 2.6vw, 30px) 24px 56px;
+  // padding: clamp(16px, 2.6vw, 30px) 24px 56px;
+
+  padding: var(--page-padding-top) var(--page-padding-inline) var(--page-padding-bottom);
 }
 
 .my-listings-page__head {
@@ -30,7 +32,7 @@
     minmax(174px, max-content)
     minmax(208px, max-content)
     auto;
-  margin-bottom: 0;
+  margin-bottom: 14px;
 }
 
 .listing-toolbar__control {
@@ -41,12 +43,12 @@
   min-width: 142px;
 }
 
-.my-listings-results {
-  margin: 12px 0 12px;
-  color: var(--color-text-soft);
-  font-size: 0.8rem;
-  font-weight: 800;
-}
+// .my-listings-results {
+//   margin: 12px 0 12px;
+//   color: var(--color-text-soft);
+//   font-size: 0.8rem;
+//   font-weight: 800;
+// }
 
 .listing-grid,
 .listing-skeleton-grid {
