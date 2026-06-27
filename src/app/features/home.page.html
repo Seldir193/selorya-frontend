@@ -73,7 +73,7 @@
         @for (listing of previewListings(); track listing.id) {
           <a class="home-listing-card" [routerLink]="['/listings', listing.slug]">
             <div class="home-listing-card__image">
-              <img [src]="listingImage(listing)" [alt]="listingAlt(listing)" />
+              <img [src]="listingImage(listing)" [alt]="listingAlt(listing)" loading="lazy" />
             </div>
 
             <div class="home-listing-card__body">
@@ -298,5 +298,98 @@
       />
     }
   </section>
+
+  <section class="home-trust">
+    <div class="home-section-head">
+      <span>{{ text('homeTrustEyebrow') }}</span>
+      <h2>{{ text('homeTrustTitle') }}</h2>
+      <p>{{ text('homeTrustDescription') }}</p>
+    </div>
+
+    <div class="home-trust__grid">
+      <article class="home-trust-card">
+        <div class="home-trust-card__icon" aria-hidden="true">
+          <img src="assets/icons/home/shield-check.svg" alt="" />
+        </div>
+
+        <h3>{{ text('homeTrustSafeTitle') }}</h3>
+        <p>{{ text('homeTrustSafeDescription') }}</p>
+      </article>
+
+      <article class="home-trust-card">
+        <div class="home-trust-card__icon" aria-hidden="true">
+          <img src="assets/icons/home/document-overview.svg" alt="" />
+        </div>
+
+        <h3>{{ text('homeTrustOrdersTitle') }}</h3>
+        <p>{{ text('homeTrustOrdersDescription') }}</p>
+      </article>
+
+      <article class="home-trust-card">
+        <div class="home-trust-card__icon" aria-hidden="true">
+          <img src="assets/icons/home/sell-bag.svg" alt="" />
+        </div>
+
+        <h3>{{ text('homeTrustSellTitle') }}</h3>
+        <p>{{ text('homeTrustSellDescription') }}</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="home-categories">
+    <div class="home-section-head home-section-head--split">
+      <div>
+        <span>{{ text('homeCategoriesEyebrow') }}</span>
+        <h2>{{ text('homeCategoriesTitle') }}</h2>
+      </div>
+
+      <a routerLink="/listings" class="app-button app-button--secondary">
+        {{ text('homeCategoriesAction') }}
+      </a>
+    </div>
+
+    <div class="home-categories__grid">
+      <a routerLink="/listings" class="home-category-card">
+        <span>{{ text('homeCategoryFashion') }}</span>
+      </a>
+
+      <a routerLink="/listings" class="home-category-card">
+        <span>{{ text('homeCategoryElectronics') }}</span>
+      </a>
+
+      <a routerLink="/listings" class="home-category-card">
+        <span>{{ text('homeCategoryHome') }}</span>
+      </a>
+
+      <a routerLink="/listings" class="home-category-card">
+        <span>{{ text('homeCategorySport') }}</span>
+      </a>
+
+      <a routerLink="/listings" class="home-category-card">
+        <span>{{ text('homeCategoryKids') }}</span>
+      </a>
+
+      <a routerLink="/listings" class="home-category-card">
+        <span>{{ text('homeCategoryBeauty') }}</span>
+      </a>
+    </div>
+  </section>
+
+  <section class="home-marketplace-cta">
+    <div>
+      <span>{{ text('homeMarketplaceCtaEyebrow') }}</span>
+      <h2>{{ text('homeMarketplaceCtaTitle') }}</h2>
+      <p>{{ text('homeMarketplaceCtaDescription') }}</p>
+    </div>
+
+    <div class="home-marketplace-cta__actions">
+      <a routerLink="/listings" class="app-button app-button--primary">
+        {{ text('homeMarketplaceCtaBuy') }}
+      </a>
+
+      <a routerLink="/sell/create" class="app-button app-button--secondary">
+        {{ text('homeMarketplaceCtaSell') }}
+      </a>
+    </div>
+  </section>
 </section> -->
-<!-- </section> -->

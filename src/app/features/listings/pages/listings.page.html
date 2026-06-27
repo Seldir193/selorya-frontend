@@ -66,6 +66,125 @@
         <article class="listing-card">
           <a class="listing-card__link" [routerLink]="['/listings', listing.slug]">
             <div class="listing-card__media">
+              @if (hasListingImage(listing)) {
+                <img
+                  [src]="primaryImage(listing)"
+                  [alt]="listing.title"
+                  loading="lazy"
+                  (error)="onImageError(listing.id)"
+                />
+              } @else {
+                <div class="listing-card__placeholder" role="img" [attr.aria-label]="listing.title">
+                  <img [src]="listingPlaceholderIconSrc" alt="" aria-hidden="true" />
+                </div>
+              }
+            </div>
+
+            <div class="listing-card__body">
+              <span class="listing-card__category">
+                {{ listing.category_data.name }}
+              </span>
+
+              <h2>{{ listing.title }}</h2>
+
+              <strong class="listing-card__price">
+                {{ +listing.price | currency: 'EUR' : 'symbol' : '1.2-2' }}
+              </strong>
+
+              @if (locationLabel(listing)) {
+                <p class="listing-card__location">
+                  <img [src]="listingLocationIconSrc" alt="" aria-hidden="true" />
+                  {{ locationLabel(listing) }}
+                </p>
+              }
+            </div>
+          </a>
+
+          <button
+            type="button"
+            class="favorite-button"
+            [class.is-active]="isFavorite(listing.id)"
+            [attr.aria-pressed]="isFavorite(listing.id)"
+            (click)="toggleFavorite(listing.id)"
+          >
+            <span aria-hidden="true">
+              {{ isFavorite(listing.id) ? '♥' : '♡' }}
+            </span>
+          </button>
+        </article>
+      }
+    </div>
+  }
+</section>
+
+<!-- <section class="listings-page">
+  <div class="listings-head">
+    <div>
+      <h1>Discover Listings</h1>
+      <p>Browse premium secondhand products on Selorya.</p>
+    </div>
+  </div>
+
+  <div class="filters-panel">
+    <input
+      class="filter-input"
+      type="text"
+      placeholder="Search listings"
+      [ngModel]="search()"
+      (ngModelChange)="updateSearch($event)"
+    />
+
+    <input
+      class="filter-input"
+      type="text"
+      placeholder="Min price"
+      [ngModel]="minPrice()"
+      (ngModelChange)="updateMinPrice($event)"
+    />
+
+    <input
+      class="filter-input"
+      type="text"
+      placeholder="Max price"
+      [ngModel]="maxPrice()"
+      (ngModelChange)="updateMaxPrice($event)"
+    />
+
+    <button type="button" class="apply-button" (click)="applyFilters()">Apply</button>
+  </div>
+
+  <div class="category-filters">
+    <button
+      type="button"
+      class="filter-chip"
+      [class.is-active]="selectedCategory() === ''"
+      (click)="selectCategory()"
+    >
+      All
+    </button>
+
+    @for (category of categories(); track category.id) {
+      <button
+        type="button"
+        class="filter-chip"
+        [class.is-active]="selectedCategory() === category.slug"
+        (click)="selectCategory(category.slug)"
+      >
+        {{ category.name }}
+      </button>
+    }
+  </div>
+
+  @if (isLoading()) {
+    <p class="listings-state">Loading listings...</p>
+  } @else if (!filteredListings().length) {
+    <p class="listings-state">No listings found.</p>
+  } @else {
+    <div class="listing-grid">
+      @for (listing of filteredListings(); track listing.id) {
+        <article class="listing-card">
+          <a class="listing-card__link" [routerLink]="['/listings', listing.slug]">
+            <div class="listing-card__media">
               @if (primaryImage(listing)) {
                 <img [src]="primaryImage(listing)" [alt]="listing.title" />
               } @else {
@@ -95,4 +214,4 @@
       }
     </div>
   }
-</section>
+</section> -->

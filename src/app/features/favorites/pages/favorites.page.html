@@ -1,16 +1,6 @@
 <section class="favorites-page">
   <header class="favorites-page__head">
-    <div>
-      <p class="favorites-page__eyebrow">
-        {{ 'favorites.eyebrow' | translate }}
-      </p>
-
-      <h1>{{ 'favorites.title' | translate }}</h1>
-
-      <p class="favorites-page__description">
-        {{ 'favorites.description' | translate }}
-      </p>
-    </div>
+    <h1>{{ 'favorites.title' | translate }}</h1>
 
     @if (!isLoading() && !hasLoadError() && favorites().length) {
       <p class="favorites-page__count">
@@ -24,6 +14,7 @@
       @for (item of [1, 2, 3, 4, 5, 6, 7, 8]; track item) {
         <article class="favorites-skeleton__card">
           <div class="favorites-skeleton__image"></div>
+
           <div class="favorites-skeleton__content">
             <span></span>
             <strong></strong>
@@ -80,7 +71,7 @@
         [value]="statusFilter()"
         [options]="statusDropdownOptions()"
         [ariaLabel]="'favorites.statusAria' | translate"
-        [minWidth]="176"
+        minWidth="164px"
         (valueChange)="setStatusFilter($event)"
       />
 
@@ -88,7 +79,194 @@
         [value]="sortOption()"
         [options]="sortDropdownOptions()"
         [ariaLabel]="'favorites.sortAria' | translate"
-        [minWidth]="218"
+        minWidth="184px"
+        align="right"
+        (valueChange)="setSortOption($event)"
+      />
+
+      @if (hasActiveFilters()) {
+        <button type="button" class="filter-clear" (click)="clearFilters()">
+          {{ 'favorites.clearFilters' | translate }}
+        </button>
+      }
+    </div>
+
+    @if (!filteredFavorites().length) {
+      <section class="favorites-state-card favorites-state-card--filtered">
+        <img [src]="emptyIcon" alt="" aria-hidden="true" />
+
+        <div>
+          <h2>{{ 'favorites.filterEmptyTitle' | translate }}</h2>
+          <p>{{ 'favorites.filterEmptyDescription' | translate }}</p>
+        </div>
+
+        <button type="button" class="app-button app-button--secondary" (click)="clearFilters()">
+          {{ 'favorites.resetFilters' | translate }}
+        </button>
+      </section>
+    } @else {
+      <div class="favorites-grid">
+        @for (favorite of paginatedFavorites(); track favorite.id) {
+          <article
+            class="favorite-card"
+            [class.favorite-card--sold]="favorite.listing_data.status === 'sold'"
+            [class.favorite-card--archived]="favorite.listing_data.status === 'archived'"
+            [class.favorite-card--draft]="favorite.listing_data.status === 'draft'"
+          >
+            <a class="favorite-card__link" [routerLink]="['/listings', favorite.listing_data.slug]">
+              <div class="favorite-card__media">
+                <img
+                  class="favorite-card__image"
+                  [src]="imageSource(favorite)"
+                  [alt]="favorite.listing_data.primary_image_alt || favorite.listing_data.title"
+                  loading="lazy"
+                  (error)="handleImageError(favorite.id)"
+                />
+
+                @if (favorite.listing_data.status !== 'published') {
+                  <span class="favorite-card__status">
+                    {{ statusKey(favorite.listing_data.status) | translate }}
+                  </span>
+                }
+              </div>
+
+              <div class="favorite-card__content">
+                <p class="favorite-card__category">
+                  {{ favorite.listing_data.category_name }}
+                </p>
+
+                <h2>{{ favorite.listing_data.title }}</h2>
+
+                <strong class="favorite-card__price">
+                  {{ +favorite.listing_data.price | currency: 'EUR' : 'symbol' : '1.2-2' }}
+                </strong>
+
+                @if (location(favorite)) {
+                  <p class="favorite-card__location">
+                    <img [src]="locationIcon" alt="" aria-hidden="true" />
+                    {{ location(favorite) }}
+                  </p>
+                }
+              </div>
+            </a>
+
+            <button
+              type="button"
+              class="favorite-card__remove"
+              [disabled]="isRemoving(favorite.id)"
+              [attr.aria-label]="
+                'favorites.removeAria' | translate: { title: favorite.listing_data.title }
+              "
+              (click)="removeFavorite(favorite.id)"
+            >
+              <img [src]="removeIcon" alt="" aria-hidden="true" />
+            </button>
+
+            @if (removeErrorFavoriteId() === favorite.id) {
+              <p class="favorite-card__remove-error" role="alert">
+                {{ 'favorites.removeError' | translate }}
+              </p>
+            }
+          </article>
+        }
+      </div>
+
+      <app-pagination
+        [page]="currentPage()"
+        [pageSize]="pageSize()"
+        [totalItems]="filteredFavorites().length"
+        [pageSizeOptions]="pageSizeOptions"
+        [showPageSize]="true"
+        variant="compact"
+        (pageChange)="setPage($event)"
+        (pageSizeChange)="setPageSize($event)"
+      />
+    }
+  }
+</section>
+
+<!-- <section class="favorites-page">
+  <header class="favorites-page__head">
+    <h1>{{ 'favorites.title' | translate }}</h1>
+
+    @if (!isLoading() && !hasLoadError() && favorites().length) {
+      <p class="favorites-page__count">
+        {{ 'favorites.resultCount' | translate: { count: filteredFavorites().length } }}
+      </p>
+    }
+  </header>
+
+  @if (isLoading()) {
+    <div class="favorites-skeleton" aria-hidden="true">
+      @for (item of [1, 2, 3, 4, 5, 6, 7, 8]; track item) {
+        <article class="favorites-skeleton__card">
+          <div class="favorites-skeleton__image"></div>
+
+          <div class="favorites-skeleton__content">
+            <span></span>
+            <strong></strong>
+            <strong></strong>
+            <span></span>
+          </div>
+        </article>
+      }
+    </div>
+
+    <p class="sr-only" role="status">
+      {{ 'favorites.loading' | translate }}
+    </p>
+  } @else if (hasLoadError()) {
+    <section class="favorites-state-card">
+      <img [src]="emptyIcon" alt="" aria-hidden="true" />
+
+      <div>
+        <h2>{{ 'favorites.errorTitle' | translate }}</h2>
+        <p>{{ 'favorites.errorDescription' | translate }}</p>
+      </div>
+
+      <button type="button" class="app-button app-button--secondary" (click)="loadFavorites()">
+        {{ 'favorites.retry' | translate }}
+      </button>
+    </section>
+  } @else if (!favorites().length) {
+    <section class="favorites-state-card">
+      <img [src]="emptyIcon" alt="" aria-hidden="true" />
+
+      <div>
+        <h2>{{ 'favorites.emptyTitle' | translate }}</h2>
+        <p>{{ 'favorites.emptyDescription' | translate }}</p>
+      </div>
+
+      <a routerLink="/listings" class="app-button app-button--primary">
+        {{ 'favorites.exploreListings' | translate }}
+      </a>
+    </section>
+  } @else {
+    <div class="favorites-toolbar filter-toolbar">
+      <label class="filter-search">
+        <span class="sr-only">{{ 'favorites.searchAria' | translate }}</span>
+
+        <input
+          type="search"
+          [value]="searchQuery()"
+          [placeholder]="'favorites.searchPlaceholder' | translate"
+          (input)="setSearchQuery($any($event.target).value)"
+        />
+      </label>
+
+      <app-dropdown
+        [value]="statusFilter()"
+        [options]="statusDropdownOptions()"
+        [ariaLabel]="'favorites.statusAria' | translate"
+        minWidth="164px"
+        (valueChange)="setStatusFilter($event)"
+      />
+
+      <app-dropdown
+        [value]="sortOption()"
+        [options]="sortDropdownOptions()"
+        [ariaLabel]="'favorites.sortAria' | translate"
+        minWidth="184px"
         align="right"
         (valueChange)="setSortOption($event)"
       />
@@ -146,24 +324,23 @@
 
                 <div class="favorite-card__meta">
                   @if (location(favorite)) {
-                    <span>
+                    <span class="favorite-card__meta-item">
                       <img [src]="locationIcon" alt="" aria-hidden="true" />
                       {{ location(favorite) }}
                     </span>
                   }
 
+                  @if (location(favorite) && favorite.listing_data.seller_name) {
+                    <span class="favorite-card__meta-divider" aria-hidden="true">·</span>
+                  }
+
                   @if (favorite.listing_data.seller_name) {
-                    <span>
+                    <span class="favorite-card__meta-item">
                       <img [src]="sellerIcon" alt="" aria-hidden="true" />
                       {{ favorite.listing_data.seller_name }}
                     </span>
                   }
                 </div>
-
-                <p class="favorite-card__saved">
-                  {{ 'favorites.savedOn' | translate }}
-                  {{ favorite.created_at | date: 'mediumDate' }}
-                </p>
               </div>
             </a>
 
@@ -192,47 +369,12 @@
         [page]="currentPage()"
         [pageSize]="pageSize()"
         [totalItems]="filteredFavorites().length"
-        [options]="pageSizeOptions"
+        [pageSizeOptions]="pageSizeOptions"
         [showPageSize]="true"
         variant="compact"
         (pageChange)="setPage($event)"
         (pageSizeChange)="setPageSize($event)"
       />
     }
-  }
-</section>
-
-<!-- <section class="favorites-page">
-  <div class="page-head">
-    <h1>Your Favorites</h1>
-    <p>Saved products you want to revisit later.</p>
-  </div>
-
-  @if (isLoading()) {
-    <p class="state-text">Loading favorites...</p>
-  } @else if (!favorites().length) {
-    <p class="state-text">You have no favorites yet.</p>
-  } @else {
-    <div class="favorites-grid">
-      @for (favorite of favorites(); track favorite.id) {
-        <article class="favorite-card">
-          <a class="favorite-card__link" [routerLink]="['/listings', favorite.listing_data.slug]">
-            <span class="favorite-card__category">
-              {{ favorite.listing_data.category_name }}
-            </span>
-            <h2>{{ favorite.listing_data.title }}</h2>
-            <p>
-              {{ favorite.listing_data.city }},
-              {{ favorite.listing_data.country }}
-            </p>
-            <strong>{{ +favorite.listing_data.price | currency: 'EUR' }}</strong>
-          </a>
-
-          <button type="button" class="remove-button" (click)="removeFavorite(favorite.id)">
-            Remove
-          </button>
-        </article>
-      }
-    </div>
   }
 </section> -->
