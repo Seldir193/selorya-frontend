@@ -157,6 +157,25 @@
                     </a>
                   </div>
 
+                  @if (isPlatformAdmin()) {
+                    <div class="user-menu__group">
+                      <p class="user-menu__group-title">
+                        {{ 'adminCommercialMenuGroup' | translate }}
+                      </p>
+
+                      <a
+                        routerLink="/admin/commercial-sellers"
+                        class="user-menu__item"
+                        (click)="closeUserMenu()"
+                        [class.user-menu__item--active]="
+                          isCurrentRoute('/admin/commercial-sellers')
+                        "
+                      >
+                        {{ 'adminCommercialNav' | translate }}
+                      </a>
+                    </div>
+                  }
+
                   <div class="user-menu__group user-menu__group--danger">
                     <button
                       type="button"

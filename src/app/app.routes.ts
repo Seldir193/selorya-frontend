@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { adminGuard } from './core/guards/admin.guard';
 import { authGuard } from './core/guards/auth.guard';
 import { HomePage } from './features/home.page';
 import { LoginPage } from './features/auth/pages/login.page';
@@ -59,6 +60,16 @@ export const routes: Routes = [
     canActivate: [authGuard],
   },
   {
+    path: 'profile/edit',
+    component: ProfileEditPage,
+    canActivate: [authGuard],
+  },
+  {
+    path: 'profile/commercial',
+    component: CommercialProfilePage,
+    canActivate: [authGuard],
+  },
+  {
     path: 'my-listings',
     component: MyListingsPage,
     canActivate: [authGuard],
@@ -66,6 +77,11 @@ export const routes: Routes = [
   {
     path: 'sell/create',
     component: CreateListingPage,
+    canActivate: [authGuard],
+  },
+  {
+    path: 'sell/:slug/edit',
+    component: EditListingPage,
     canActivate: [authGuard],
   },
   {
@@ -79,19 +95,11 @@ export const routes: Routes = [
     canActivate: [authGuard],
   },
   {
-    path: 'sell/:slug/edit',
-    component: EditListingPage,
-    canActivate: [authGuard],
-  },
-
-  {
-    path: 'profile/edit',
-    component: ProfileEditPage,
-    canActivate: [authGuard],
-  },
-  {
-    path: 'profile/commercial',
-    component: CommercialProfilePage,
-    canActivate: [authGuard],
+    path: 'admin/commercial-sellers',
+    canActivate: [adminGuard],
+    loadComponent: () =>
+      import('./features/admin/pages/admin-commercial-sellers.page').then(
+        (module) => module.AdminCommercialSellersPage,
+      ),
   },
 ];

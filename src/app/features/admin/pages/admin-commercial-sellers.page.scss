@@ -1,0 +1,369 @@
+.admin-commercial-page {
+  width: 100%;
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: var(--page-padding-top) var(--page-padding-inline) var(--page-padding-bottom);
+}
+
+.admin-commercial-page__head {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 24px;
+}
+
+.admin-commercial-page__head > div {
+  display: grid;
+  gap: 9px;
+}
+
+.admin-commercial-page__head p,
+.admin-commercial-page__head h1,
+.admin-commercial-page__head span {
+  margin: 0;
+}
+
+.admin-commercial-page__head p {
+  color: var(--color-text-soft);
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.admin-commercial-page__head h1 {
+  color: var(--color-text);
+  font-size: clamp(1.85rem, 4vw, 2.75rem);
+  letter-spacing: -0.04em;
+}
+
+.admin-commercial-page__head span {
+  max-width: 720px;
+  color: var(--color-text-soft);
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+.admin-commercial-toolbar {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  gap: 12px;
+  margin-bottom: 22px;
+  padding: 16px;
+  border: 1px solid var(--color-border-soft);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-sm);
+}
+
+.admin-commercial-field {
+  display: grid;
+  gap: 7px;
+}
+
+.admin-commercial-field span {
+  color: var(--color-text-soft);
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.admin-commercial-field input,
+.admin-commercial-dialog__field textarea {
+  width: 100%;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-surface);
+  color: var(--color-text);
+  font: inherit;
+  font-weight: 700;
+  outline: none;
+  transition:
+    border-color var(--button-hover-transition),
+    box-shadow var(--button-hover-transition);
+}
+
+.admin-commercial-field input {
+  min-height: var(--button-height);
+  padding: 0 14px;
+}
+
+.admin-commercial-field input:focus,
+.admin-commercial-dialog__field textarea:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px var(--button-focus-ring);
+}
+
+.admin-commercial-toolbar__status {
+  align-self: end;
+}
+
+.admin-commercial-toolbar > .app-button {
+  align-self: end;
+}
+
+.admin-commercial-state {
+  display: grid;
+  justify-items: start;
+  gap: 10px;
+  padding: 30px;
+  border: 1px solid var(--color-border-soft);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-sm);
+}
+
+.admin-commercial-state h2,
+.admin-commercial-state p {
+  margin: 0;
+}
+
+.admin-commercial-state h2 {
+  color: var(--color-primary);
+  font-size: 20px;
+}
+
+.admin-commercial-state p {
+  color: var(--color-text-soft);
+  line-height: 1.6;
+}
+
+.admin-commercial-list {
+  display: grid;
+  gap: 16px;
+}
+
+.admin-commercial-card {
+  display: grid;
+  gap: 20px;
+  padding: 22px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-sm);
+}
+
+.admin-commercial-card__head {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: 18px;
+}
+
+.admin-commercial-card__head > div {
+  display: grid;
+  gap: 5px;
+}
+
+.admin-commercial-card__head p,
+.admin-commercial-card__head h2,
+.admin-commercial-card__head span {
+  margin: 0;
+}
+
+.admin-commercial-card__head p {
+  color: var(--color-text-soft);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.admin-commercial-card__head h2 {
+  color: var(--color-primary);
+  font-size: 22px;
+  letter-spacing: -0.03em;
+}
+
+.admin-commercial-card__head span {
+  color: var(--color-text-muted);
+  font-size: 13px;
+}
+
+.admin-commercial-status--pending {
+  border-color: var(--color-accent);
+  background: var(--color-accent);
+}
+
+.admin-commercial-status--approved {
+  border-color: var(--color-primary);
+  background: var(--color-primary);
+}
+
+.admin-commercial-status--rejected,
+.admin-commercial-status--suspended {
+  border-color: var(--color-danger);
+  background: var(--color-danger);
+}
+
+.admin-commercial-status--not-requested {
+  border-color: var(--color-border);
+  background: var(--color-surface-muted);
+  color: var(--color-primary);
+}
+
+.admin-commercial-card__details {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.admin-commercial-card__section {
+  display: grid;
+  gap: 14px;
+  padding: 16px;
+  border: 1px solid var(--color-border-soft);
+  border-radius: var(--radius-md);
+  background: var(--color-surface-soft);
+}
+
+.admin-commercial-card__section h3 {
+  margin: 0;
+  color: var(--color-primary);
+  font-size: 15px;
+}
+
+.admin-commercial-card__section dl {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  margin: 0;
+}
+
+.admin-commercial-card__section dl div {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+}
+
+.admin-commercial-card__detail-full {
+  grid-column: 1 / -1;
+}
+
+.admin-commercial-card__section dt {
+  color: var(--color-text-muted);
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.admin-commercial-card__section dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+  color: var(--color-text);
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.5;
+}
+
+.admin-commercial-card__reason {
+  display: grid;
+  gap: 5px;
+  padding: 12px;
+  border: 1px solid rgba(200, 63, 73, 0.34);
+  border-radius: var(--radius-sm);
+  background: rgba(200, 63, 73, 0.045);
+  color: var(--color-danger);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.admin-commercial-card__actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.admin-commercial-dialog__subtitle {
+  margin: 0 0 16px;
+  color: var(--color-text-soft);
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.admin-commercial-dialog__seller {
+  display: grid;
+  gap: 4px;
+  margin-bottom: 18px;
+  padding: 14px;
+  border: 1px solid var(--color-border-soft);
+  border-radius: var(--radius-sm);
+  background: var(--color-surface-soft);
+}
+
+.admin-commercial-dialog__seller strong {
+  color: var(--color-primary);
+}
+
+.admin-commercial-dialog__seller span {
+  color: var(--color-text-soft);
+  font-size: 13px;
+}
+
+.admin-commercial-dialog__field {
+  display: grid;
+  gap: 8px;
+}
+
+.admin-commercial-dialog__field > span {
+  color: var(--color-text-soft);
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.admin-commercial-dialog__field textarea {
+  min-height: 130px;
+  padding: 12px;
+  resize: vertical;
+}
+
+.admin-commercial-dialog__field small {
+  color: var(--color-danger);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.admin-commercial-dialog__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 0 24px 24px;
+}
+
+@media (max-width: 860px) {
+  .admin-commercial-toolbar,
+  .admin-commercial-card__details {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-commercial-toolbar__status,
+  .admin-commercial-toolbar > .app-button {
+    align-self: auto;
+  }
+}
+
+@media (max-width: 640px) {
+  .admin-commercial-page__head,
+  .admin-commercial-card__head {
+    display: grid;
+  }
+
+  .admin-commercial-page__head > .app-button,
+  .admin-commercial-toolbar > .app-button,
+  .admin-commercial-card__actions .app-button {
+    width: 100%;
+  }
+
+  .admin-commercial-card__section dl {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-commercial-card__detail-full {
+    grid-column: auto;
+  }
+
+  .admin-commercial-dialog__actions {
+    display: grid;
+    padding: 0 18px 18px;
+  }
+}

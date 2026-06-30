@@ -1,0 +1,261 @@
+<section class="admin-commercial-page">
+  <header class="admin-commercial-page__head">
+    <div>
+      <p>{{ text('adminCommercialEyebrow') }}</p>
+      <h1>{{ text('adminCommercialTitle') }}</h1>
+      <span>{{ text('adminCommercialSubtitle') }}</span>
+    </div>
+
+    <button
+      type="button"
+      class="app-button app-button--secondary"
+      [disabled]="isLoading()"
+      (click)="loadSellers()"
+    >
+      {{ text('adminCommercialReload') }}
+    </button>
+  </header>
+
+  <form class="admin-commercial-toolbar" (submit)="submitSearch($event)">
+    <label class="admin-commercial-field">
+      <span>{{ text('adminCommercialSearchLabel') }}</span>
+
+      <input
+        type="search"
+        [value]="searchQuery()"
+        [placeholder]="text('adminCommercialSearchPlaceholder')"
+        (input)="updateSearchQuery($event)"
+      />
+    </label>
+
+    <app-dropdown
+      class="admin-commercial-toolbar__status"
+      [value]="activeStatus()"
+      [options]="statusOptions()"
+      [ariaLabel]="text('adminCommercialStatusLabel')"
+      minWidth="200px"
+      maxMenuHeight="260px"
+      itemAlign="left"
+      (valueChange)="changeStatus($event)"
+    />
+
+    <button type="submit" class="app-button app-button--primary">
+      {{ text('adminCommercialSearchAction') }}
+    </button>
+  </form>
+
+  @if (isLoading()) {
+    <section class="admin-commercial-state">
+      <h2>{{ text('adminCommercialLoadingTitle') }}</h2>
+      <p>{{ text('adminCommercialLoadingDescription') }}</p>
+    </section>
+  } @else if (hasError()) {
+    <section class="admin-commercial-state">
+      <h2>{{ text('adminCommercialLoadFailedTitle') }}</h2>
+      <p>{{ text('adminCommercialLoadFailedDescription') }}</p>
+
+      <button type="button" class="app-button app-button--primary" (click)="loadSellers()">
+        {{ text('adminCommercialRetry') }}
+      </button>
+    </section>
+  } @else if (!sellers().length) {
+    <section class="admin-commercial-state">
+      <h2>{{ text('adminCommercialEmptyTitle') }}</h2>
+      <p>{{ text('adminCommercialEmptyDescription') }}</p>
+    </section>
+  } @else {
+    <div class="admin-commercial-list">
+      @for (seller of sellers(); track seller.id) {
+        <article class="admin-commercial-card">
+          <header class="admin-commercial-card__head">
+            <div>
+              <p>{{ seller.user_full_name }}</p>
+              <h2>{{ sellerName(seller) }}</h2>
+              <span>{{ seller.user_email }}</span>
+            </div>
+
+            <span
+              class="app-badge admin-commercial-status"
+              [class.admin-commercial-status--pending]="
+                seller.commercial_status === 'pending_review'
+              "
+              [class.admin-commercial-status--approved]="seller.commercial_status === 'approved'"
+              [class.admin-commercial-status--rejected]="seller.commercial_status === 'rejected'"
+              [class.admin-commercial-status--suspended]="seller.commercial_status === 'suspended'"
+              [class.admin-commercial-status--not-requested]="
+                seller.commercial_status === 'not_requested'
+              "
+            >
+              {{ commercialStatusLabel(seller.commercial_status) }}
+            </span>
+          </header>
+
+          <div class="admin-commercial-card__details">
+            <section class="admin-commercial-card__section">
+              <h3>{{ text('adminCommercialBusinessSection') }}</h3>
+
+              <dl>
+                <div>
+                  <dt>{{ text('commercialLegalForm') }}</dt>
+                  <dd>{{ seller.commercial_legal_form }}</dd>
+                </div>
+
+                <div>
+                  <dt>{{ text('commercialRepresentativeName') }}</dt>
+                  <dd>
+                    {{ seller.commercial_representative_name || text('adminCommercialNoValue') }}
+                  </dd>
+                </div>
+
+                <div>
+                  <dt>{{ text('commercialBusinessEmail') }}</dt>
+                  <dd>{{ seller.commercial_email }}</dd>
+                </div>
+
+                <div>
+                  <dt>{{ text('commercialBusinessPhone') }}</dt>
+                  <dd>{{ seller.commercial_phone || text('adminCommercialNoValue') }}</dd>
+                </div>
+
+                <div class="admin-commercial-card__detail-full">
+                  <dt>{{ text('adminCommercialBusinessAddress') }}</dt>
+                  <dd>{{ businessAddress(seller) || text('adminCommercialNoValue') }}</dd>
+                </div>
+
+                <div>
+                  <dt>{{ text('adminCommercialRegistry') }}</dt>
+                  <dd>{{ registryDetails(seller) }}</dd>
+                </div>
+
+                <div>
+                  <dt>{{ text('commercialVatId') }}</dt>
+                  <dd>{{ seller.commercial_vat_id || text('adminCommercialNoValue') }}</dd>
+                </div>
+              </dl>
+            </section>
+
+            <section class="admin-commercial-card__section">
+              <h3>{{ text('adminCommercialReviewSection') }}</h3>
+
+              <dl>
+                <div>
+                  <dt>{{ text('adminCommercialRequestedAt') }}</dt>
+                  <dd>{{ requestedDate(seller) }}</dd>
+                </div>
+
+                <div>
+                  <dt>{{ text('adminCommercialReviewedAt') }}</dt>
+                  <dd>{{ reviewedDate(seller) }}</dd>
+                </div>
+
+                <div class="admin-commercial-card__detail-full">
+                  <dt>{{ text('adminCommercialReviewer') }}</dt>
+                  <dd>{{ reviewerEmail(seller) }}</dd>
+                </div>
+              </dl>
+
+              @if (showRejectionReason(seller)) {
+                <div class="admin-commercial-card__reason">
+                  <strong>{{ text('commercialRejectionReason') }}</strong>
+                  <span>{{ seller.commercial_rejection_reason }}</span>
+                </div>
+              }
+            </section>
+          </div>
+
+          <footer class="admin-commercial-card__actions">
+            @if (isActionAvailable(seller, 'approve')) {
+              <button
+                type="button"
+                class="app-button app-button--primary"
+                (click)="openDecisionDialog(seller, 'approve')"
+              >
+                {{ text('adminCommercialApproveAction') }}
+              </button>
+            }
+
+            @if (isActionAvailable(seller, 'reject')) {
+              <button
+                type="button"
+                class="app-button app-button--secondary"
+                (click)="openDecisionDialog(seller, 'reject')"
+              >
+                {{ text('adminCommercialRejectAction') }}
+              </button>
+            }
+
+            @if (isActionAvailable(seller, 'suspend')) {
+              <button
+                type="button"
+                class="app-button app-button--danger"
+                (click)="openDecisionDialog(seller, 'suspend')"
+              >
+                {{ text('adminCommercialSuspendAction') }}
+              </button>
+            }
+          </footer>
+        </article>
+      }
+    </div>
+  }
+
+  <app-dialog
+    [isOpen]="isDecisionDialogOpen()"
+    [title]="decisionTitle()"
+    [ariaLabel]="decisionTitle()"
+    size="sm"
+    [closeOnBackdrop]="!isActionSubmitting()"
+    (close)="closeDecisionDialog()"
+  >
+    <p dialog-subtitle class="admin-commercial-dialog__subtitle">
+      {{ decisionDescription() }}
+    </p>
+
+    @if (selectedSeller()) {
+      <div class="admin-commercial-dialog__seller">
+        <strong>{{ sellerName(selectedSeller()!) }}</strong>
+        <span>{{ selectedSeller()!.user_email }}</span>
+      </div>
+    }
+
+    @if (requiresDecisionReason()) {
+      <div [formGroup]="decisionForm">
+        <label class="admin-commercial-dialog__field">
+          <span>{{ text('adminCommercialDecisionReason') }}</span>
+
+          <textarea
+            rows="5"
+            formControlName="reason"
+            [placeholder]="text('adminCommercialDecisionReasonPlaceholder')"
+          ></textarea>
+
+          @if (isDecisionReasonInvalid()) {
+            <small>{{ text('adminCommercialDecisionReasonRequired') }}</small>
+          }
+        </label>
+      </div>
+    }
+
+    <footer dialog-actions class="admin-commercial-dialog__actions">
+      <button
+        type="button"
+        class="app-button app-button--secondary"
+        [disabled]="isActionSubmitting()"
+        (click)="closeDecisionDialog()"
+      >
+        {{ text('adminCommercialCancelAction') }}
+      </button>
+
+      <button
+        type="button"
+        class="app-button"
+        [class.app-button--primary]="selectedAction() === 'approve'"
+        [class.app-button--danger]="selectedAction() !== 'approve'"
+        [disabled]="!canConfirmDecision()"
+        (click)="confirmDecision()"
+      >
+        {{ decisionConfirmLabel() }}
+      </button>
+    </footer>
+  </app-dialog>
+</section>

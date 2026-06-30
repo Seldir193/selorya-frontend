@@ -69,4 +69,58 @@ export const deCommercialTexts = {
   commercialReviewFailed: 'Die Prüfung konnte nicht angefordert werden.',
   commercialReviewRequiredFields:
     'Bitte vervollständige alle Pflichtfelder für die gewerbliche Prüfung.',
+
+  adminCommercialMenuGroup: 'Administration',
+  adminCommercialNav: 'Gewerbliche Prüfungen',
+  adminCommercialEyebrow: 'Selorya Administration',
+  adminCommercialTitle: 'Gewerbliche Verkäufer prüfen',
+  adminCommercialSubtitle:
+    'Prüfe Unternehmensdaten und entscheide über die Freigabe gewerblicher Verkäuferprofile.',
+  adminCommercialReload: 'Aktualisieren',
+  adminCommercialSearchLabel: 'Unternehmen oder Konto suchen',
+  adminCommercialSearchPlaceholder: 'Firmenname, Name oder E-Mail',
+  adminCommercialStatusLabel: 'Prüfstatus filtern',
+  adminCommercialSearchAction: 'Suchen',
+  adminCommercialAllStatuses: 'Alle Status',
+  adminCommercialLoadingTitle: 'Prüfungen werden geladen',
+  adminCommercialLoadingDescription: 'Die gewerblichen Verkäuferprofile werden abgerufen.',
+  adminCommercialLoadFailedTitle: 'Prüfungen konnten nicht geladen werden',
+  adminCommercialLoadFailedDescription:
+    'Die Liste der gewerblichen Verkäuferprofile ist momentan nicht erreichbar.',
+  adminCommercialRetry: 'Erneut versuchen',
+  adminCommercialEmptyTitle: 'Keine gewerblichen Verkäuferprofile gefunden',
+  adminCommercialEmptyDescription:
+    'Für den gewählten Status oder Suchbegriff gibt es keine Ergebnisse.',
+  adminCommercialBusinessSection: 'Unternehmen',
+  adminCommercialReviewSection: 'Prüfung',
+  adminCommercialBusinessAddress: 'Geschäftsanschrift',
+  adminCommercialRegistry: 'Registerdaten',
+  adminCommercialRequestedAt: 'Prüfung angefordert',
+  adminCommercialReviewedAt: 'Letzte Entscheidung',
+  adminCommercialReviewer: 'Bearbeitet von',
+  adminCommercialNoValue: 'Nicht hinterlegt',
+  adminCommercialApproveAction: 'Freigeben',
+  adminCommercialRejectAction: 'Ablehnen',
+  adminCommercialSuspendAction: 'Sperren',
+  adminCommercialApproveTitle: 'Gewerbliches Profil freigeben',
+  adminCommercialRejectTitle: 'Gewerbliches Profil ablehnen',
+  adminCommercialSuspendTitle: 'Gewerbliches Profil sperren',
+  adminCommercialApproveDescription:
+    'Nach der Freigabe darf der Verkäufer Anzeigen zur Produktprüfung einreichen.',
+  adminCommercialRejectDescription:
+    'Der angegebene Grund wird dem Verkäufer im Unternehmensprofil angezeigt.',
+  adminCommercialSuspendDescription:
+    'Eine Sperrung blockiert neue Verkäufe und Checkouts dieses gewerblichen Verkäuferprofils.',
+  adminCommercialApproveConfirm: 'Jetzt freigeben',
+  adminCommercialRejectConfirm: 'Ablehnung speichern',
+  adminCommercialSuspendConfirm: 'Jetzt sperren',
+  adminCommercialDecisionReason: 'Begründung',
+  adminCommercialDecisionReasonPlaceholder:
+    'Erkläre präzise, warum dieses Profil abgelehnt oder gesperrt wird.',
+  adminCommercialDecisionReasonRequired: 'Eine Begründung ist für diese Entscheidung erforderlich.',
+  adminCommercialCancelAction: 'Abbrechen',
+  adminCommercialApproveSuccess: 'Das gewerbliche Verkäuferprofil wurde freigegeben.',
+  adminCommercialRejectSuccess: 'Das gewerbliche Verkäuferprofil wurde abgelehnt.',
+  adminCommercialSuspendSuccess: 'Das gewerbliche Verkäuferprofil wurde gesperrt.',
+  adminCommercialActionFailed: 'Die Entscheidung konnte nicht gespeichert werden.',
 } as const;
