@@ -12,6 +12,20 @@ export const trListingTexts = {
   listingStatusSold: 'Satıldı',
   listingStatusArchived: 'Arşivlendi',
 
+  listingCurrentModerationStatus: 'Güncel inceleme durumu',
+  listingModerationReason: 'Bilgi:',
+
+  listingStatusPendingReviewLabel: 'İncelemede',
+
+  listingSubmissionStatus: 'Kaydederken',
+  listingStatusPendingReview: 'Ürün incelemesine gönder',
+  listingStatusBlocked: 'Engellendi',
+  listingStatusRejected: 'Reddedildi',
+  listingCommercialDraftGateTitle: 'Sadece taslak mümkün',
+  listingCommercialDraftGateDescription:
+    'Ticari satıcı profilin henüz onaylanmadı. İlanları taslak olarak kaydedebilirsin ancak ürün incelemesine gönderemezsin.',
+  listingCommercialDraftGateAction: 'Şirket profilini aç',
+
   listingSellEyebrow: "Selorya'da satış yap",
   createListingTitle: 'İlan oluştur',
   createListingDescription: 'Ürün bilgilerini, fiyatı, durumu ve görselleri ekle.',

@@ -11,6 +11,18 @@ export const deListingTexts = {
   listingStatusPublished: 'Veröffentlicht',
   listingStatusSold: 'Verkauft',
   listingStatusArchived: 'Archiviert',
+  listingStatusPendingReview: 'Zur Produktprüfung einreichen',
+  listingStatusBlocked: 'Blockiert',
+  listingStatusRejected: 'Abgelehnt',
+  listingCommercialDraftGateTitle: 'Nur als Entwurf möglich',
+  listingCommercialDraftGateDescription:
+    'Dein gewerbliches Verkäuferprofil ist noch nicht freigegeben. Du kannst Anzeigen als Entwurf speichern, aber nicht zur Produktprüfung einreichen.',
+  listingCommercialDraftGateAction: 'Unternehmensprofil öffnen',
+
+  listingStatusPendingReviewLabel: 'In Prüfung',
+
+  listingCurrentModerationStatus: 'Aktueller Moderationsstatus',
+  listingModerationReason: 'Hinweis:',
 
   listingSellEyebrow: 'Auf Selorya verkaufen',
   createListingTitle: 'Anzeige erstellen',

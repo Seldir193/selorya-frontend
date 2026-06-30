@@ -12,6 +12,19 @@ export const enListingTexts = {
   listingStatusSold: 'Sold',
   listingStatusArchived: 'Archived',
 
+  listingCurrentModerationStatus: 'Current moderation status',
+  listingModerationReason: 'Notice:',
+  listingStatusPendingReviewLabel: 'Under review',
+
+  listingSubmissionStatus: 'When saving',
+  listingStatusPendingReview: 'Submit for product review',
+  listingStatusBlocked: 'Blocked',
+  listingStatusRejected: 'Rejected',
+  listingCommercialDraftGateTitle: 'Drafts only',
+  listingCommercialDraftGateDescription:
+    'Your commercial seller profile is not approved yet. You can save listings as drafts, but cannot submit them for product review.',
+  listingCommercialDraftGateAction: 'Open business profile',
+
   listingSellEyebrow: 'Sell on Selorya',
   createListingTitle: 'Create listing',
   createListingDescription: 'Add product details, price, condition and images.',

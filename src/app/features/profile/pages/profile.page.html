@@ -2,7 +2,6 @@
   <div class="profile-hero">
     <div>
       <h1>{{ 'profileOverviewTitle' | translate }}</h1>
-
       <p>{{ 'profileOverviewSubtitle' | translate }}</p>
     </div>
 
@@ -28,20 +27,10 @@
           </p>
 
           <h2>{{ authService.user()?.full_name || ('profileEmptyValue' | translate) }}</h2>
-
           <p>{{ authService.user()?.email }}</p>
         </div>
       </div>
 
-      <!-- <div class="profile-status-row">
-        <span class="app-badge">
-          {{ authService.user()?.role || ('profileEmptyValue' | translate) }}
-        </span>
-
-        <span class="app-badge app-badge--soft">
-          {{ authService.user()?.language || ('profileEmptyValue' | translate) }}
-        </span>
-      </div> -->
       <div class="profile-status-row">
         <span class="app-badge">
           {{ 'profileAccountBadge' | translate }}
@@ -67,6 +56,13 @@
       <div class="profile-list">
         <div class="profile-row">
           <span>{{ 'profileFullName' | translate }}</span>
+          <strong {{ translate }}></strong>
+        </div>
+      </div>
+
+      <div class="profile-list">
+        <div class="profile-row">
+          <span>{{ 'profileFullName' | translate }}</span>
           <strong>{{ authService.user()?.full_name || ('profileEmptyValue' | translate) }}</strong>
         </div>
 
@@ -75,15 +71,6 @@
           <strong>{{ authService.user()?.email || ('profileEmptyValue' | translate) }}</strong>
         </div>
 
-        <!-- <div class="profile-row">
-          <span>{{ 'profileRole' | translate }}</span>
-          <strong>{{ authService.user()?.role || ('profileEmptyValue' | translate) }}</strong>
-        </div>
-
-        <div class="profile-row">
-          <span>{{ 'profileLanguage' | translate }}</span>
-          <strong>{{ authService.user()?.language || ('profileEmptyValue' | translate) }}</strong>
-        </div> -->
         <div class="profile-row">
           <span>{{ 'profileRole' | translate }}</span>
           <strong>{{ roleLabel() }}</strong>
@@ -140,6 +127,39 @@
       </div>
     </article>
 
+    <article class="profile-card profile-card--commercial">
+      <div class="profile-card__header">
+        <div>
+          <p class="profile-card__kicker">
+            {{ 'profileCommercialCardLabel' | translate }}
+          </p>
+
+          <h2>{{ 'profileCommercialCardTitle' | translate }}</h2>
+        </div>
+      </div>
+
+      <div class="profile-list">
+        <div class="profile-row">
+          <span>{{ 'profileSellerType' | translate }}</span>
+          <strong>{{ sellerTypeLabelKey() | translate }}</strong>
+        </div>
+
+        @if (isCommercialSeller()) {
+          <div class="profile-row">
+            <span>{{ 'profileCommercialStatus' | translate }}</span>
+            <strong>{{ commercialStatusLabelKey() | translate }}</strong>
+          </div>
+        }
+      </div>
+
+      <a
+        routerLink="/profile/commercial"
+        class="app-button app-button--secondary profile-card__action"
+      >
+        {{ 'profileCommercialManageAction' | translate }}
+      </a>
+    </article>
+
     <article class="profile-card profile-card--trust">
       <div class="profile-card__header">
         <div>
@@ -170,44 +190,3 @@
     </article>
   </div>
 </section>
-
-<!-- <section class="profile-page">
-  <div class="page-head">
-    <h1>Your Profile</h1>
-    <p>Account and profile information for Selorya.</p>
-  </div>
-
-  <div class="profile-card">
-    <div class="profile-row">
-      <span>Full name</span>
-      <strong>{{ authService.user()?.full_name }}</strong>
-    </div>
-
-    <div class="profile-row">
-      <span>Email</span>
-      <strong>{{ authService.user()?.email }}</strong>
-    </div>
-
-    <div class="profile-row">
-      <span>Role</span>
-      <strong>{{ authService.user()?.role }}</strong>
-    </div>
-
-    <div class="profile-row">
-      <span>Language</span>
-      <strong>{{ authService.user()?.language }}</strong>
-    </div>
-
-    <div class="profile-row">
-      <span>Seller display name</span>
-      <strong>{{ authService.user()?.seller_profile?.display_name }}</strong>
-    </div>
-
-    <div class="profile-row">
-      <span>Seller city</span>
-      <strong>{{ authService.user()?.seller_profile?.city }}</strong>
-    </div>
-  </div>
-
-  <a routerLink="/profile/edit" class="edit-link">Edit Profile</a>
-</section> -->

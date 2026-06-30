@@ -15,6 +15,7 @@ import { DocumentsPage } from './features/documents/pages/documents.page';
 import { ProfilePage } from './features/profile/pages/profile.page';
 import { EditListingPage } from './features/listings/pages/edit-listing.page';
 import { ProfileEditPage } from './features/profile/pages/profile-edit.page';
+import { CommercialProfilePage } from './features/profile/pages/commercial-profile.page';
 
 export const routes: Routes = [
   {
@@ -86,6 +87,11 @@ export const routes: Routes = [
   {
     path: 'profile/edit',
     component: ProfileEditPage,
+    canActivate: [authGuard],
+  },
+  {
+    path: 'profile/commercial',
+    component: CommercialProfilePage,
     canActivate: [authGuard],
   },
 ];

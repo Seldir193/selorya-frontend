@@ -1,0 +1,313 @@
+@use './profile.page.scss';
+
+.commercial-profile-page {
+  width: 100%;
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: var(--page-padding-top) var(--page-padding-inline) var(--page-padding-bottom);
+}
+
+.commercial-profile-page__back {
+  display: inline-flex;
+  margin-bottom: 22px;
+  color: var(--color-primary);
+  font-size: 14px;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.commercial-profile-page__back:hover,
+.commercial-profile-page__back:focus-visible {
+  color: var(--color-primary-deep);
+  outline: none;
+  text-decoration: underline;
+}
+
+.commercial-profile-page__head {
+  display: grid;
+  gap: 10px;
+  margin-bottom: 22px;
+}
+
+.commercial-profile-page__head p {
+  margin: 0;
+  color: var(--color-text-soft);
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.commercial-profile-page__head h1 {
+  margin: 0;
+  color: var(--color-text);
+  font-size: clamp(1.85rem, 4vw, 2.75rem);
+  letter-spacing: -0.04em;
+}
+
+.commercial-profile-page__head span {
+  max-width: 720px;
+  color: var(--color-text-soft);
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+.commercial-status-card,
+.commercial-profile-form {
+  display: grid;
+  gap: 18px;
+  padding: 24px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-lg);
+}
+
+.commercial-status-card {
+  grid-template-columns: minmax(0, 1fr) auto;
+  margin-bottom: 18px;
+}
+
+.commercial-status-card p,
+.commercial-status-card h2 {
+  margin: 0;
+}
+
+.commercial-status-card p:first-child {
+  margin-bottom: 7px;
+  color: var(--color-text-soft);
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.commercial-status-card h2 {
+  color: var(--color-primary);
+  font-size: 20px;
+  letter-spacing: -0.02em;
+}
+
+.commercial-status-card__badge {
+  align-self: start;
+}
+
+.commercial-status-card__description,
+.commercial-status-card__reason,
+.commercial-status-card__notice {
+  grid-column: 1 / -1;
+}
+
+.commercial-status-card__description,
+.commercial-status-card__notice {
+  color: var(--color-text-soft);
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.commercial-status-card__reason,
+.commercial-profile-form__notice {
+  display: grid;
+  gap: 5px;
+  padding: 14px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface-muted);
+  color: var(--color-text-soft);
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+.commercial-status-card__reason strong {
+  color: var(--color-primary);
+}
+
+.commercial-profile-form__section {
+  display: grid;
+  gap: 18px;
+}
+
+.commercial-profile-form__section + .commercial-profile-form__section {
+  padding-top: 24px;
+  border-top: 1px solid var(--color-border);
+}
+
+.commercial-profile-form__section-head h2,
+.commercial-profile-form__section-head p {
+  margin: 0;
+}
+
+.commercial-profile-form__section-head h2 {
+  color: var(--color-primary);
+  font-size: 19px;
+  letter-spacing: -0.02em;
+}
+
+.commercial-profile-form__section-head p {
+  max-width: 680px;
+  margin-top: 7px;
+  color: var(--color-text-soft);
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.commercial-type-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.commercial-type-choice {
+  position: relative;
+  display: grid;
+  min-height: 144px;
+  padding: 18px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+  cursor: pointer;
+  transition:
+    border-color var(--button-hover-transition),
+    background var(--button-hover-transition),
+    transform var(--button-hover-transition);
+}
+
+.commercial-type-choice:hover,
+.commercial-type-choice:focus-within {
+  border-color: var(--color-primary);
+  transform: translateY(-1px);
+}
+
+.commercial-type-choice--selected {
+  border-color: var(--color-primary);
+  background: var(--color-surface-muted);
+  box-shadow: inset 0 0 0 1px var(--color-primary);
+}
+
+.commercial-type-choice--disabled {
+  cursor: not-allowed;
+  opacity: 0.62;
+}
+
+.commercial-type-choice--disabled:hover {
+  border-color: var(--color-border);
+  transform: none;
+}
+
+.commercial-type-choice input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.commercial-type-choice__content {
+  display: grid;
+  gap: 9px;
+}
+
+.commercial-type-choice__content strong {
+  color: var(--color-primary);
+  font-size: 16px;
+}
+
+.commercial-type-choice__content small {
+  color: var(--color-text-soft);
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+.commercial-profile-form__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px 16px;
+}
+
+.commercial-profile-form__grid-full {
+  grid-column: 1 / -1;
+}
+
+.commercial-field {
+  display: grid;
+  gap: 9px;
+  min-width: 0;
+}
+
+.commercial-field > span {
+  color: var(--color-text-soft);
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.commercial-field em {
+  margin-left: 4px;
+  color: var(--color-text-muted);
+  font-style: normal;
+  font-weight: 600;
+}
+
+.commercial-field small {
+  color: var(--color-danger);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.commercial-input {
+  width: 100%;
+  min-height: var(--form-control-height);
+  padding: 0 var(--form-control-padding-x);
+  border: 1px solid var(--form-control-border);
+  border-radius: var(--radius-sm);
+  background: var(--form-control-bg);
+  color: var(--form-control-color);
+  font: inherit;
+  font-weight: 800;
+  outline: none;
+  transition:
+    border-color var(--button-hover-transition),
+    box-shadow var(--button-hover-transition);
+}
+
+.commercial-input:hover {
+  border-color: var(--form-control-border-hover);
+}
+
+.commercial-input:focus {
+  border-color: var(--form-control-border-focus);
+  box-shadow: 0 0 0 3px var(--form-control-focus-ring);
+}
+
+.commercial-profile-form__actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 12px;
+  padding-top: 6px;
+}
+
+@media (max-width: 760px) {
+  .commercial-status-card {
+    grid-template-columns: 1fr;
+  }
+
+  .commercial-status-card__badge {
+    justify-self: start;
+  }
+
+  .commercial-type-grid,
+  .commercial-profile-form__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .commercial-profile-form__grid-full {
+    grid-column: auto;
+  }
+
+  .commercial-profile-form__actions {
+    justify-content: stretch;
+  }
+
+  .commercial-profile-form__actions .app-button {
+    width: 100%;
+  }
+}

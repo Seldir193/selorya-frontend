@@ -24,6 +24,11 @@ export const trProfileTexts = {
   profileAccountDetailsTitle: 'Kişisel özet',
   profileSellerCardLabel: 'Selorya’da satış',
   profileSellerCardTitle: 'Satıcı profili',
+  profileCommercialCardLabel: 'Ticari satış',
+  profileCommercialCardTitle: 'Şirket profili',
+  profileSellerType: 'Satıcı türü',
+  profileCommercialStatus: 'İnceleme durumu',
+  profileCommercialManageAction: 'Şirket profilini yönet',
   profileTrustCardLabel: 'Durum',
   profileTrustCardTitle: 'Hesap alanı',
   profileFullName: 'Ad soyad',
@@ -40,14 +45,12 @@ export const trProfileTexts = {
 
   profileAvatarInvalid: 'Lütfen geçerli bir görsel dosyası seç.',
   profileAvatarTooLarge: 'Profil görseli en fazla 3 MB olabilir.',
-
   profileEditAvatarTitle: 'Profil görseli',
   profileEditAvatarSubtitle: 'Selorya hesabını temsil eden bir görsel yükle.',
   profileAvatarUploadTitle: 'Profil görseli seç',
   profileAvatarUploadHint: 'PNG veya JPG, en fazla 3 MB. Görsel yuvarlak gösterilir.',
   profileAvatarChooseFile: 'Görsel seç',
-
+  profileAvatarRemove: 'Görseli kaldır',
   profileAvatarRemoved: 'Profil görseli kaldırıldı.',
-
   profileAccountBadge: 'Selorya hesabı',
 } as const;

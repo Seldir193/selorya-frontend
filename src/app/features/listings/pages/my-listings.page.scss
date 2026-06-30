@@ -148,6 +148,18 @@
   background: var(--color-accent);
 }
 
+.listing-card__status--pending-review {
+  border-color: var(--color-accent);
+  background: var(--color-accent);
+}
+
+.listing-card__status--blocked,
+.listing-card__status--rejected {
+  border-color: var(--color-danger);
+  background: var(--color-danger);
+  color: var(--color-surface);
+}
+
 .listing-card__status--sold {
   border-color: var(--color-border-strong);
   background: var(--color-surface-muted);
@@ -218,6 +230,21 @@
   flex: 0 0 auto;
   width: 13px;
   height: 13px;
+}
+
+.listing-card__reason {
+  margin: 0;
+  padding: 8px 9px;
+  border: 1px solid var(--color-danger);
+  border-radius: var(--radius-sm);
+  color: var(--color-danger);
+  font-size: 0.72rem;
+  font-weight: 700;
+  line-height: 1.45;
+}
+
+.listing-card__reason strong {
+  margin-right: 4px;
 }
 
 .listing-card__footer {

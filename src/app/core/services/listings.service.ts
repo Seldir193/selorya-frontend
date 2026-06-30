@@ -2,26 +2,13 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
 import { API_BASE_URL } from '../config/api.config';
-import { Listing } from '../models/listing.model';
+import { Listing, ListingCreatePayload, ListingUpdatePayload } from '../models/listing.model';
 
 type ListingListParams = {
   category?: string;
   search?: string;
   minPrice?: string;
   maxPrice?: string;
-};
-
-type ListingPayload = {
-  category: number;
-  title: string;
-  slug: string;
-  description: string;
-  price: string;
-  condition: string;
-  status: string;
-  city: string;
-  country: string;
-  is_featured: boolean;
 };
 
 type ListingImagePayload = {
@@ -40,30 +27,18 @@ export class ListingsService {
 
   getCachedListings(): Listing[] {
     const cachedListings = localStorage.getItem(this.listCacheKey);
-
-    if (!cachedListings) {
-      return [];
-    }
-
-    return this.parseCachedListings(cachedListings);
+    return cachedListings ? this.parseCachedListings(cachedListings) : [];
   }
 
   getCachedListing(slug: string): Listing | null {
     const cachedListing = localStorage.getItem(this.getDetailCacheKey(slug));
-
-    if (!cachedListing) {
-      return null;
-    }
-
-    return this.parseCachedListing(cachedListing, slug);
+    return cachedListing ? this.parseCachedListing(cachedListing, slug) : null;
   }
 
   list(params?: ListingListParams): Observable<Listing[]> {
-    const httpParams = this.buildListParams(params);
-
     return this.http
       .get<Listing[]>(`${API_BASE_URL}/listings/`, {
-        params: httpParams,
+        params: this.buildListParams(params),
       })
       .pipe(tap((listings) => this.cachePublicListings(listings, params)));
   }
@@ -74,13 +49,19 @@ export class ListingsService {
       .pipe(tap((listing) => this.cacheListing(listing)));
   }
 
+  manageDetail(slug: string): Observable<Listing> {
+    return this.http
+      .get<Listing>(`${API_BASE_URL}/listings/${slug}/update/`)
+      .pipe(tap((listing) => this.cacheListing(listing)));
+  }
+
   myListings(): Observable<Listing[]> {
     return this.http
       .get<Listing[]>(`${API_BASE_URL}/listings/mine/`)
       .pipe(tap((listings) => this.cacheListings(listings)));
   }
 
-  create(payload: ListingPayload): Observable<Listing> {
+  create(payload: ListingCreatePayload): Observable<Listing> {
     return this.http
       .post<Listing>(`${API_BASE_URL}/listings/create/`, payload)
       .pipe(tap((listing) => this.cacheListing(listing)));
@@ -93,8 +74,10 @@ export class ListingsService {
     sortOrder = 0,
     isPrimary = false,
   ): Observable<unknown> {
-    const formData = this.buildImageFormData(file, altText, sortOrder, isPrimary);
-    return this.http.post(`${API_BASE_URL}/listings/${slug}/images/create/`, formData);
+    return this.http.post(
+      `${API_BASE_URL}/listings/${slug}/images/create/`,
+      this.buildImageFormData(file, altText, sortOrder, isPrimary),
+    );
   }
 
   updateImage(imageId: number, payload: ListingImagePayload): Observable<unknown> {
@@ -105,7 +88,7 @@ export class ListingsService {
     return this.http.delete<void>(`${API_BASE_URL}/listings/images/${imageId}/delete/`);
   }
 
-  update(slug: string, payload: ListingPayload): Observable<Listing> {
+  update(slug: string, payload: ListingUpdatePayload): Observable<Listing> {
     return this.http
       .patch<Listing>(`${API_BASE_URL}/listings/${slug}/update/`, payload)
       .pipe(tap((listing) => this.cacheUpdatedListing(slug, listing)));
@@ -119,21 +102,14 @@ export class ListingsService {
 
   private buildListParams(params?: ListingListParams): HttpParams {
     let httpParams = new HttpParams();
-
     httpParams = this.appendParam(httpParams, 'category', params?.category);
     httpParams = this.appendParam(httpParams, 'search', params?.search);
     httpParams = this.appendParam(httpParams, 'min_price', params?.minPrice);
-    httpParams = this.appendParam(httpParams, 'max_price', params?.maxPrice);
-
-    return httpParams;
+    return this.appendParam(httpParams, 'max_price', params?.maxPrice);
   }
 
   private appendParam(params: HttpParams, key: string, value?: string): HttpParams {
-    if (!value) {
-      return params;
-    }
-
-    return params.set(key, value);
+    return value ? params.set(key, value) : params;
   }
 
   private buildImageFormData(
@@ -143,12 +119,10 @@ export class ListingsService {
     isPrimary: boolean,
   ): FormData {
     const formData = new FormData();
-
     formData.append('image', file);
     formData.append('alt_text', altText);
     formData.append('sort_order', String(sortOrder));
     formData.append('is_primary', String(isPrimary));
-
     return formData;
   }
 
@@ -200,154 +174,3 @@ export class ListingsService {
     }
   }
 }
-
-// import { Injectable, inject } from '@angular/core';
-// import { HttpClient, HttpParams } from '@angular/common/http';
-// import { Observable, tap } from 'rxjs';
-// import { API_BASE_URL } from '../config/api.config';
-// import { Listing } from '../models/listing.model';
-
-// type ListingListParams = {
-//   category?: string;
-//   search?: string;
-//   minPrice?: string;
-//   maxPrice?: string;
-// };
-
-// type ListingPayload = {
-//   category: number;
-//   title: string;
-//   slug: string;
-//   description: string;
-//   price: string;
-//   condition: string;
-//   status: string;
-//   city: string;
-//   country: string;
-//   is_featured: boolean;
-// };
-
-// type ListingImagePayload = {
-//   alt_text: string;
-//   sort_order: number;
-//   is_primary: boolean;
-// };
-
-// @Injectable({
-//   providedIn: 'root',
-// })
-// export class ListingsService {
-//   private readonly http = inject(HttpClient);
-//   private readonly listCacheKey = 'selorya_public_listings';
-
-//   getCachedListings(): Listing[] {
-//     const cachedListings = localStorage.getItem(this.listCacheKey);
-
-//     if (!cachedListings) {
-//       return [];
-//     }
-
-//     return this.parseCachedListings(cachedListings);
-//   }
-
-//   list(params?: ListingListParams): Observable<Listing[]> {
-//     const httpParams = this.buildListParams(params);
-
-//     return this.http
-//       .get<Listing[]>(`${API_BASE_URL}/listings/`, {
-//         params: httpParams,
-//       })
-//       .pipe(tap((listings) => this.cachePublicListings(listings, params)));
-//   }
-
-//   detail(slug: string): Observable<Listing> {
-//     return this.http.get<Listing>(`${API_BASE_URL}/listings/${slug}/`);
-//   }
-
-//   myListings(): Observable<Listing[]> {
-//     return this.http.get<Listing[]>(`${API_BASE_URL}/listings/mine/`);
-//   }
-
-//   create(payload: ListingPayload): Observable<Listing> {
-//     return this.http.post<Listing>(`${API_BASE_URL}/listings/create/`, payload);
-//   }
-
-//   uploadImage(
-//     slug: string,
-//     file: File,
-//     altText = '',
-//     sortOrder = 0,
-//     isPrimary = false,
-//   ): Observable<unknown> {
-//     const formData = this.buildImageFormData(file, altText, sortOrder, isPrimary);
-//     return this.http.post(`${API_BASE_URL}/listings/${slug}/images/create/`, formData);
-//   }
-
-//   updateImage(imageId: number, payload: ListingImagePayload): Observable<unknown> {
-//     return this.http.patch(`${API_BASE_URL}/listings/images/${imageId}/update/`, payload);
-//   }
-
-//   deleteImage(imageId: number): Observable<void> {
-//     return this.http.delete<void>(`${API_BASE_URL}/listings/images/${imageId}/delete/`);
-//   }
-
-//   update(slug: string, payload: ListingPayload): Observable<Listing> {
-//     return this.http.patch<Listing>(`${API_BASE_URL}/listings/${slug}/update/`, payload);
-//   }
-
-//   delete(slug: string): Observable<void> {
-//     return this.http.delete<void>(`${API_BASE_URL}/listings/${slug}/delete/`);
-//   }
-
-//   private buildListParams(params?: ListingListParams): HttpParams {
-//     let httpParams = new HttpParams();
-
-//     httpParams = this.appendParam(httpParams, 'category', params?.category);
-//     httpParams = this.appendParam(httpParams, 'search', params?.search);
-//     httpParams = this.appendParam(httpParams, 'min_price', params?.minPrice);
-//     httpParams = this.appendParam(httpParams, 'max_price', params?.maxPrice);
-
-//     return httpParams;
-//   }
-
-//   private appendParam(params: HttpParams, key: string, value?: string): HttpParams {
-//     if (!value) {
-//       return params;
-//     }
-
-//     return params.set(key, value);
-//   }
-
-//   private buildImageFormData(
-//     file: File,
-//     altText: string,
-//     sortOrder: number,
-//     isPrimary: boolean,
-//   ): FormData {
-//     const formData = new FormData();
-
-//     formData.append('image', file);
-//     formData.append('alt_text', altText);
-//     formData.append('sort_order', String(sortOrder));
-//     formData.append('is_primary', String(isPrimary));
-
-//     return formData;
-//   }
-
-//   private cachePublicListings(listings: Listing[], params?: ListingListParams): void {
-//     if (params) {
-//       return;
-//     }
-
-//     localStorage.setItem(this.listCacheKey, JSON.stringify(listings));
-//   }
-
-//   private parseCachedListings(cachedListings: string): Listing[] {
-//     try {
-//       return JSON.parse(cachedListings) as Listing[];
-//     } catch {
-//       localStorage.removeItem(this.listCacheKey);
-//       return [];
-//     }
-//   }
-// }

@@ -26,6 +26,11 @@ export const enProfileTexts = {
   profileAccountDetailsTitle: 'Personal overview',
   profileSellerCardLabel: 'Selling on Selorya',
   profileSellerCardTitle: 'Seller profile',
+  profileCommercialCardLabel: 'Sell commercially',
+  profileCommercialCardTitle: 'Business profile',
+  profileSellerType: 'Seller type',
+  profileCommercialStatus: 'Review status',
+  profileCommercialManageAction: 'Manage business profile',
   profileTrustCardLabel: 'Status',
   profileTrustCardTitle: 'Account area',
   profileFullName: 'Full name',
@@ -42,14 +47,12 @@ export const enProfileTexts = {
 
   profileAvatarInvalid: 'Please select a valid image file.',
   profileAvatarTooLarge: 'The profile image must not exceed 3 MB.',
-
   profileEditAvatarTitle: 'Profile image',
   profileEditAvatarSubtitle: 'Upload an image that represents your Selorya account.',
   profileAvatarUploadTitle: 'Choose a profile image',
   profileAvatarUploadHint: 'PNG or JPG, maximum 3 MB. The image will be displayed as a circle.',
   profileAvatarChooseFile: 'Choose image',
-
+  profileAvatarRemove: 'Remove image',
   profileAvatarRemoved: 'Profile image has been removed.',
-
   profileAccountBadge: 'Selorya account',
 } as const;

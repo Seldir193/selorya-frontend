@@ -114,10 +114,6 @@
       </button>
     </section>
   } @else {
-    <!-- <p class="my-listings-results" aria-live="polite">
-      {{ resultsSummary() }}
-    </p> -->
-
     <div class="listing-grid">
       @for (listing of paginatedListings(); track listing.id) {
         <article
@@ -146,6 +142,9 @@
             <span
               class="app-badge listing-card__status"
               [class.listing-card__status--draft]="listing.status === 'draft'"
+              [class.listing-card__status--pending-review]="listing.status === 'pending_review'"
+              [class.listing-card__status--blocked]="listing.status === 'blocked'"
+              [class.listing-card__status--rejected]="listing.status === 'rejected'"
               [class.listing-card__status--sold]="listing.status === 'sold'"
               [class.listing-card__status--archived]="listing.status === 'archived'"
             >
@@ -180,6 +179,13 @@
                 {{ locationLabel(listing) }}
               </span>
             </div>
+
+            @if (showModerationReason(listing)) {
+              <p class="listing-card__reason">
+                <strong>{{ text('listingModerationReason') }}</strong>
+                {{ listing.moderation_reason }}
+              </p>
+            }
 
             <div class="listing-card__footer">
               <span class="listing-card__updated">
@@ -218,224 +224,3 @@
     />
   }
 </section>
-
-<!-- <section class="my-listings-page">
-  <header class="my-listings-page__head">
-    <h1>{{ text('myListingsTitle') }}</h1>
-
-    <a routerLink="/sell/create" class="app-button app-button--primary my-listings-page__create">
-      {{ text('myListingsCreateAction') }}
-    </a>
-  </header>
-
-  <div class="filter-toolbar listing-toolbar">
-    <label class="filter-search listing-toolbar__search">
-      <span class="sr-only">{{ text('myListingsSearchLabel') }}</span>
-
-      <input
-        type="search"
-        [value]="searchQuery()"
-        [placeholder]="text('myListingsSearchPlaceholder')"
-        (input)="updateSearchQuery($any($event.target).value)"
-      />
-    </label>
-
-    <app-dropdown
-      class="filter-control listing-toolbar__control"
-      [value]="activeStatus()"
-      [options]="statusDropdownOptions()"
-      [ariaLabel]="text('myListingsTabsLabel')"
-      minWidth="174px"
-      maxMenuHeight="240px"
-      itemAlign="left"
-      (valueChange)="changeStatus($event)"
-    />
-
-    <app-dropdown
-      class="filter-control listing-toolbar__control"
-      [value]="sortOption()"
-      [options]="sortDropdownOptions()"
-      [ariaLabel]="text('myListingsSortLabel')"
-      minWidth="208px"
-      maxMenuHeight="240px"
-      itemAlign="left"
-      (valueChange)="changeSortOption($event)"
-    />
-
-    @if (hasActiveFilters()) {
-      <button
-        type="button"
-        class="app-button app-button--secondary filter-clear listing-toolbar__clear"
-        (click)="clearFilters()"
-      >
-        {{ text('myListingsClearFilters') }}
-      </button>
-    }
-  </div>
-
-  @if (isLoading()) {
-    <div class="listing-skeleton-grid" aria-live="polite">
-      <span class="sr-only">{{ text('myListingsLoadingTitle') }}</span>
-
-      @for (card of skeletonCards; track $index) {
-        <article class="listing-skeleton" aria-hidden="true">
-          <div class="listing-skeleton__image"></div>
-
-          <div class="listing-skeleton__content">
-            <span class="listing-skeleton__line listing-skeleton__line--title"></span>
-            <span class="listing-skeleton__line listing-skeleton__line--price"></span>
-
-            <div class="listing-skeleton__meta">
-              <span></span>
-              <span></span>
-            </div>
-
-            <span class="listing-skeleton__footer"></span>
-          </div>
-        </article>
-      }
-    </div>
-  } @else if (hasError()) {
-    <section class="my-listings-state-card">
-      <div class="my-listings-state-card__icon" aria-hidden="true">
-        <img [src]="listingEmptyIconSrc" alt="" />
-      </div>
-
-      <h2>{{ text('myListingsErrorTitle') }}</h2>
-      <p>{{ text('myListingsErrorDescription') }}</p>
-
-      <button type="button" class="app-button app-button--primary" (click)="loadListings()">
-        {{ text('myListingsRetryAction') }}
-      </button>
-    </section>
-  } @else if (!listings().length) {
-    <section class="my-listings-state-card">
-      <div class="my-listings-state-card__icon" aria-hidden="true">
-        <img [src]="listingEmptyIconSrc" alt="" />
-      </div>
-
-      <h2>{{ text('myListingsEmptyTitle') }}</h2>
-      <p>{{ text('myListingsEmptyDescription') }}</p>
-
-      <a routerLink="/sell/create" class="app-button app-button--primary">
-        {{ text('myListingsCreateAction') }}
-      </a>
-    </section>
-  } @else if (!filteredListings().length) {
-    <section class="my-listings-state-card">
-      <div class="my-listings-state-card__icon" aria-hidden="true">
-        <img [src]="listingEmptyIconSrc" alt="" />
-      </div>
-
-      <h2>{{ text('myListingsFilterEmptyTitle') }}</h2>
-      <p>{{ text('myListingsFilterEmptyDescription') }}</p>
-
-      <button type="button" class="app-button app-button--primary" (click)="clearFilters()">
-        {{ text('myListingsClearFilters') }}
-      </button>
-    </section>
-  } @else {
-    <p class="my-listings-results" aria-live="polite">
-      {{ resultsSummary() }}
-    </p>
-
-    <div class="listing-grid">
-      @for (listing of paginatedListings(); track listing.id) {
-        <article
-          class="listing-card"
-          [class.listing-card--sold]="listing.status === 'sold'"
-          [class.listing-card--archived]="listing.status === 'archived'"
-        >
-          <div class="listing-card__media">
-            @if (hasDisplayImage(listing)) {
-              <img
-                [src]="listingImageSrc(listing)"
-                [alt]="listing.title"
-                loading="lazy"
-                (error)="onImageError(listing.id)"
-              />
-            } @else {
-              <div
-                class="listing-card__image-fallback"
-                role="img"
-                [attr.aria-label]="text('myListingsImageFallbackAlt')"
-              >
-                <img [src]="listingFallbackImageSrc" alt="" aria-hidden="true" />
-              </div>
-            }
-
-            <span
-              class="app-badge listing-card__status"
-              [class.listing-card__status--draft]="listing.status === 'draft'"
-              [class.listing-card__status--sold]="listing.status === 'sold'"
-              [class.listing-card__status--archived]="listing.status === 'archived'"
-            >
-              {{ listingStatusLabel(listing.status) }}
-            </span>
-          </div>
-
-          <div class="listing-card__content">
-            <div class="listing-card__main">
-              <h2>{{ listing.title }}</h2>
-              <strong class="listing-card__price">{{ listingPrice(listing) }}</strong>
-            </div>
-
-            <div class="listing-card__meta">
-              <span class="listing-card__meta-item">
-                <img
-                  class="listing-card__meta-icon"
-                  [src]="listingConditionIconSrc"
-                  alt=""
-                  aria-hidden="true"
-                />
-                {{ conditionLabel(listing.condition) }}
-              </span>
-
-              <span class="listing-card__meta-item">
-                <img
-                  class="listing-card__meta-icon"
-                  [src]="listingLocationIconSrc"
-                  alt=""
-                  aria-hidden="true"
-                />
-                {{ locationLabel(listing) }}
-              </span>
-            </div>
-
-            <div class="listing-card__footer">
-              <span class="listing-card__updated">
-                {{ text('myListingsUpdated') }} {{ listingUpdatedDate(listing) }}
-              </span>
-
-              @if (canEditListing(listing)) {
-                <a
-                  class="app-button app-button--secondary listing-card__edit"
-                  [routerLink]="['/sell', listing.slug, 'edit']"
-                >
-                  <img
-                    class="app-button__icon"
-                    [src]="listingEditIconSrc"
-                    alt=""
-                    aria-hidden="true"
-                  />
-                  <span>{{ text('myListingsEditAction') }}</span>
-                </a>
-              }
-            </div>
-          </div>
-        </article>
-      }
-    </div>
-
-    <app-pagination
-      [page]="currentPage()"
-      [pageSize]="pageSize()"
-      [totalItems]="filteredListings().length"
-      [pageSizeOptions]="pageSizeOptions"
-      [showPageSize]="true"
-      variant="compact"
-      (pageChange)="changePage($event)"
-      (pageSizeChange)="changePageSize($event)"
-    />
-  }
-</section> -->

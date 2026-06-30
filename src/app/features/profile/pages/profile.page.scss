@@ -219,6 +219,22 @@
   display: none;
 }
 
+//
+
+.profile-card--commercial {
+  align-content: space-between;
+}
+
+.profile-card__action {
+  justify-self: start;
+  min-width: 0;
+}
+
+@media (max-width: 640px) {
+  .profile-card__action {
+    width: 100%;
+  }
+}
 @media (max-width: 920px) {
   .profile-hero,
   .page-head {

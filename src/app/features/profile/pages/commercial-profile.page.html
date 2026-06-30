@@ -1,0 +1,252 @@
+<section class="commercial-profile-page">
+  <a routerLink="/profile" class="commercial-profile-page__back">
+    {{ 'commercialBackToProfile' | translate }}
+  </a>
+
+  <header class="commercial-profile-page__head">
+    <p>{{ 'commercialProfileEyebrow' | translate }}</p>
+    <h1>{{ 'commercialProfileTitle' | translate }}</h1>
+    <span>{{ 'commercialProfileSubtitle' | translate }}</span>
+  </header>
+
+  <article class="commercial-status-card">
+    <div>
+      <p>{{ 'commercialVerificationTitle' | translate }}</p>
+      <h2>{{ 'commercialVerificationStatus' | translate }}</h2>
+    </div>
+
+    <span class="app-badge commercial-status-card__badge">
+      {{ statusLabelKey() | translate }}
+    </span>
+
+    <p class="commercial-status-card__description">
+      {{ statusDescriptionKey() | translate }}
+    </p>
+
+    @if (rejectionReason()) {
+      <div class="commercial-status-card__reason">
+        <strong>{{ 'commercialRejectionReason' | translate }}</strong>
+        <span>{{ rejectionReason() }}</span>
+      </div>
+    }
+
+    @if (commercialStatus() === 'suspended') {
+      <p class="commercial-status-card__notice">
+        {{ 'commercialSuspendedHint' | translate }}
+      </p>
+    }
+  </article>
+
+  <form class="commercial-profile-form" [formGroup]="form" (ngSubmit)="save()">
+    <section class="commercial-profile-form__section">
+      <header class="commercial-profile-form__section-head">
+        <h2>{{ 'commercialSellerTypeTitle' | translate }}</h2>
+        <p>{{ 'commercialSellerTypeSubtitle' | translate }}</p>
+      </header>
+
+      <div class="commercial-type-grid">
+        <label
+          class="commercial-type-choice"
+          [class.commercial-type-choice--selected]="!isCommercial()"
+          [class.commercial-type-choice--disabled]="isPrivateSelectionLocked()"
+        >
+          <input
+            type="radio"
+            formControlName="seller_type"
+            value="private"
+            (change)="setSellerType('private')"
+          />
+
+          <span class="commercial-type-choice__content">
+            <strong>{{ 'commercialSellerTypePrivate' | translate }}</strong>
+            <small>{{ 'commercialSellerTypePrivateDescription' | translate }}</small>
+          </span>
+        </label>
+
+        <label
+          class="commercial-type-choice"
+          [class.commercial-type-choice--selected]="isCommercial()"
+        >
+          <input
+            type="radio"
+            formControlName="seller_type"
+            value="commercial"
+            (change)="setSellerType('commercial')"
+          />
+
+          <span class="commercial-type-choice__content">
+            <strong>{{ 'commercialSellerTypeCommercial' | translate }}</strong>
+            <small>{{ 'commercialSellerTypeCommercialDescription' | translate }}</small>
+          </span>
+        </label>
+      </div>
+
+      @if (isPrivateSelectionLocked()) {
+        <p class="commercial-profile-form__notice">
+          {{ 'commercialSellerTypePrivateLocked' | translate }}
+        </p>
+      }
+    </section>
+
+    @if (isCommercial()) {
+      <section class="commercial-profile-form__section">
+        <header class="commercial-profile-form__section-head">
+          <h2>{{ 'commercialBusinessDetailsTitle' | translate }}</h2>
+          <p>{{ 'commercialBusinessDetailsSubtitle' | translate }}</p>
+        </header>
+
+        @if (showStatusResetHint()) {
+          <p class="commercial-profile-form__notice">
+            {{ 'commercialStatusResetHint' | translate }}
+          </p>
+        }
+
+        <div class="commercial-profile-form__grid">
+          <label class="commercial-field">
+            <span>{{ 'commercialLegalName' | translate }}</span>
+            <input type="text" class="commercial-input" formControlName="commercial_legal_name" />
+            @if (isReviewFieldInvalid('commercial_legal_name')) {
+              <small>{{ 'commercialRequiredField' | translate }}</small>
+            }
+          </label>
+
+          <label class="commercial-field">
+            <span>{{ 'commercialLegalForm' | translate }}</span>
+            <input type="text" class="commercial-input" formControlName="commercial_legal_form" />
+            @if (isReviewFieldInvalid('commercial_legal_form')) {
+              <small>{{ 'commercialRequiredField' | translate }}</small>
+            }
+          </label>
+
+          <label class="commercial-field">
+            <span>
+              {{ 'commercialRepresentativeName' | translate }}
+              <em>{{ 'commercialOptional' | translate }}</em>
+            </span>
+            <input
+              type="text"
+              class="commercial-input"
+              formControlName="commercial_representative_name"
+            />
+          </label>
+
+          <label class="commercial-field">
+            <span>{{ 'commercialBusinessEmail' | translate }}</span>
+            <input type="email" class="commercial-input" formControlName="commercial_email" />
+            @if (isReviewFieldInvalid('commercial_email') || isEmailInvalid()) {
+              <small>{{ 'commercialRequiredField' | translate }}</small>
+            }
+          </label>
+
+          <label class="commercial-field">
+            <span>
+              {{ 'commercialBusinessPhone' | translate }}
+              <em>{{ 'commercialOptional' | translate }}</em>
+            </span>
+            <input type="tel" class="commercial-input" formControlName="commercial_phone" />
+          </label>
+
+          <label class="commercial-field commercial-profile-form__grid-full">
+            <span>{{ 'commercialAddressLine1' | translate }}</span>
+            <input
+              type="text"
+              class="commercial-input"
+              formControlName="commercial_address_line_1"
+            />
+            @if (isReviewFieldInvalid('commercial_address_line_1')) {
+              <small>{{ 'commercialRequiredField' | translate }}</small>
+            }
+          </label>
+
+          <label class="commercial-field commercial-profile-form__grid-full">
+            <span>
+              {{ 'commercialAddressLine2' | translate }}
+              <em>{{ 'commercialOptional' | translate }}</em>
+            </span>
+            <input
+              type="text"
+              class="commercial-input"
+              formControlName="commercial_address_line_2"
+            />
+          </label>
+
+          <label class="commercial-field">
+            <span>{{ 'commercialPostalCode' | translate }}</span>
+            <input type="text" class="commercial-input" formControlName="commercial_postal_code" />
+            @if (isReviewFieldInvalid('commercial_postal_code')) {
+              <small>{{ 'commercialRequiredField' | translate }}</small>
+            }
+          </label>
+
+          <label class="commercial-field">
+            <span>{{ 'commercialCity' | translate }}</span>
+            <input type="text" class="commercial-input" formControlName="commercial_city" />
+            @if (isReviewFieldInvalid('commercial_city')) {
+              <small>{{ 'commercialRequiredField' | translate }}</small>
+            }
+          </label>
+
+          <label class="commercial-field">
+            <span>{{ 'commercialCountry' | translate }}</span>
+            <input type="text" class="commercial-input" formControlName="commercial_country" />
+            @if (isReviewFieldInvalid('commercial_country')) {
+              <small>{{ 'commercialRequiredField' | translate }}</small>
+            }
+          </label>
+
+          <label class="commercial-field">
+            <span>
+              {{ 'commercialRegisterCourt' | translate }}
+              <em>{{ 'commercialOptional' | translate }}</em>
+            </span>
+            <input
+              type="text"
+              class="commercial-input"
+              formControlName="commercial_register_court"
+            />
+          </label>
+
+          <label class="commercial-field">
+            <span>
+              {{ 'commercialRegisterNumber' | translate }}
+              <em>{{ 'commercialOptional' | translate }}</em>
+            </span>
+            <input
+              type="text"
+              class="commercial-input"
+              formControlName="commercial_register_number"
+            />
+          </label>
+
+          <label class="commercial-field">
+            <span>
+              {{ 'commercialVatId' | translate }}
+              <em>{{ 'commercialOptional' | translate }}</em>
+            </span>
+            <input type="text" class="commercial-input" formControlName="commercial_vat_id" />
+          </label>
+        </div>
+      </section>
+    }
+
+    <footer class="commercial-profile-form__actions">
+      <button type="submit" class="app-button app-button--secondary" [disabled]="isBusy()">
+        {{ (isSaving() ? 'commercialSaving' : 'commercialSave') | translate }}
+      </button>
+
+      @if (canRequestReview()) {
+        <button
+          type="button"
+          class="app-button app-button--primary"
+          [disabled]="isBusy()"
+          (click)="requestReview()"
+        >
+          {{
+            (isRequestingReview() ? 'commercialRequestingReview' : 'commercialRequestReview')
+              | translate
+          }}
+        </button>
+      }
+    </footer>
+  </form>
+</section>

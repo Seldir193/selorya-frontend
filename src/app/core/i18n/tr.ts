@@ -11,6 +11,7 @@ import { trCategoryMenuTexts } from './tr/category.tr';
 import { trListingTexts } from './tr/listing.tr';
 import { trDocumentsTexts } from './tr/documents.tr';
 import { favoritesTrTexts } from './tr/favorites.tr';
+import { trCommercialTexts } from './tr/commercial.tr';
 
 export const trTexts = {
   ...trFeedbackTexts,
@@ -26,4 +27,5 @@ export const trTexts = {
   ...trListingTexts,
   ...trDocumentsTexts,
   ...favoritesTrTexts,
+  ...trCommercialTexts,
 } as const;

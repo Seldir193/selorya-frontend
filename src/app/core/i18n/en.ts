@@ -13,6 +13,7 @@ import { enListingTexts } from './en/listing.en';
 
 import { enDocumentsTexts } from './en/documents.en';
 import { favoritesEnTexts } from './en/favorites.en';
+import { enCommercialTexts } from './en/commercial.en';
 
 export const enTexts = {
   ...enFeedbackTexts,
@@ -29,4 +30,5 @@ export const enTexts = {
   ...enListingTexts,
   ...enDocumentsTexts,
   ...favoritesEnTexts,
+  ...enCommercialTexts,
 } as const;

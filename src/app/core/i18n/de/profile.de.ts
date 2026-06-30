@@ -27,6 +27,11 @@ export const deProfileTexts = {
   profileAccountDetailsTitle: 'Persönliche Übersicht',
   profileSellerCardLabel: 'Verkaufen auf Selorya',
   profileSellerCardTitle: 'Verkäuferprofil',
+  profileCommercialCardLabel: 'Gewerblich verkaufen',
+  profileCommercialCardTitle: 'Unternehmensprofil',
+  profileSellerType: 'Verkäuferart',
+  profileCommercialStatus: 'Prüfstatus',
+  profileCommercialManageAction: 'Unternehmensprofil verwalten',
   profileTrustCardLabel: 'Status',
   profileTrustCardTitle: 'Account-Bereich',
   profileFullName: 'Vollständiger Name',
@@ -43,15 +48,12 @@ export const deProfileTexts = {
 
   profileAvatarInvalid: 'Bitte wähle eine gültige Bilddatei aus.',
   profileAvatarTooLarge: 'Das Profilbild darf maximal 3 MB groß sein.',
-
   profileEditAvatarTitle: 'Profilbild',
   profileEditAvatarSubtitle: 'Lade ein Bild hoch, das dein Selorya Konto sichtbar macht.',
   profileAvatarUploadTitle: 'Profilbild auswählen',
   profileAvatarUploadHint: 'PNG oder JPG, maximal 3 MB. Das Bild wird rund dargestellt.',
   profileAvatarChooseFile: 'Bild auswählen',
-
   profileAvatarRemove: 'Bild entfernen',
   profileAvatarRemoved: 'Profilbild wurde entfernt.',
-
   profileAccountBadge: 'Selorya Konto',
 } as const;
