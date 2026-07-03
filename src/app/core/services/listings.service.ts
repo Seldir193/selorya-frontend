@@ -1,14 +1,24 @@
-import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
+import { Injectable, inject } from '@angular/core';
 import { Observable, tap } from 'rxjs';
 import { API_BASE_URL } from '../config/api.config';
-import { Listing, ListingCreatePayload, ListingUpdatePayload } from '../models/listing.model';
+import {
+  Listing,
+  ListingCreatePayload,
+  ListingStatus,
+  ListingUpdatePayload,
+} from '../models/listing.model';
 
 type ListingListParams = {
   category?: string;
   search?: string;
   minPrice?: string;
   maxPrice?: string;
+};
+
+export type ListingModerationParams = {
+  status?: ListingStatus;
+  search?: string;
 };
 
 type ListingImagePayload = {
@@ -61,6 +71,26 @@ export class ListingsService {
       .pipe(tap((listings) => this.cacheListings(listings)));
   }
 
+  listForModeration(params: ListingModerationParams): Observable<Listing[]> {
+    return this.http.get<Listing[]>(`${API_BASE_URL}/listings/moderation/`, {
+      params: this.buildModerationParams(params),
+    });
+  }
+
+  approveModeration(slug: string): Observable<Listing> {
+    return this.http
+      .post<Listing>(`${API_BASE_URL}/listings/${slug}/moderation/approve/`, {})
+      .pipe(tap((listing) => this.handleModeratedListing(slug, listing)));
+  }
+
+  rejectModeration(slug: string, reason: string): Observable<Listing> {
+    return this.http
+      .post<Listing>(`${API_BASE_URL}/listings/${slug}/moderation/reject/`, {
+        reason: reason.trim(),
+      })
+      .pipe(tap((listing) => this.handleModeratedListing(slug, listing)));
+  }
+
   create(payload: ListingCreatePayload): Observable<Listing> {
     return this.http
       .post<Listing>(`${API_BASE_URL}/listings/create/`, payload)
@@ -108,8 +138,19 @@ export class ListingsService {
     return this.appendParam(httpParams, 'max_price', params?.maxPrice);
   }
 
+  private buildModerationParams(params: ListingModerationParams): HttpParams {
+    let httpParams = new HttpParams();
+    httpParams = this.appendParam(httpParams, 'status', params.status);
+    return this.appendTrimmedParam(httpParams, 'search', params.search);
+  }
+
   private appendParam(params: HttpParams, key: string, value?: string): HttpParams {
     return value ? params.set(key, value) : params;
+  }
+
+  private appendTrimmedParam(params: HttpParams, key: string, value?: string): HttpParams {
+    const normalizedValue = value?.trim();
+    return normalizedValue ? params.set(key, normalizedValue) : params;
   }
 
   private buildImageFormData(
@@ -146,6 +187,15 @@ export class ListingsService {
   private cacheUpdatedListing(previousSlug: string, listing: Listing): void {
     this.removeCachedListing(previousSlug);
     this.cacheListing(listing);
+  }
+
+  private handleModeratedListing(previousSlug: string, listing: Listing): void {
+    this.removeCachedListing(previousSlug);
+    localStorage.removeItem(this.listCacheKey);
+
+    if (listing.status === 'published') {
+      this.cacheListing(listing);
+    }
   }
 
   private removeCachedListing(slug: string): void {

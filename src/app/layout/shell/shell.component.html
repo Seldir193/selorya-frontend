@@ -173,6 +173,17 @@
                       >
                         {{ 'adminCommercialNav' | translate }}
                       </a>
+
+                      <a
+                        routerLink="/admin/listing-moderation"
+                        class="user-menu__item"
+                        (click)="closeUserMenu()"
+                        [class.user-menu__item--active]="
+                          isCurrentRoute('/admin/listing-moderation')
+                        "
+                      >
+                        {{ 'adminListingModerationNav' | translate }}
+                      </a>
                     </div>
                   }
 

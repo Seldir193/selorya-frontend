@@ -1,0 +1,201 @@
+<section class="admin-listing-moderation-page">
+  <header class="admin-listing-moderation-page__head">
+    <div>
+      <p>{{ text('adminListingModerationEyebrow') }}</p>
+      <h1>{{ text('adminListingModerationTitle') }}</h1>
+      <span>{{ text('adminListingModerationSubtitle') }}</span>
+    </div>
+
+    <button
+      type="button"
+      class="app-button app-button--secondary"
+      [disabled]="isLoading()"
+      (click)="loadListings()"
+    >
+      {{ text('adminListingModerationReload') }}
+    </button>
+  </header>
+
+  <form class="admin-listing-moderation-toolbar" (submit)="submitSearch($event)">
+    <label class="admin-listing-moderation-field">
+      <span>{{ text('adminListingModerationSearchLabel') }}</span>
+
+      <input
+        type="search"
+        [value]="searchQuery()"
+        [placeholder]="text('adminListingModerationSearchPlaceholder')"
+        (input)="updateSearchQuery($event)"
+      />
+    </label>
+
+    <button type="submit" class="app-button app-button--primary">
+      {{ text('adminListingModerationSearchAction') }}
+    </button>
+  </form>
+
+  @if (isLoading()) {
+    <section class="admin-listing-moderation-state">
+      <h2>{{ text('adminListingModerationLoadingTitle') }}</h2>
+      <p>{{ text('adminListingModerationLoadingDescription') }}</p>
+    </section>
+  } @else if (hasError()) {
+    <section class="admin-listing-moderation-state">
+      <h2>{{ text('adminListingModerationLoadFailedTitle') }}</h2>
+      <p>{{ text('adminListingModerationLoadFailedDescription') }}</p>
+
+      <button type="button" class="app-button app-button--primary" (click)="loadListings()">
+        {{ text('adminListingModerationRetry') }}
+      </button>
+    </section>
+  } @else if (!listings().length) {
+    <section class="admin-listing-moderation-state">
+      <h2>{{ text('adminListingModerationEmptyTitle') }}</h2>
+      <p>{{ text('adminListingModerationEmptyDescription') }}</p>
+    </section>
+  } @else {
+    <div class="admin-listing-moderation-list">
+      @for (listing of listings(); track listing.id) {
+        <article class="admin-listing-card">
+          <div class="admin-listing-card__image">
+            @if (imageUrl(listing); as imageUrl) {
+              <img [src]="imageUrl" [alt]="listing.title" />
+            } @else {
+              <span>{{ text('adminListingModerationNoImage') }}</span>
+            }
+          </div>
+
+          <div class="admin-listing-card__content">
+            <header class="admin-listing-card__head">
+              <div>
+                <span class="app-badge admin-listing-card__status">
+                  {{ text('adminListingModerationPendingStatus') }}
+                </span>
+
+                <h2>{{ listing.title }}</h2>
+              </div>
+
+              <strong>{{ +listing.price | currency: 'EUR' }}</strong>
+            </header>
+
+            <p class="admin-listing-card__description">
+              {{ listing.description }}
+            </p>
+
+            <dl class="admin-listing-card__details">
+              <div>
+                <dt>{{ text('adminListingModerationCategory') }}</dt>
+                <dd>{{ listing.category_data.name }}</dd>
+              </div>
+
+              <div>
+                <dt>{{ text('adminListingModerationCondition') }}</dt>
+                <dd>{{ conditionLabel(listing.condition) }}</dd>
+              </div>
+
+              <div>
+                <dt>{{ text('adminListingModerationLocation') }}</dt>
+                <dd>{{ locationLabel(listing) }}</dd>
+              </div>
+
+              <div>
+                <dt>{{ text('adminListingModerationSubmittedAt') }}</dt>
+                <dd>{{ submittedDate(listing) }}</dd>
+              </div>
+
+              <div class="admin-listing-card__seller">
+                <dt>{{ text('adminListingModerationSeller') }}</dt>
+                <dd>
+                  <strong>{{ listing.seller_name }}</strong>
+                  <span>{{ sellerTypeLabel(listing) }}</span>
+                  <a [href]="'mailto:' + listing.seller_email">
+                    {{ listing.seller_email }}
+                  </a>
+                </dd>
+              </div>
+            </dl>
+
+            <footer class="admin-listing-card__actions">
+              <button
+                type="button"
+                class="app-button app-button--secondary"
+                (click)="openDecisionDialog(listing, 'reject')"
+              >
+                {{ text('adminListingModerationRejectAction') }}
+              </button>
+
+              <button
+                type="button"
+                class="app-button app-button--primary"
+                (click)="openDecisionDialog(listing, 'approve')"
+              >
+                {{ text('adminListingModerationApproveAction') }}
+              </button>
+            </footer>
+          </div>
+        </article>
+      }
+    </div>
+  }
+
+  <app-dialog
+    [isOpen]="isDecisionDialogOpen()"
+    [title]="decisionTitle()"
+    [ariaLabel]="decisionTitle()"
+    size="sm"
+    [closeOnBackdrop]="!isActionSubmitting()"
+    (close)="closeDecisionDialog()"
+  >
+    <p dialog-subtitle class="admin-listing-dialog__subtitle">
+      {{ decisionDescription() }}
+    </p>
+
+    @if (selectedListing(); as listing) {
+      <div class="admin-listing-dialog__listing">
+        <strong>{{ listing.title }}</strong>
+        <span>{{ listing.seller_name }} · {{ listing.seller_email }}</span>
+      </div>
+    }
+
+    @if (requiresDecisionReason()) {
+      <div [formGroup]="decisionForm">
+        <label class="admin-listing-dialog__field">
+          <span>{{ text('adminListingModerationDecisionReason') }}</span>
+
+          <textarea
+            rows="5"
+            formControlName="reason"
+            [placeholder]="text('adminListingModerationDecisionReasonPlaceholder')"
+          ></textarea>
+
+          @if (isDecisionReasonInvalid()) {
+            <small>
+              {{ text('adminListingModerationDecisionReasonRequired') }}
+            </small>
+          }
+        </label>
+      </div>
+    }
+
+    <footer dialog-actions class="admin-listing-dialog__actions">
+      <button
+        type="button"
+        class="app-button app-button--secondary"
+        [disabled]="isActionSubmitting()"
+        (click)="closeDecisionDialog()"
+      >
+        {{ text('adminListingModerationCancelAction') }}
+      </button>
+
+      <button
+        type="button"
+        class="app-button"
+        [class.app-button--primary]="selectedAction() === 'approve'"
+        [class.app-button--danger]="selectedAction() === 'reject'"
+        [disabled]="!canConfirmDecision()"
+        (click)="confirmDecision()"
+      >
+        {{ decisionConfirmLabel() }}
+      </button>
+    </footer>
+  </app-dialog>
+</section>
