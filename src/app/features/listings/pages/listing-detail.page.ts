@@ -7,7 +7,7 @@ import { I18nService } from '../../../core/services/i18n.service';
 import { ListingsService } from '../../../core/services/listings.service';
 import { OrdersService } from '../../../core/services/orders.service';
 import { ToastService } from '../../../core/services/toast.service';
-import { Listing } from '../../../core/models/listing.model';
+import { CommercialSellerPublic, Listing } from '../../../core/models/listing.model';
 
 @Component({
   selector: 'app-listing-detail-page',
@@ -119,6 +119,18 @@ export class ListingDetailPage {
 
   primaryImage(): string {
     return this.selectedImageUrl();
+  }
+
+  commercialSeller(): CommercialSellerPublic | null {
+    return this.listing()?.commercial_seller ?? null;
+  }
+
+  commercialPhoneHref(phone: string): string {
+    return `tel:${phone.replace(/[^\d+]/g, '')}`;
+  }
+
+  text(key: string): string {
+    return this.i18n.t(key);
   }
 
   selectImage(imageUrl: string): void {

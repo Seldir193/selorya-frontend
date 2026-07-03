@@ -25,6 +25,14 @@ export const enListingTexts = {
     'Your commercial seller profile is not approved yet. You can save listings as drafts, but cannot submit them for product review.',
   listingCommercialDraftGateAction: 'Open business profile',
 
+  listingCommercialSellerEyebrow: 'Ticari satıcı',
+  listingCommercialSellerRepresentative: 'Yetkili temsilci',
+  listingCommercialSellerBusinessAddress: 'Şirket adresi',
+  listingCommercialSellerBusinessEmail: 'Şirket e-posta adresi',
+  listingCommercialSellerBusinessPhone: 'Şirket telefon numarası',
+  listingCommercialSellerRegistry: 'Sicil bilgileri',
+  listingCommercialSellerVatId: 'KDV numarası',
+
   listingSellEyebrow: 'Sell on Selorya',
   createListingTitle: 'Create listing',
   createListingDescription: 'Add product details, price, condition and images.',

@@ -56,6 +56,88 @@
           <span>Seller: {{ listing()!.seller_name }}</span>
         </div>
 
+        @if (commercialSeller(); as seller) {
+          <section class="commercial-seller-card" aria-labelledby="commercial-seller-title">
+            <header class="commercial-seller-card__head">
+              <p>{{ text('listingCommercialSellerEyebrow') }}</p>
+              <h2 id="commercial-seller-title">{{ seller.legal_name }}</h2>
+
+              @if (seller.legal_form) {
+                <span>{{ seller.legal_form }}</span>
+              }
+            </header>
+
+            <dl class="commercial-seller-card__details">
+              @if (seller.representative_name) {
+                <div>
+                  <dt>{{ text('listingCommercialSellerRepresentative') }}</dt>
+                  <dd>{{ seller.representative_name }}</dd>
+                </div>
+              }
+
+              @if (seller.email) {
+                <div>
+                  <dt>{{ text('listingCommercialSellerBusinessEmail') }}</dt>
+                  <dd>
+                    <a [href]="'mailto:' + seller.email">{{ seller.email }}</a>
+                  </dd>
+                </div>
+              }
+
+              @if (seller.phone) {
+                <div>
+                  <dt>{{ text('listingCommercialSellerBusinessPhone') }}</dt>
+                  <dd>
+                    <a [href]="commercialPhoneHref(seller.phone)">
+                      {{ seller.phone }}
+                    </a>
+                  </dd>
+                </div>
+              }
+
+              @if (seller.address_line_1 || seller.postal_code || seller.city || seller.country) {
+                <div class="commercial-seller-card__details-full">
+                  <dt>{{ text('listingCommercialSellerBusinessAddress') }}</dt>
+                  <dd>
+                    <address>
+                      @if (seller.address_line_1) {
+                        <span>{{ seller.address_line_1 }}</span>
+                      }
+
+                      @if (seller.address_line_2) {
+                        <span>{{ seller.address_line_2 }}</span>
+                      }
+
+                      <span>{{ seller.postal_code }} {{ seller.city }}</span>
+                      <span>{{ seller.country }}</span>
+                    </address>
+                  </dd>
+                </div>
+              }
+
+              @if (seller.register_court || seller.register_number) {
+                <div>
+                  <dt>{{ text('listingCommercialSellerRegistry') }}</dt>
+                  <dd>
+                    {{ seller.register_court }}
+                    @if (seller.register_court && seller.register_number) {
+                      ·
+                    }
+                    {{ seller.register_number }}
+                  </dd>
+                </div>
+              }
+
+              @if (seller.vat_id) {
+                <div>
+                  <dt>{{ text('listingCommercialSellerVatId') }}</dt>
+                  <dd>{{ seller.vat_id }}</dd>
+                </div>
+              }
+            </dl>
+          </section>
+        }
+
         <div class="detail-actions">
           <button type="button" class="app-button app-button--secondary" (click)="addToFavorites()">
             Add to Favorites

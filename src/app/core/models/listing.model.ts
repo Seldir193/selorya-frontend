@@ -1,4 +1,5 @@
 import { Category } from './category.model';
+import { SellerType } from './auth.model';
 
 export type ListingStatus =
   | 'draft'
@@ -22,11 +23,29 @@ export type ListingImage = {
   updated_at: string;
 };
 
+export type CommercialSellerPublic = {
+  legal_name: string;
+  legal_form: string;
+  representative_name: string;
+  email: string;
+  phone: string;
+  address_line_1: string;
+  address_line_2: string;
+  postal_code: string;
+  city: string;
+  country: string;
+  register_court: string;
+  register_number: string;
+  vat_id: string;
+};
+
 export type Listing = {
   id: number;
   seller: number;
   seller_name: string;
   seller_email: string;
+  seller_type: SellerType | null;
+  commercial_seller: CommercialSellerPublic | null;
   category: number;
   category_data: Category;
   title: string;

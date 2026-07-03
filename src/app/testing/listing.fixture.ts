@@ -5,6 +5,8 @@ const defaultListing: Listing = {
   seller: 4,
   seller_name: 'Selorya Seller',
   seller_email: 'seller@example.com',
+  seller_type: 'private',
+  commercial_seller: null,
   category: 2,
   category_data: {
     id: 2,

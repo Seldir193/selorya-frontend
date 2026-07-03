@@ -19,6 +19,14 @@ export const deListingTexts = {
     'Dein gewerbliches Verkäuferprofil ist noch nicht freigegeben. Du kannst Anzeigen als Entwurf speichern, aber nicht zur Produktprüfung einreichen.',
   listingCommercialDraftGateAction: 'Unternehmensprofil öffnen',
 
+  listingCommercialSellerEyebrow: 'Gewerblicher Verkäufer',
+  listingCommercialSellerRepresentative: 'Vertretungsberechtigte Person',
+  listingCommercialSellerBusinessAddress: 'Geschäftsanschrift',
+  listingCommercialSellerBusinessEmail: 'Geschäftliche E-Mail',
+  listingCommercialSellerBusinessPhone: 'Geschäftliche Telefonnummer',
+  listingCommercialSellerRegistry: 'Registerdaten',
+  listingCommercialSellerVatId: 'Umsatzsteuer-ID',
+
   listingStatusPendingReviewLabel: 'In Prüfung',
 
   listingCurrentModerationStatus: 'Aktueller Moderationsstatus',

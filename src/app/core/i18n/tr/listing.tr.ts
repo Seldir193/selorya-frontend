@@ -26,6 +26,14 @@ export const trListingTexts = {
     'Ticari satıcı profilin henüz onaylanmadı. İlanları taslak olarak kaydedebilirsin ancak ürün incelemesine gönderemezsin.',
   listingCommercialDraftGateAction: 'Şirket profilini aç',
 
+  listingCommercialSellerEyebrow: 'Ticari satıcı',
+  listingCommercialSellerRepresentative: 'Yetkili temsilci',
+  listingCommercialSellerBusinessAddress: 'Şirket adresi',
+  listingCommercialSellerBusinessEmail: 'Şirket e-posta adresi',
+  listingCommercialSellerBusinessPhone: 'Şirket telefon numarası',
+  listingCommercialSellerRegistry: 'Sicil bilgileri',
+  listingCommercialSellerVatId: 'KDV numarası',
+
   listingSellEyebrow: "Selorya'da satış yap",
   createListingTitle: 'İlan oluştur',
   createListingDescription: 'Ürün bilgilerini, fiyatı, durumu ve görselleri ekle.',
