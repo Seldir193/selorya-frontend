@@ -1,7 +1,7 @@
 import { Component, HostListener, OnDestroy, computed, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
-import { forkJoin, of, switchMap } from 'rxjs';
+import { Observable, forkJoin, of, switchMap } from 'rxjs';
 import { AuthService } from '../../../core/services/auth.service';
 import { CategoriesService } from '../../../core/services/categories.service';
 import { I18nService } from '../../../core/services/i18n.service';
@@ -277,19 +277,24 @@ export class CreateListingPage implements OnDestroy {
   }
 
   private createListing(): void {
+    const draftPayload = this.createPayload('draft');
+    const submissionPayload = this.createPayload(this.requestedStatus());
     this.listingsService
-      .create(this.createPayload())
-      .pipe(switchMap((listing) => this.uploadListingImages(listing)))
+      .create(draftPayload)
+      .pipe(
+        switchMap((listing) => this.uploadListingImages(listing)),
+        switchMap((listing) => this.finalizeListing(listing, submissionPayload)),
+      )
       .subscribe({
         next: (listing) => this.handleCreatedListing(listing),
         error: () => this.handleCreateError(),
       });
   }
 
-  private createPayload(): ListingCreatePayload {
+  private createPayload(status: ListingSubmissionStatus): ListingCreatePayload {
     return {
       ...this.form.getRawValue(),
-      status: this.requestedStatus(),
+      status,
     };
   }
 
@@ -297,12 +302,12 @@ export class CreateListingPage implements OnDestroy {
     return this.isCommercialReviewRestricted() ? 'draft' : this.form.controls.status.value;
   }
 
-  private uploadListingImages(listing: Listing) {
+  private uploadListingImages(listing: Listing): Observable<Listing> {
     const files = this.selectedFiles();
     return files.length ? this.uploadSelectedImages(listing, files) : of(listing);
   }
 
-  private uploadSelectedImages(listing: Listing, files: File[]) {
+  private uploadSelectedImages(listing: Listing, files: File[]): Observable<Listing> {
     const uploads = files.map((file, index) => {
       return this.listingsService.uploadImage(
         listing.slug,
@@ -314,6 +319,13 @@ export class CreateListingPage implements OnDestroy {
     });
 
     return forkJoin(uploads).pipe(switchMap(() => of(listing)));
+  }
+
+  private finalizeListing(listing: Listing, payload: ListingCreatePayload): Observable<Listing> {
+    if (payload.status === 'draft') {
+      return of(listing);
+    }
+    return this.listingsService.update(listing.slug, payload);
   }
 
   private handleCreatedListing(listing: Listing): void {
