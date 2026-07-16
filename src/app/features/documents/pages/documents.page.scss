@@ -1,7 +1,6 @@
 .documents-page {
   max-width: 1120px;
   margin: 0 auto;
-  // padding: 32px 24px 56px;
 
   padding: var(--page-padding-top) var(--page-padding-inline) var(--page-padding-bottom);
 }
@@ -54,12 +53,6 @@
   flex-wrap: wrap;
 }
 
-// .document-card a {
-//   color: var(--color-primary);
-//   text-decoration: none;
-//   font-weight: 700;
-// }
-
 .document-actions {
   display: flex;
   gap: 14px;
@@ -89,16 +82,6 @@
     transform 160ms ease;
 }
 
-// .document-download svg {
-//   width: 18px;
-//   height: 18px;
-//   fill: none;
-//   flex: 0 0 auto;
-//   stroke: currentColor;
-//   stroke-linecap: round;
-//   stroke-linejoin: round;
-//   stroke-width: 1.8;
-// }
 .document-download__icon {
   width: 18px;
   height: 18px;
@@ -124,9 +107,3 @@
   color: var(--color-text-soft);
   font-size: 0.875rem;
 }
-
-// .document-actions a {
-//   color: var(--color-primary);
-//   text-decoration: none;
-//   font-weight: 700;
-// }

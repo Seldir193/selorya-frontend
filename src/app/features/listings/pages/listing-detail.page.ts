@@ -33,11 +33,6 @@ export class ListingDetailPage {
   readonly selectedImageIndex = signal(0);
   readonly isPreviewOpen = signal(false);
 
-  // constructor() {
-  //   const slug = this.route.snapshot.paramMap.get('slug') ?? '';
-  //   this.loadListing(slug);
-  // }
-
   constructor() {
     this.prepareScrollPosition();
     const slug = this.route.snapshot.paramMap.get('slug') ?? '';
@@ -63,14 +58,6 @@ export class ListingDetailPage {
     });
   }
 
-  // private setLoadedListing(listing: Listing): void {
-  //   const imageUrl = this.primaryImageFrom(listing);
-  //   this.listing.set(listing);
-  //   this.selectedImageUrl.set(imageUrl);
-  //   this.selectedImageIndex.set(this.imageIndexFromUrl(listing, imageUrl));
-  //   this.isLoading.set(false);
-  // }
-
   private setLoadedListing(listing: Listing): void {
     const imageUrl = this.primaryImageFrom(listing);
     this.listing.set(listing);
@@ -79,31 +66,15 @@ export class ListingDetailPage {
     this.finishLoading();
   }
 
-  // private setMissingListing(): void {
-  //   this.listing.set(null);
-  //   this.isLoading.set(false);
-  // }
-
   private setMissingListing(): void {
     this.listing.set(null);
     this.finishLoading();
   }
 
-  // private finishLoading(): void {
-  //   this.isLoading.set(false);
-  //   this.scrollToTopAfterRender();
-  // }
-
   private finishLoading(): void {
     this.isLoading.set(false);
     this.resetScrollAfterRender();
   }
-
-  // private scrollToTopAfterRender(): void {
-  //   requestAnimationFrame(() => {
-  //     window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
-  //   });
-  // }
 
   private resetScrollAfterRender(): void {
     requestAnimationFrame(() => {

@@ -84,7 +84,3 @@ export type ListingCreatePayload = ListingBasePayload & {
 export type ListingUpdatePayload = ListingBasePayload & {
   status?: ListingSubmissionStatus;
 };
-
-// export type ListingUpdatePayload = ListingBasePayload & {
-//   status?: ListingStatus;
-// };
