@@ -1,0 +1,191 @@
+<section class="checkout-page">
+  <a
+    class="checkout-page__back"
+    [routerLink]="listing() ? ['/listings', listing()!.slug] : ['/listings']"
+  >
+    ← {{ text('checkoutBackToListing') }}
+  </a>
+
+  @if (isLoading()) {
+    <section class="checkout-state" aria-live="polite">
+      <h1>{{ text('checkoutLoadingTitle') }}</h1>
+      <p>{{ text('checkoutLoadingDescription') }}</p>
+    </section>
+  } @else if (hasError() || !listing()) {
+    <section class="checkout-state">
+      <h1>{{ text('checkoutErrorTitle') }}</h1>
+      <p>{{ text('checkoutErrorDescription') }}</p>
+      <button type="button" class="app-button app-button--primary" (click)="loadCheckout()">
+        {{ text('checkoutRetryAction') }}
+      </button>
+    </section>
+  } @else {
+    <header class="checkout-page__head">
+      <p>{{ text('checkoutEyebrow') }}</p>
+      <h1>{{ text('checkoutTitle') }}</h1>
+      <span>{{ text('checkoutDescription') }}</span>
+    </header>
+
+    <div class="checkout-layout">
+      <form class="checkout-form" [formGroup]="form" (ngSubmit)="submit()">
+        <section class="checkout-section" aria-labelledby="checkout-shipping-title">
+          <header class="checkout-section__head">
+            <span>1</span>
+            <div>
+              <h2 id="checkout-shipping-title">{{ text('checkoutShippingTitle') }}</h2>
+              <p>{{ text('checkoutShippingDescription') }}</p>
+            </div>
+          </header>
+
+          <div class="shipping-options">
+            @for (option of shippingOptions(); track option.id) {
+              <label class="shipping-option">
+                <input type="radio" formControlName="shipping_option_id" [value]="option.id" />
+                <span class="shipping-option__marker" aria-hidden="true"></span>
+                <span class="shipping-option__content">
+                  <strong>{{ option.name }}</strong>
+                  <small>{{ option.carrier }} · {{ option.service_level }}</small>
+                </span>
+                <strong class="shipping-option__price">
+                  {{ shippingOptionPrice(option) }}
+                </strong>
+              </label>
+            }
+          </div>
+        </section>
+
+        <section class="checkout-section" aria-labelledby="checkout-address-title">
+          <header class="checkout-section__head">
+            <span>2</span>
+            <div>
+              <h2 id="checkout-address-title">{{ text('checkoutAddressTitle') }}</h2>
+              <p>{{ text('checkoutAddressDescription') }}</p>
+            </div>
+          </header>
+
+          <div class="checkout-fields">
+            <label class="checkout-field checkout-fields__full">
+              <span>{{ text('checkoutRecipientName') }}</span>
+              <input
+                type="text"
+                formControlName="recipient_name"
+                [attr.aria-invalid]="fieldInvalid('recipient_name')"
+              />
+              @if (fieldInvalid('recipient_name')) {
+                <small>{{ text('checkoutFieldRequired') }}</small>
+              }
+            </label>
+
+            <label class="checkout-field checkout-fields__full">
+              <span>{{ text('checkoutAddressLine1') }}</span>
+              <input
+                type="text"
+                formControlName="address_line_1"
+                [attr.aria-invalid]="fieldInvalid('address_line_1')"
+              />
+              @if (fieldInvalid('address_line_1')) {
+                <small>{{ text('checkoutFieldRequired') }}</small>
+              }
+            </label>
+
+            <label class="checkout-field checkout-fields__full">
+              <span>{{ text('checkoutAddressLine2') }}</span>
+              <input type="text" formControlName="address_line_2" />
+            </label>
+
+            <label class="checkout-field">
+              <span>{{ text('checkoutPostalCode') }}</span>
+              <input
+                type="text"
+                formControlName="postal_code"
+                [attr.aria-invalid]="fieldInvalid('postal_code')"
+              />
+              @if (fieldInvalid('postal_code')) {
+                <small>{{ text('checkoutFieldRequired') }}</small>
+              }
+            </label>
+
+            <label class="checkout-field">
+              <span>{{ text('checkoutCity') }}</span>
+              <input
+                type="text"
+                formControlName="city"
+                [attr.aria-invalid]="fieldInvalid('city')"
+              />
+              @if (fieldInvalid('city')) {
+                <small>{{ text('checkoutFieldRequired') }}</small>
+              }
+            </label>
+
+            <label class="checkout-field checkout-fields__full">
+              <span>{{ text('checkoutCountry') }}</span>
+              <input
+                type="text"
+                formControlName="country"
+                [attr.aria-invalid]="fieldInvalid('country')"
+              />
+              @if (fieldInvalid('country')) {
+                <small>{{ text('checkoutFieldRequired') }}</small>
+              }
+            </label>
+          </div>
+        </section>
+
+        <section class="checkout-section checkout-section--payment">
+          <header class="checkout-section__head">
+            <span>3</span>
+            <div>
+              <h2>{{ text('checkoutPaymentTitle') }}</h2>
+              <p>{{ text('checkoutPaymentDescription') }}</p>
+            </div>
+          </header>
+
+          <div class="checkout-payment">
+            <span>{{ text('checkoutPaymentProvider') }}</span>
+            <strong>{{ providerLabel() }}</strong>
+          </div>
+
+          <button
+            type="submit"
+            class="app-button app-button--primary checkout-form__submit"
+            [disabled]="isSubmitting()"
+          >
+            {{ submitLabel() }}
+          </button>
+        </section>
+      </form>
+
+      <aside class="checkout-summary-card">
+        <h2>{{ text('checkoutSummaryTitle') }}</h2>
+
+        <div class="checkout-product-card">
+          @if (listingImage()) {
+            <img [src]="listingImage()" [alt]="listing()!.title" />
+          } @else {
+            <div class="checkout-product-card__placeholder" aria-hidden="true"></div>
+          }
+
+          <div>
+            <strong>{{ listing()!.title }}</strong>
+            <span>{{ listing()!.condition }}</span>
+          </div>
+        </div>
+
+        <dl class="checkout-costs">
+          <div>
+            <dt>{{ text('checkoutItemPrice') }}</dt>
+            <dd>{{ listingPrice() }}</dd>
+          </div>
+          <div>
+            <dt>{{ text('checkoutShippingPrice') }}</dt>
+            <dd>{{ shippingPrice() }}</dd>
+          </div>
+        </dl>
+
+        <p class="checkout-summary-card__notice">
+          {{ text('checkoutFinalTotalNotice') }}
+        </p>
+      </aside>
+    </div>
+  }
+</section>

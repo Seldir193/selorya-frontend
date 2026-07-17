@@ -5,9 +5,9 @@ import { AuthService } from '../../../core/services/auth.service';
 import { FavoritesService } from '../../../core/services/favorites.service';
 import { I18nService } from '../../../core/services/i18n.service';
 import { ListingsService } from '../../../core/services/listings.service';
-import { OrdersService } from '../../../core/services/orders.service';
 import { ToastService } from '../../../core/services/toast.service';
 import { CommercialSellerPublic, Listing } from '../../../core/models/listing.model';
+import { CheckoutProvider } from '../../../core/models/order.model';
 
 @Component({
   selector: 'app-listing-detail-page',
@@ -21,7 +21,6 @@ export class ListingDetailPage {
   private readonly router = inject(Router);
   private readonly listingsService = inject(ListingsService);
   private readonly favoritesService = inject(FavoritesService);
-  private readonly ordersService = inject(OrdersService);
   private readonly toast = inject(ToastService);
   private readonly i18n = inject(I18nService);
   readonly authService = inject(AuthService);
@@ -214,14 +213,14 @@ export class ListingDetailPage {
   }
 
   buyWithStripe(): void {
-    this.createOrderAndCheckout('stripe');
+    this.openCheckout('stripe');
   }
 
   buyWithPayPal(): void {
-    this.createOrderAndCheckout('paypal');
+    this.openCheckout('paypal');
   }
 
-  private createOrderAndCheckout(provider: 'stripe' | 'paypal'): void {
+  private openCheckout(provider: CheckoutProvider): void {
     const listing = this.listing();
     if (!listing) {
       return;
@@ -232,46 +231,6 @@ export class ListingDetailPage {
       return;
     }
 
-    this.ordersService.create(listing.id).subscribe({
-      next: (order) => this.startCheckout(provider, order.id),
-      error: () => this.handleOrderCreateError(),
-    });
-  }
-
-  private startCheckout(provider: 'stripe' | 'paypal', orderId: number): void {
-    if (provider === 'stripe') {
-      this.startStripeCheckout(orderId);
-      return;
-    }
-    this.startPayPalCheckout(orderId);
-  }
-
-  private startStripeCheckout(orderId: number): void {
-    this.ordersService.startStripeCheckout(orderId).subscribe({
-      next: (response) => {
-        window.location.href = response.checkout_url;
-      },
-      error: () => {
-        this.actionText.set(this.i18n.t('stripeStartFailed'));
-        this.toast.error(this.i18n.t('stripeStartFailed'));
-      },
-    });
-  }
-
-  private startPayPalCheckout(orderId: number): void {
-    this.ordersService.startPayPalCheckout(orderId).subscribe({
-      next: (response) => {
-        window.location.href = response.approve_url;
-      },
-      error: () => {
-        this.actionText.set(this.i18n.t('paypalStartFailed'));
-        this.toast.error(this.i18n.t('paypalStartFailed'));
-      },
-    });
-  }
-
-  private handleOrderCreateError(): void {
-    this.actionText.set(this.i18n.t('orderCreateFailed'));
-    this.toast.error(this.i18n.t('orderCreateFailed'));
+    this.router.navigate(['/checkout', provider, listing.slug]);
   }
 }

@@ -3,9 +3,15 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { API_BASE_URL } from '../config/api.config';
 import {
+  CheckoutProvider,
+  CheckoutResponse,
   Order,
+  OrderCreatePayload,
   OrderScope,
   PayPalCheckoutResponse,
+  Shipment,
+  ShippingOption,
+  ShippingSelectionPayload,
   StripeCheckoutResponse,
 } from '../models/order.model';
 
@@ -25,11 +31,16 @@ export class OrdersService {
     return this.http.get<Order>(`${API_BASE_URL}/orders/${id}/`);
   }
 
-  create(listingId: number, quantity = 1): Observable<Order> {
-    return this.http.post<Order>(`${API_BASE_URL}/orders/create/`, {
-      listing_id: listingId,
-      quantity,
-    });
+  shippingOptions(): Observable<ShippingOption[]> {
+    return this.http.get<ShippingOption[]>(`${API_BASE_URL}/orders/shipping-options/`);
+  }
+
+  create(payload: OrderCreatePayload): Observable<Order> {
+    return this.http.post<Order>(`${API_BASE_URL}/orders/create/`, payload);
+  }
+
+  selectShipping(orderId: number, shipping: ShippingSelectionPayload): Observable<Shipment> {
+    return this.http.post<Shipment>(`${API_BASE_URL}/orders/${orderId}/shipment/select/`, shipping);
   }
 
   startStripeCheckout(orderId: number): Observable<StripeCheckoutResponse> {
@@ -42,5 +53,11 @@ export class OrdersService {
     return this.http.post<PayPalCheckoutResponse>(`${API_BASE_URL}/payments/paypal/create-order/`, {
       order_id: orderId,
     });
+  }
+
+  startCheckout(provider: CheckoutProvider, orderId: number): Observable<CheckoutResponse> {
+    return provider === 'stripe'
+      ? this.startStripeCheckout(orderId)
+      : this.startPayPalCheckout(orderId);
   }
 }

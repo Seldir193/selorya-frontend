@@ -8,7 +8,6 @@ import { AuthService } from '../../../core/services/auth.service';
 import { FavoritesService } from '../../../core/services/favorites.service';
 import { I18nService } from '../../../core/services/i18n.service';
 import { ListingsService } from '../../../core/services/listings.service';
-import { OrdersService } from '../../../core/services/orders.service';
 import { ToastService } from '../../../core/services/toast.service';
 import { createListing } from '../../../testing/listing.fixture';
 import { ListingDetailPage } from './listing-detail.page';
@@ -36,6 +35,7 @@ describe('ListingDetailPage', () => {
   };
 
   const router = {
+    navigate: vi.fn(),
     navigateByUrl: vi.fn(),
   };
 
@@ -45,12 +45,6 @@ describe('ListingDetailPage', () => {
 
   const favoritesService = {
     create: vi.fn(),
-  };
-
-  const ordersService = {
-    create: vi.fn(),
-    startStripeCheckout: vi.fn(),
-    startPayPalCheckout: vi.fn(),
   };
 
   const toastService = {
@@ -67,6 +61,7 @@ describe('ListingDetailPage', () => {
   beforeEach(async () => {
     vi.restoreAllMocks();
     vi.clearAllMocks();
+    authService.isAuthenticated.mockReturnValue(false);
     vi.spyOn(window, 'scrollTo').mockImplementation(() => undefined);
 
     await TestBed.configureTestingModule({
@@ -86,7 +81,6 @@ describe('ListingDetailPage', () => {
         { provide: AuthService, useValue: authService },
         { provide: ListingsService, useValue: listingsService },
         { provide: FavoritesService, useValue: favoritesService },
-        { provide: OrdersService, useValue: ordersService },
         { provide: ToastService, useValue: toastService },
         { provide: I18nService, useValue: i18nService },
       ],
@@ -116,6 +110,20 @@ describe('ListingDetailPage', () => {
     const phoneHref = component.commercialPhoneHref(commercialSeller.phone);
 
     expect(phoneHref).toBe('tel:+4917643203362');
+  });
+
+  it('opens Stripe checkout for an authenticated buyer', () => {
+    authService.isAuthenticated.mockReturnValue(true);
+    component.listing.set(createListing());
+    component.buyWithStripe();
+    expect(router.navigate).toHaveBeenCalledWith(['/checkout', 'stripe', 'vintage-jacket']);
+  });
+
+  it('requires login before opening PayPal checkout', () => {
+    component.listing.set(createListing());
+    component.buyWithPayPal();
+    expect(router.navigateByUrl).toHaveBeenCalledWith('/login');
+    expect(router.navigate).not.toHaveBeenCalled();
   });
 
   function createCommercialListing() {

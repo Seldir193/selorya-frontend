@@ -4,6 +4,7 @@ import { authGuard } from './core/guards/auth.guard';
 import { LoginPage } from './features/auth/pages/login.page';
 import { RegisterPage } from './features/auth/pages/register.page';
 import { CheckoutCancelPage } from './features/checkout/pages/checkout-cancel.page';
+import { CheckoutPage } from './features/checkout/pages/checkout.page';
 import { CheckoutSuccessPage } from './features/checkout/pages/checkout-success.page';
 import { DocumentsPage } from './features/documents/pages/documents.page';
 import { FavoritesPage } from './features/favorites/pages/favorites.page';
@@ -82,6 +83,11 @@ export const routes: Routes = [
   {
     path: 'sell/:slug/edit',
     component: EditListingPage,
+    canActivate: [authGuard],
+  },
+  {
+    path: 'checkout/:provider/:slug',
+    component: CheckoutPage,
     canActivate: [authGuard],
   },
   {
