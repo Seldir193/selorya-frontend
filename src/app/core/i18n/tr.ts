@@ -12,6 +12,7 @@ import { trOrdersTexts } from './tr/orders.tr';
 import { trPaymentsTexts } from './tr/payments.tr';
 import { trPaginationTexts } from './tr/pagination.tr';
 import { trProfileTexts } from './tr/profile.tr';
+import { trShippingTexts } from './tr/shipping.tr';
 import { trSignupTexts } from './tr/signup.tr';
 import { favoritesTrTexts } from './tr/favorites.tr';
 
@@ -26,6 +27,7 @@ export const trTexts = {
   ...trPaginationTexts,
   ...trHomeTexts,
   ...trProfileTexts,
+  ...trShippingTexts,
   ...trCategoryMenuTexts,
   ...trListingTexts,
   ...trDocumentsTexts,

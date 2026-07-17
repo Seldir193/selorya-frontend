@@ -6,13 +6,15 @@ describe('application routes', () => {
     expect(routes.find((route) => route.path === 'payments')).toMatchObject({
       path: 'payments',
       canActivate: expect.any(Array),
+      loadComponent: expect.any(Function),
     });
   });
 
-  it('keeps shipping safe until its dedicated page exists', () => {
+  it('provides the protected shipping overview', () => {
     expect(routes.find((route) => route.path === 'shipping')).toMatchObject({
-      redirectTo: 'orders',
-      pathMatch: 'full',
+      path: 'shipping',
+      canActivate: expect.any(Array),
+      loadComponent: expect.any(Function),
     });
   });
 });

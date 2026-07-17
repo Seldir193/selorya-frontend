@@ -15,7 +15,6 @@ import { ListingDetailPage } from './features/listings/pages/listing-detail.page
 import { ListingsPage } from './features/listings/pages/listings.page';
 import { MyListingsPage } from './features/listings/pages/my-listings.page';
 import { OrdersPage } from './features/orders/pages/orders.page';
-import { PaymentsPage } from './features/payments/pages/payments.page';
 import { CommercialProfilePage } from './features/profile/pages/commercial-profile.page';
 import { ProfileEditPage } from './features/profile/pages/profile-edit.page';
 import { ProfilePage } from './features/profile/pages/profile.page';
@@ -53,13 +52,15 @@ export const routes: Routes = [
   },
   {
     path: 'payments',
-    component: PaymentsPage,
     canActivate: [authGuard],
+    loadComponent: () =>
+      import('./features/payments/pages/payments.page').then((module) => module.PaymentsPage),
   },
   {
     path: 'shipping',
-    redirectTo: 'orders',
-    pathMatch: 'full',
+    canActivate: [authGuard],
+    loadComponent: () =>
+      import('./features/shipping/pages/shipping.page').then((module) => module.ShippingPage),
   },
   {
     path: 'documents',

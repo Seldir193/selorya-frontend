@@ -13,6 +13,7 @@ import { enOrdersTexts } from './en/orders.en';
 import { enPaymentsTexts } from './en/payments.en';
 import { enPaginationTexts } from './en/pagination.en';
 import { enProfileTexts } from './en/profile.en';
+import { enShippingTexts } from './en/shipping.en';
 import { enSignupTexts } from './en/signup.en';
 import { favoritesEnTexts } from './en/favorites.en';
 
@@ -28,6 +29,7 @@ export const enTexts = {
   ...enHomeTexts,
   ...enFooterTexts,
   ...enProfileTexts,
+  ...enShippingTexts,
   ...enCategoryMenuTexts,
   ...enListingTexts,
   ...enDocumentsTexts,

@@ -13,6 +13,7 @@ import { deOrdersTexts } from './de/orders.de';
 import { dePaymentsTexts } from './de/payments.de';
 import { dePaginationTexts } from './de/pagination.de';
 import { deProfileTexts } from './de/profile.de';
+import { deShippingTexts } from './de/shipping.de';
 import { deSignupTexts } from './de/signup.de';
 import { favoritesDeTexts } from './de/favorites.de';
 
@@ -28,6 +29,7 @@ export const deTexts = {
   ...deHomeTexts,
   ...deFooterTexts,
   ...deProfileTexts,
+  ...deShippingTexts,
   ...deCategoryMenuTexts,
   ...deListingTexts,
   ...deDocumentsTexts,

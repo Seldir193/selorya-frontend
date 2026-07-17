@@ -1,0 +1,137 @@
+<section class="shipping-page">
+  <header class="shipping-page__head">
+    <h1>{{ text('shippingTitle') }}</h1>
+    <p>{{ text('shippingDescription') }}</p>
+  </header>
+
+  <div class="shipping-tabs" role="tablist" [attr.aria-label]="text('shippingScopeLabel')">
+    @for (scope of orderScopes; track scope) {
+      <button
+        type="button"
+        class="shipping-tabs__button"
+        [class.shipping-tabs__button--active]="activeScope() === scope"
+        (click)="changeScope(scope)"
+      >
+        {{ scopeLabel(scope) }}
+      </button>
+    }
+  </div>
+
+  <div class="filter-toolbar shipping-toolbar">
+    <label class="filter-search shipping-search">
+      <input
+        type="search"
+        [value]="searchQuery()"
+        [placeholder]="text('shippingSearchPlaceholder')"
+        (input)="updateSearch($any($event.target).value)"
+      />
+    </label>
+
+    <app-dropdown
+      class="filter-control"
+      [value]="statusFilter()"
+      [options]="statusOptions()"
+      [ariaLabel]="text('shippingStatusFilterLabel')"
+      minWidth="220px"
+      maxMenuHeight="280px"
+      itemAlign="left"
+      (valueChange)="changeStatus($event)"
+    />
+
+    @if (hasActiveFilters()) {
+      <button type="button" class="app-button app-button--secondary" (click)="clearFilters()">
+        {{ text('shippingClearFilters') }}
+      </button>
+    }
+  </div>
+
+  @if (isLoading()) {
+    <div class="shipping-state">
+      <h2>{{ text('shippingLoadingTitle') }}</h2>
+      <p>{{ text('shippingLoadingDescription') }}</p>
+    </div>
+  } @else if (!shipmentOrders().length) {
+    <div class="shipping-state">
+      <h2>{{ text('shippingEmptyTitle') }}</h2>
+      <p>{{ text('shippingEmptyDescription') }}</p>
+    </div>
+  } @else if (!filteredOrders().length) {
+    <div class="shipping-state">
+      <h2>{{ text('shippingFilterEmptyTitle') }}</h2>
+      <p>{{ text('shippingFilterEmptyDescription') }}</p>
+    </div>
+  } @else {
+    <div class="shipping-list">
+      <div class="shipping-table-head" aria-hidden="true">
+        <span>{{ text('shippingColumnOrder') }}</span>
+        <span>{{ text('shippingColumnItem') }}</span>
+        <span>{{ text('shippingColumnDate') }}</span>
+        <span>{{ text('shippingColumnMethod') }}</span>
+        <span>{{ text('shippingColumnCost') }}</span>
+        <span>{{ text('shippingColumnTracking') }}</span>
+        <span>{{ text('shippingColumnStatus') }}</span>
+      </div>
+
+      @for (order of paginatedOrders(); track order.id) {
+        <article
+          class="shipping-row"
+          role="button"
+          tabindex="0"
+          (click)="openDetails(order)"
+          (keydown.enter)="openDetails(order)"
+          (keydown.space)="openDetails(order); $event.preventDefault()"
+        >
+          <div>
+            <span>{{ text('shippingColumnOrder') }}</span>
+
+            <strong>#{{ order.id }}</strong>
+          </div>
+          <div>
+            <span>{{ text('shippingColumnItem') }}</span>
+
+            <strong>{{ itemTitle(order) }}</strong>
+          </div>
+          <div>
+            <span>{{ text('shippingColumnDate') }}</span>
+
+            <strong>{{ orderDate(order) }}</strong>
+          </div>
+          <div>
+            <span>{{ text('shippingColumnMethod') }}</span>
+
+            <strong>{{ shippingMethod(order) }}</strong>
+          </div>
+          <div>
+            <span>{{ text('shippingColumnCost') }}</span>
+
+            <strong>{{ shippingPrice(order) }}</strong>
+          </div>
+          <div>
+            <span>{{ text('shippingColumnTracking') }}</span>
+
+            <strong>{{ trackingNumber(order) }}</strong>
+          </div>
+          <div>
+            <span>{{ text('shippingColumnStatus') }}</span>
+            <strong class="shipping-status">{{ statusLabel(order.shipment.status) }}</strong>
+          </div>
+        </article>
+      }
+    </div>
+
+    <app-pagination
+      [page]="currentPage()"
+      [pageSize]="pageSize()"
+      [totalItems]="filteredOrders().length"
+      [pageSizeOptions]="pageSizeOptions"
+      (pageChange)="changePage($event)"
+      (pageSizeChange)="changePageSize($event)"
+    />
+
+    <app-order-detail-dialog
+      [isOpen]="selectedOrder() !== null"
+      [order]="selectedOrder()"
+      (close)="closeDetails()"
+    />
+  }
+</section>

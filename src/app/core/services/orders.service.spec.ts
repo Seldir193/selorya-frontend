@@ -30,6 +30,13 @@ describe('OrdersService', () => {
 
   afterEach(() => httpController.verify());
 
+  it('loads orders for the selected personal scope', () => {
+    service.list('all').subscribe();
+    const request = httpController.expectOne(`${API_BASE_URL}/orders/?scope=all`);
+    expect(request.request.method).toBe('GET');
+    request.flush([]);
+  });
+
   it('loads the available shipping options', () => {
     service.shippingOptions().subscribe();
     const request = httpController.expectOne(`${API_BASE_URL}/orders/shipping-options/`);
