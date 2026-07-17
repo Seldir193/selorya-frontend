@@ -3,7 +3,8 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
 import { I18nService } from '../../../core/services/i18n.service';
 import { Order } from '../../../core/models/order.model';
 import { OrdersService } from '../../../core/services/orders.service';
-import { PaymentItem, PaymentsService } from '../../../core/services/payments.service';
+import { PaymentItem } from '../../../core/models/payment.model';
+import { PaymentsService } from '../../../core/services/payments.service';
 
 @Component({
   selector: 'app-checkout-success-page',

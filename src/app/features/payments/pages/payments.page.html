@@ -1,0 +1,116 @@
+<section class="payments-page">
+  <header class="payments-page__head">
+    <h1>{{ text('paymentsTitle') }}</h1>
+    <p>{{ text('paymentsDescription') }}</p>
+  </header>
+
+  <div class="payments-tabs" role="tablist" [attr.aria-label]="text('paymentsScopeLabel')">
+    @for (scope of paymentScopes; track scope) {
+      <button
+        type="button"
+        class="payments-tabs__button"
+        [class.payments-tabs__button--active]="activeScope() === scope"
+        (click)="changeScope(scope)"
+      >
+        {{ scopeLabel(scope) }}
+      </button>
+    }
+  </div>
+
+  <div class="filter-toolbar payments-toolbar">
+    <label class="filter-search payments-search">
+      <input
+        type="search"
+        [value]="searchQuery()"
+        [placeholder]="text('paymentsSearchPlaceholder')"
+        (input)="updateSearch($any($event.target).value)"
+      />
+    </label>
+
+    <app-dropdown
+      class="filter-control"
+      [value]="statusFilter()"
+      [options]="statusOptions()"
+      [ariaLabel]="text('paymentsStatusFilterLabel')"
+      minWidth="220px"
+      maxMenuHeight="260px"
+      itemAlign="left"
+      (valueChange)="changeStatus($event)"
+    />
+
+    @if (hasActiveFilters()) {
+      <button type="button" class="app-button app-button--secondary" (click)="clearFilters()">
+        {{ text('paymentsClearFilters') }}
+      </button>
+    }
+  </div>
+
+  @if (isLoading()) {
+    <div class="payments-state">
+      <h2>{{ text('paymentsLoadingTitle') }}</h2>
+      <p>{{ text('paymentsLoadingDescription') }}</p>
+    </div>
+  } @else if (!payments().length) {
+    <div class="payments-state">
+      <h2>{{ text('paymentsEmptyTitle') }}</h2>
+      <p>{{ text('paymentsEmptyDescription') }}</p>
+      <a routerLink="/listings" class="app-button app-button--primary">
+        {{ text('paymentsEmptyAction') }}
+      </a>
+    </div>
+  } @else if (!filteredPayments().length) {
+    <div class="payments-state">
+      <h2>{{ text('paymentsFilterEmptyTitle') }}</h2>
+      <p>{{ text('paymentsFilterEmptyDescription') }}</p>
+    </div>
+  } @else {
+    <div class="payments-list">
+      <div class="payments-table-head" aria-hidden="true">
+        <span>{{ text('paymentsColumnPayment') }}</span>
+        <span>{{ text('paymentsColumnOrder') }}</span>
+        <span>{{ text('paymentsColumnDate') }}</span>
+        <span>{{ text('paymentsColumnProvider') }}</span>
+        <span>{{ text('paymentsColumnAmount') }}</span>
+        <span>{{ text('paymentsColumnStatus') }}</span>
+      </div>
+
+      @for (payment of paginatedPayments(); track payment.id) {
+        <article class="payment-row">
+          <div>
+            <span>{{ text('paymentsColumnPayment') }}</span
+            ><strong>#{{ payment.id }}</strong>
+          </div>
+          <div>
+            <span>{{ text('paymentsColumnOrder') }}</span
+            ><strong>#{{ payment.order_id }}</strong>
+          </div>
+          <div>
+            <span>{{ text('paymentsColumnDate') }}</span
+            ><strong>{{ paymentDate(payment) }}</strong>
+          </div>
+          <div>
+            <span>{{ text('paymentsColumnProvider') }}</span
+            ><strong>{{ providerLabel(payment) }}</strong>
+          </div>
+          <div>
+            <span>{{ text('paymentsColumnAmount') }}</span
+            ><strong>{{ paymentAmount(payment) }}</strong>
+          </div>
+          <div>
+            <span>{{ text('paymentsColumnStatus') }}</span>
+            <strong class="payment-status">{{ statusLabel(payment.status) }}</strong>
+          </div>
+        </article>
+      }
+    </div>
+
+    <app-pagination
+      [page]="currentPage()"
+      [pageSize]="pageSize()"
+      [totalItems]="filteredPayments().length"
+      [pageSizeOptions]="pageSizeOptions"
+      (pageChange)="changePage($event)"
+      (pageSizeChange)="changePageSize($event)"
+    />
+  }
+</section>
