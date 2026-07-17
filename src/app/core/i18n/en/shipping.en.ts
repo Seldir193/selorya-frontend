@@ -22,4 +22,9 @@ export const enShippingTexts = {
   shippingColumnCost: 'Cost',
   shippingColumnTracking: 'Tracking',
   shippingColumnStatus: 'Status',
+  shippingTrackingLabel: 'Tracking number',
+  shippingTrackingPlaceholder: 'Enter tracking number',
+  shippingDispatchAction: 'Mark as shipped',
+  shippingDispatchSaving: 'Saving',
+  shippingDispatchError: 'Enter a valid tracking number and try again.',
 } as const;

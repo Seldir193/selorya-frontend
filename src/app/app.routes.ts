@@ -52,7 +52,6 @@ export const routes: Routes = [
   },
   {
     path: 'payments',
-<<<<<<< Updated upstream
     canActivate: [authGuard],
     loadComponent: () =>
       import('./features/payments/pages/payments.page').then((module) => module.PaymentsPage),
@@ -62,15 +61,6 @@ export const routes: Routes = [
     canActivate: [authGuard],
     loadComponent: () =>
       import('./features/shipping/pages/shipping.page').then((module) => module.ShippingPage),
-=======
-    redirectTo: 'orders',
-    pathMatch: 'full',
-  },
-  {
-    path: 'shipping',
-    redirectTo: 'orders',
-    pathMatch: 'full',
->>>>>>> Stashed changes
   },
   {
     path: 'documents',

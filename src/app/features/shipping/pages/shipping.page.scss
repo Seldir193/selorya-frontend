@@ -63,7 +63,7 @@
 .shipping-table-head,
 .shipping-row {
   display: grid;
-  grid-template-columns: 0.6fr 1.1fr 0.8fr 1.1fr 0.75fr 1fr 1.1fr;
+  grid-template-columns: 0.55fr 1fr 0.75fr 1fr 0.65fr 0.9fr minmax(150px, 1.35fr);
   align-items: center;
   gap: 12px;
 }
@@ -114,11 +114,39 @@
 }
 
 .shipping-row .shipping-status {
+  max-width: 100%;
   width: fit-content;
   padding: 9px 14px;
   border-radius: 999px;
   background: var(--color-primary);
   color: var(--color-surface);
+  text-align: center;
+  white-space: normal;
+}
+
+.shipping-dispatch {
+  grid-column: 1 / -1;
+  grid-template-columns: auto minmax(220px, 1fr) auto;
+  align-items: center;
+}
+
+.shipping-dispatch label,
+.shipping-dispatch span {
+  color: var(--color-text-soft);
+  font-weight: 800;
+}
+
+.shipping-dispatch input {
+  min-height: 42px;
+  padding: 0 14px;
+  border: 1px solid var(--color-border-strong);
+  border-radius: 14px;
+  font: inherit;
+}
+
+.shipping-dispatch span {
+  grid-column: 2 / -1;
+  color: var(--color-danger);
 }
 
 .shipping-state {
@@ -150,6 +178,14 @@
 
   .shipping-row {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .shipping-dispatch {
+    grid-template-columns: 1fr;
+  }
+
+  .shipping-dispatch span {
+    grid-column: auto;
   }
 
   .shipping-row div > span {

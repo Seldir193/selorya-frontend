@@ -115,6 +115,37 @@
             <span>{{ text('shippingColumnStatus') }}</span>
             <strong class="shipping-status">{{ statusLabel(order.shipment.status) }}</strong>
           </div>
+          @if (canDispatch(order)) {
+            <div class="shipping-dispatch" (click)="$event.stopPropagation()">
+              <label [for]="'tracking-' + order.shipment.id">
+                {{ text('shippingTrackingLabel') }}
+              </label>
+              <input
+                [id]="'tracking-' + order.shipment.id"
+                type="text"
+                [value]="trackingValues()[order.shipment.id] || ''"
+                [placeholder]="text('shippingTrackingPlaceholder')"
+                (input)="updateTracking(order.shipment.id, $any($event.target).value)"
+              />
+              <button
+                type="button"
+                class="app-button"
+                [disabled]="savingShipmentId() === order.shipment.id"
+                (click)="dispatch(order)"
+              >
+                {{
+                  text(
+                    savingShipmentId() === order.shipment.id
+                      ? 'shippingDispatchSaving'
+                      : 'shippingDispatchAction'
+                  )
+                }}
+              </button>
+              @if (dispatchErrorId() === order.shipment.id) {
+                <span role="alert">{{ text('shippingDispatchError') }}</span>
+              }
+            </div>
+          }
         </article>
       }
     </div>

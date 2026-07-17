@@ -32,6 +32,9 @@ export class ShippingPage {
   readonly currentPage = signal(1);
   readonly pageSize = signal(10);
   readonly selectedOrder = signal<Order | null>(null);
+  readonly trackingValues = signal<Record<number, string>>({});
+  readonly savingShipmentId = signal<number | null>(null);
+  readonly dispatchErrorId = signal<number | null>(null);
   readonly orderScopes: OrderScope[] = ['purchased', 'sold', 'all'];
   readonly pageSizeOptions = [10, 20, 50, 100];
   readonly statusFilters: ShipmentStatusFilter[] = [
@@ -115,6 +118,28 @@ export class ShippingPage {
     this.selectedOrder.set(null);
   }
 
+  canDispatch(order: ShipmentOrder): boolean {
+    const ready = order.status === 'paid' || order.status === 'partially_refunded';
+    return this.activeScope() === 'sold' && ready && order.shipment.status === 'selected';
+  }
+
+  updateTracking(id: number, value: string): void {
+    this.trackingValues.update((values) => ({ ...values, [id]: value }));
+    this.dispatchErrorId.set(null);
+  }
+
+  dispatch(order: ShipmentOrder): void {
+    const tracking = (this.trackingValues()[order.shipment.id] ?? '').trim();
+    if (!tracking) return this.dispatchErrorId.set(order.shipment.id);
+    this.savingShipmentId.set(order.shipment.id);
+    this.ordersService
+      .dispatchShipment(order.shipment.id, { status: 'shipped', tracking_number: tracking })
+      .subscribe({
+        next: (shipment) => this.completeDispatch(order.id, shipment),
+        error: () => this.failDispatch(order),
+      });
+  }
+
   scopeLabel(scope: OrderScope): string {
     return this.text(`shippingScope${this.toPascalCase(scope)}`);
   }
@@ -184,6 +209,19 @@ export class ShippingPage {
   private setOrders(orders: Order[]): void {
     this.orders.set(orders);
     this.isLoading.set(false);
+  }
+
+  private completeDispatch(orderId: number, shipment: Shipment): void {
+    this.orders.update((orders) =>
+      orders.map((order) => (order.id === orderId ? { ...order, shipment } : order)),
+    );
+    this.savingShipmentId.set(null);
+    this.dispatchErrorId.set(null);
+  }
+
+  private failDispatch(order: ShipmentOrder): void {
+    this.savingShipmentId.set(null);
+    this.dispatchErrorId.set(order.shipment.id);
   }
 
   private resetPage(): void {

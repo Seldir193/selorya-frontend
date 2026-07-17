@@ -3,7 +3,11 @@ import { HttpTestingController, provideHttpClientTesting } from '@angular/common
 import { TestBed } from '@angular/core/testing';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import { API_BASE_URL } from '../config/api.config';
-import { OrderCreatePayload, ShippingSelectionPayload } from '../models/order.model';
+import {
+  OrderCreatePayload,
+  ShipmentDispatchPayload,
+  ShippingSelectionPayload,
+} from '../models/order.model';
 import { OrdersService } from './orders.service';
 
 const shipping: ShippingSelectionPayload = {
@@ -59,6 +63,15 @@ describe('OrdersService', () => {
     expect(request.request.method).toBe('POST');
     expect(request.request.body).toEqual(shipping);
     request.flush({ id: 9 });
+  });
+
+  it('dispatches a seller shipment with tracking', () => {
+    const payload: ShipmentDispatchPayload = { status: 'shipped', tracking_number: 'DHL-42' };
+    service.dispatchShipment(9, payload).subscribe();
+    const request = httpController.expectOne(`${API_BASE_URL}/orders/shipments/9/dispatch/`);
+    expect(request.request.method).toBe('PATCH');
+    expect(request.request.body).toEqual(payload);
+    request.flush({ id: 9, status: 'shipped' });
   });
 
   it('starts checkout with the selected provider', () => {

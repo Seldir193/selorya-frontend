@@ -41,7 +41,11 @@ const order: Order = {
 };
 
 describe('ShippingPage', () => {
-  const ordersService = { list: vi.fn(() => of([order])) };
+  const shipped = { ...order.shipment!, status: 'shipped' as const, tracking_number: 'DHL-42' };
+  const ordersService = {
+    list: vi.fn(() => of([order])),
+    dispatchShipment: vi.fn(() => of(shipped)),
+  };
   const i18nService = { t: vi.fn((key: string) => key), current: vi.fn(() => 'de') };
 
   beforeEach(() => {
@@ -66,5 +70,26 @@ describe('ShippingPage', () => {
     const fixture = TestBed.createComponent(ShippingPage);
     fixture.componentInstance.changeScope('sold');
     expect(ordersService.list).toHaveBeenLastCalledWith('sold');
+  });
+
+  it('lets the seller dispatch a paid order with tracking', () => {
+    const fixture = TestBed.createComponent(ShippingPage);
+    const component = fixture.componentInstance;
+    component.changeScope('sold');
+    component.updateTracking(5, ' DHL-42 ');
+    component.dispatch(order as Order & { shipment: NonNullable<Order['shipment']> });
+    expect(ordersService.dispatchShipment).toHaveBeenCalledWith(5, {
+      status: 'shipped',
+      tracking_number: 'DHL-42',
+    });
+    expect(component.orders()[0].shipment?.status).toBe('shipped');
+  });
+
+  it('requires tracking before dispatch', () => {
+    const component = TestBed.createComponent(ShippingPage).componentInstance;
+    component.changeScope('sold');
+    component.dispatch(order as Order & { shipment: NonNullable<Order['shipment']> });
+    expect(component.dispatchErrorId()).toBe(5);
+    expect(ordersService.dispatchShipment).not.toHaveBeenCalled();
   });
 });

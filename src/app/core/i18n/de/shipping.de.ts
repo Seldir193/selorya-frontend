@@ -22,4 +22,9 @@ export const deShippingTexts = {
   shippingColumnCost: 'Kosten',
   shippingColumnTracking: 'Tracking',
   shippingColumnStatus: 'Status',
+  shippingTrackingLabel: 'Trackingnummer',
+  shippingTrackingPlaceholder: 'Trackingnummer eingeben',
+  shippingDispatchAction: 'Als versendet markieren',
+  shippingDispatchSaving: 'Wird gespeichert',
+  shippingDispatchError: 'Bitte eine gültige Trackingnummer eingeben und erneut versuchen.',
 } as const;

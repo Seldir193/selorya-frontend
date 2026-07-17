@@ -10,6 +10,7 @@ import {
   OrderScope,
   PayPalCheckoutResponse,
   Shipment,
+  ShipmentDispatchPayload,
   ShippingOption,
   ShippingSelectionPayload,
   StripeCheckoutResponse,
@@ -41,6 +42,10 @@ export class OrdersService {
 
   selectShipping(orderId: number, shipping: ShippingSelectionPayload): Observable<Shipment> {
     return this.http.post<Shipment>(`${API_BASE_URL}/orders/${orderId}/shipment/select/`, shipping);
+  }
+
+  dispatchShipment(id: number, payload: ShipmentDispatchPayload): Observable<Shipment> {
+    return this.http.patch<Shipment>(`${API_BASE_URL}/orders/shipments/${id}/dispatch/`, payload);
   }
 
   startStripeCheckout(orderId: number): Observable<StripeCheckoutResponse> {

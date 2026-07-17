@@ -31,6 +31,11 @@ export type ShippingSelectionPayload = {
   country: string;
 };
 
+export type ShipmentDispatchPayload = {
+  status: 'shipped';
+  tracking_number: string;
+};
+
 export type OrderCreatePayload = {
   listing_id: number;
   quantity: number;

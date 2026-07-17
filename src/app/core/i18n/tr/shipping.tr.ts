@@ -22,4 +22,9 @@ export const trShippingTexts = {
   shippingColumnCost: 'Ücret',
   shippingColumnTracking: 'Takip',
   shippingColumnStatus: 'Durum',
+  shippingTrackingLabel: 'Takip numarası',
+  shippingTrackingPlaceholder: 'Takip numarasını gir',
+  shippingDispatchAction: 'Gönderildi olarak işaretle',
+  shippingDispatchSaving: 'Kaydediliyor',
+  shippingDispatchError: 'Geçerli bir takip numarası girip tekrar deneyin.',
 } as const;
