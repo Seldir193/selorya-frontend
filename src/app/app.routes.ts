@@ -51,6 +51,16 @@ export const routes: Routes = [
     canActivate: [authGuard],
   },
   {
+    path: 'payments',
+    redirectTo: 'orders',
+    pathMatch: 'full',
+  },
+  {
+    path: 'shipping',
+    redirectTo: 'orders',
+    pathMatch: 'full',
+  },
+  {
     path: 'documents',
     component: DocumentsPage,
     canActivate: [authGuard],
