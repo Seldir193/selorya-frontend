@@ -1,6 +1,15 @@
 export type PaymentProvider = 'stripe' | 'paypal' | 'manual';
 export type CheckoutProvider = 'stripe' | 'paypal';
 export type OrderScope = 'purchased' | 'sold' | 'all';
+export type ShipmentStatus =
+  | 'selection_required'
+  | 'selected'
+  | 'label_created'
+  | 'shipped'
+  | 'delivered'
+  | 'issue_reported'
+  | 'cancelled'
+  | 'legacy_unknown';
 
 export type ShippingOption = {
   id: number;
@@ -30,7 +39,7 @@ export type OrderCreatePayload = {
 
 export type Shipment = Partial<Omit<ShippingSelectionPayload, 'shipping_option_id'>> & {
   id: number;
-  shipping_option: number;
+  shipping_option: number | null;
   scope: 'order';
   carrier: string;
   service_level: string;
@@ -39,7 +48,7 @@ export type Shipment = Partial<Omit<ShippingSelectionPayload, 'shipping_option_i
   currency: string;
   tracking_number: string;
   label_reference: string;
-  status: string;
+  status: ShipmentStatus;
   selected_at: string | null;
   shipped_at: string | null;
   delivered_at: string | null;

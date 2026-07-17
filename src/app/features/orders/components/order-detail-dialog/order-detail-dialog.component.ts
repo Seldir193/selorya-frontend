@@ -39,6 +39,44 @@ export class OrderDetailDialogComponent {
     return order ? formatMoney(order.total_amount, order.currency, this.i18n.current()) : '';
   }
 
+  shippingPrice(): string {
+    const shipment = this.order()?.shipment;
+    return shipment
+      ? formatMoney(shipment.shipping_amount, shipment.currency, this.i18n.current())
+      : this.text('ordersShipmentUnavailable');
+  }
+
+  shippingMethod(): string {
+    const shipment = this.order()?.shipment;
+    const fallback = [shipment?.carrier, shipment?.service_level].filter(Boolean).join(' · ');
+    return shipment?.service_name || fallback || this.text('ordersShipmentUnavailable');
+  }
+
+  shipmentStatusLabel(): string {
+    const status = this.order()?.shipment?.status ?? 'legacy_unknown';
+    return this.text(`ordersShipmentStatus${this.toPascalCase(status)}`);
+  }
+
+  trackingNumber(): string {
+    return this.order()?.shipment?.tracking_number || this.text('ordersShipmentTrackingMissing');
+  }
+
+  hasRecipientAddress(): boolean {
+    const shipment = this.order()?.shipment;
+    return Boolean(
+      shipment?.recipient_name &&
+      shipment.address_line_1 &&
+      shipment.postal_code &&
+      shipment.city &&
+      shipment.country,
+    );
+  }
+
+  postalCity(): string {
+    const shipment = this.order()?.shipment;
+    return [shipment?.postal_code, shipment?.city].filter(Boolean).join(' ');
+  }
+
   itemTotal(item: OrderItem): string {
     const currency = this.order()?.currency ?? 'EUR';
     return formatMoney(item.line_total, currency, this.i18n.current());

@@ -46,6 +46,53 @@
         </div>
       </section>
 
+      <section class="order-detail__section">
+        <h3>{{ text('ordersShipmentTitle') }}</h3>
+
+        @if (currentOrder.shipment; as shipment) {
+          <div class="order-detail__shipping">
+            <div>
+              <span>{{ text('ordersShipmentMethod') }}</span>
+              <strong>{{ shippingMethod() }}</strong>
+            </div>
+
+            <div>
+              <span>{{ text('ordersShipmentCost') }}</span>
+              <strong>{{ shippingPrice() }}</strong>
+            </div>
+
+            <div>
+              <span>{{ text('ordersShipmentStatus') }}</span>
+              <strong>{{ shipmentStatusLabel() }}</strong>
+            </div>
+
+            <div>
+              <span>{{ text('ordersShipmentTracking') }}</span>
+              <strong>{{ trackingNumber() }}</strong>
+            </div>
+          </div>
+
+          @if (hasRecipientAddress()) {
+            <div class="order-detail__address">
+              <span>{{ text('ordersShipmentAddress') }}</span>
+              <address>
+                <strong>{{ shipment.recipient_name }}</strong>
+                <span>{{ shipment.address_line_1 }}</span>
+                @if (shipment.address_line_2) {
+                  <span>{{ shipment.address_line_2 }}</span>
+                }
+                <span>{{ postalCity() }}</span>
+                <span>{{ shipment.country }}</span>
+              </address>
+            </div>
+          }
+        } @else {
+          <p class="order-detail__unavailable">
+            {{ text('ordersShipmentUnavailable') }}
+          </p>
+        }
+      </section>
+
       <section class="order-detail__summary">
         <span>{{ text('ordersTotal') }}</span>
         <strong>{{ orderTotal() }}</strong>
