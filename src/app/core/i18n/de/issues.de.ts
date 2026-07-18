@@ -26,4 +26,7 @@ export const deShipmentIssueTexts = {
   adminShipmentIssuesActionError: 'Die Entscheidung konnte nicht gespeichert werden.',
   adminShipmentIssuesCancel: 'Abbrechen',
   adminShipmentIssuesSave: 'Entscheidung speichern',
+  adminShipmentIssuesRefund: 'Vollständig erstatten',
+  adminShipmentIssuesRefundConfirm: 'Zahlung wirklich vollständig zurückerstatten?',
+  adminShipmentIssuesRefunded: 'Vollständig erstattet',
 } as const;

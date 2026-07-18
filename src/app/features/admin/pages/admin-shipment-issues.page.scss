@@ -62,6 +62,10 @@
   padding: 14px;
 }
 
+.admin-issue-card__refunded {
+  color: var(--color-success-text);
+}
+
 .admin-issue-dialog {
   align-items: center;
   background: rgb(10 19 38 / 55%);

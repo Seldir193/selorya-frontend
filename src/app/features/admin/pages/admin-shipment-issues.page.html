@@ -77,6 +77,22 @@
               <strong>{{ text('adminShipmentIssuesResolution') }}</strong>
               <p>{{ order.shipment?.issue_resolution_note }}</p>
             </div>
+            @if (order.shipment?.issue_status === 'resolved' && order.payment_status === 'paid') {
+              <footer>
+                <button
+                  type="button"
+                  class="app-button"
+                  [disabled]="refundingPaymentId() === order.payment_id"
+                  (click)="refund(order)"
+                >
+                  {{ text('adminShipmentIssuesRefund') }}
+                </button>
+              </footer>
+            } @else if (order.payment_status === 'refunded') {
+              <strong class="admin-issue-card__refunded">
+                {{ text('adminShipmentIssuesRefunded') }}
+              </strong>
+            }
           }
         </article>
       }

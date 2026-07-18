@@ -27,6 +27,7 @@ describe('AdminShipmentIssuesPage', () => {
     resolveShipmentIssue: vi.fn(() =>
       of({ ...order, shipment: { ...order.shipment!, issue_status: 'resolved' as const } }),
     ),
+    refundPayment: vi.fn(() => of({})),
   };
 
   beforeEach(() => {
@@ -54,5 +55,12 @@ describe('AdminShipmentIssuesPage', () => {
       status: 'resolved',
       note: 'Reviewed case.',
     });
+  });
+
+  it('requests a confirmed provider refund', () => {
+    vi.spyOn(globalThis, 'confirm').mockReturnValue(true);
+    const component = TestBed.createComponent(AdminShipmentIssuesPage).componentInstance;
+    component.refund({ ...order, payment_id: 9 });
+    expect(ordersService.refundPayment).toHaveBeenCalledWith(9);
   });
 });

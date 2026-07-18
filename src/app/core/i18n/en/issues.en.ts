@@ -26,4 +26,7 @@ export const enShipmentIssueTexts = {
   adminShipmentIssuesActionError: 'The decision could not be saved.',
   adminShipmentIssuesCancel: 'Cancel',
   adminShipmentIssuesSave: 'Save decision',
+  adminShipmentIssuesRefund: 'Issue full refund',
+  adminShipmentIssuesRefundConfirm: 'Do you really want to refund the full payment?',
+  adminShipmentIssuesRefunded: 'Fully refunded',
 } as const;

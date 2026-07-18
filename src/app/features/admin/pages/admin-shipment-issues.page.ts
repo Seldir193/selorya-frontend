@@ -24,6 +24,7 @@ export class AdminShipmentIssuesPage {
   readonly selectedStatus = signal<ShipmentIssueResolutionStatus>('resolved');
   readonly isSaving = signal(false);
   readonly actionError = signal(false);
+  readonly refundingPaymentId = signal<number | null>(null);
   readonly resolutionForm = this.fb.nonNullable.group({
     note: ['', [Validators.required, Validators.maxLength(1000)]],
   });
@@ -67,6 +68,16 @@ export class AdminShipmentIssuesPage {
     });
   }
 
+  refund(order: Order): void {
+    if (!order.payment_id || !confirm(this.text('adminShipmentIssuesRefundConfirm'))) return;
+    this.refundingPaymentId.set(order.payment_id);
+    this.actionError.set(false);
+    this.ordersService.refundPayment(order.payment_id).subscribe({
+      next: () => this.completeRefund(),
+      error: () => this.failRefund(),
+    });
+  }
+
   issueDate(order: Order): string {
     return formatDisplayDate(
       order.shipment?.issue_reported_at || order.updated_at,
@@ -98,6 +109,16 @@ export class AdminShipmentIssuesPage {
 
   private failResolution(): void {
     this.isSaving.set(false);
+    this.actionError.set(true);
+  }
+
+  private completeRefund(): void {
+    this.refundingPaymentId.set(null);
+    this.loadIssues();
+  }
+
+  private failRefund(): void {
+    this.refundingPaymentId.set(null);
     this.actionError.set(true);
   }
 }

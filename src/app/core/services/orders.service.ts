@@ -66,6 +66,10 @@ export class OrdersService {
     return this.http.post<Order>(`${API_BASE_URL}/orders/shipment-issues/${id}/resolve/`, payload);
   }
 
+  refundPayment(id: number): Observable<unknown> {
+    return this.http.post(`${API_BASE_URL}/payments/${id}/refund/`, { confirm: true });
+  }
+
   startStripeCheckout(orderId: number): Observable<StripeCheckoutResponse> {
     return this.http.post<StripeCheckoutResponse>(`${API_BASE_URL}/payments/stripe/checkout/`, {
       order_id: orderId,

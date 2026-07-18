@@ -106,6 +106,7 @@ export type Order = {
   total_amount: string;
   payment_provider: PaymentProvider | null;
   payment_status: string | null;
+  payment_id?: number | null;
   shipment: Shipment | null;
   items: OrderItem[];
   created_at: string;
