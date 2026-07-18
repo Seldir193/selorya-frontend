@@ -138,8 +138,9 @@
 
 .shipping-confirm {
   grid-column: 1 / -1;
-  grid-template-columns: 1fr auto;
+  grid-template-columns: 1fr minmax(150px, 1.35fr);
   align-items: center;
+  gap: 12px;
 }
 
 .shipping-confirm p {
@@ -152,6 +153,13 @@
   grid-column: 1 / -1;
   color: var(--color-danger);
   font-weight: 800;
+}
+
+.shipping-confirm__actions {
+  align-items: stretch;
+  display: flex;
+  flex-direction: column;
+  justify-self: start;
 }
 
 .shipping-dispatch input {
