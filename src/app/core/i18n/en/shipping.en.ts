@@ -27,4 +27,8 @@ export const enShippingTexts = {
   shippingDispatchAction: 'Mark as shipped',
   shippingDispatchSaving: 'Saving',
   shippingDispatchError: 'Enter a valid tracking number and try again.',
+  shippingConfirmDescription: 'Confirm receipt only after the shipment has arrived.',
+  shippingConfirmAction: 'Confirm delivery',
+  shippingConfirmSaving: 'Confirming',
+  shippingConfirmError: 'The delivery could not be confirmed. Please try again.',
 } as const;

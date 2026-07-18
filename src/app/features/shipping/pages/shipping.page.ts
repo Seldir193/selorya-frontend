@@ -35,6 +35,8 @@ export class ShippingPage {
   readonly trackingValues = signal<Record<number, string>>({});
   readonly savingShipmentId = signal<number | null>(null);
   readonly dispatchErrorId = signal<number | null>(null);
+  readonly confirmingShipmentId = signal<number | null>(null);
+  readonly confirmationErrorId = signal<number | null>(null);
   readonly orderScopes: OrderScope[] = ['purchased', 'sold', 'all'];
   readonly pageSizeOptions = [10, 20, 50, 100];
   readonly statusFilters: ShipmentStatusFilter[] = [
@@ -140,6 +142,19 @@ export class ShippingPage {
       });
   }
 
+  canConfirmDelivery(order: ShipmentOrder): boolean {
+    return this.activeScope() === 'purchased' && order.shipment.status === 'shipped';
+  }
+
+  confirmDelivery(order: ShipmentOrder): void {
+    this.confirmingShipmentId.set(order.shipment.id);
+    this.confirmationErrorId.set(null);
+    this.ordersService.confirmDelivery(order.shipment.id).subscribe({
+      next: (updated) => this.completeDelivery(updated),
+      error: () => this.failDelivery(order.shipment.id),
+    });
+  }
+
   scopeLabel(scope: OrderScope): string {
     return this.text(`shippingScope${this.toPascalCase(scope)}`);
   }
@@ -222,6 +237,18 @@ export class ShippingPage {
   private failDispatch(order: ShipmentOrder): void {
     this.savingShipmentId.set(null);
     this.dispatchErrorId.set(order.shipment.id);
+  }
+
+  private completeDelivery(updated: Order): void {
+    this.orders.update((orders) =>
+      orders.map((order) => (order.id === updated.id ? updated : order)),
+    );
+    this.confirmingShipmentId.set(null);
+  }
+
+  private failDelivery(shipmentId: number): void {
+    this.confirmingShipmentId.set(null);
+    this.confirmationErrorId.set(shipmentId);
   }
 
   private resetPage(): void {

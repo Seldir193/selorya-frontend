@@ -27,4 +27,8 @@ export const deShippingTexts = {
   shippingDispatchAction: 'Als versendet markieren',
   shippingDispatchSaving: 'Wird gespeichert',
   shippingDispatchError: 'Bitte eine gültige Trackingnummer eingeben und erneut versuchen.',
+  shippingConfirmDescription: 'Bestätige den Erhalt erst, wenn die Sendung bei dir angekommen ist.',
+  shippingConfirmAction: 'Lieferung erhalten',
+  shippingConfirmSaving: 'Wird bestätigt',
+  shippingConfirmError: 'Die Lieferung konnte nicht bestätigt werden. Bitte erneut versuchen.',
 } as const;

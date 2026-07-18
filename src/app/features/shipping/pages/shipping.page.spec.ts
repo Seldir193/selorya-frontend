@@ -45,6 +45,7 @@ describe('ShippingPage', () => {
   const ordersService = {
     list: vi.fn(() => of([order])),
     dispatchShipment: vi.fn(() => of(shipped)),
+    confirmDelivery: vi.fn(() => of({ ...order, status: 'completed', shipment: shipped })),
   };
   const i18nService = { t: vi.fn((key: string) => key), current: vi.fn(() => 'de') };
 
@@ -91,5 +92,14 @@ describe('ShippingPage', () => {
     component.dispatch(order as Order & { shipment: NonNullable<Order['shipment']> });
     expect(component.dispatchErrorId()).toBe(5);
     expect(ordersService.dispatchShipment).not.toHaveBeenCalled();
+  });
+
+  it('lets the buyer confirm a shipped delivery', () => {
+    const shippedOrder = { ...order, shipment: shipped };
+    ordersService.list.mockReturnValueOnce(of([shippedOrder]));
+    const component = TestBed.createComponent(ShippingPage).componentInstance;
+    component.confirmDelivery(shippedOrder);
+    expect(ordersService.confirmDelivery).toHaveBeenCalledWith(5);
+    expect(component.orders()[0].status).toBe('completed');
   });
 });

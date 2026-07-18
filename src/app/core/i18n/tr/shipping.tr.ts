@@ -27,4 +27,8 @@ export const trShippingTexts = {
   shippingDispatchAction: 'Gönderildi olarak işaretle',
   shippingDispatchSaving: 'Kaydediliyor',
   shippingDispatchError: 'Geçerli bir takip numarası girip tekrar deneyin.',
+  shippingConfirmDescription: 'Teslimatı yalnızca gönderi sana ulaştıktan sonra onayla.',
+  shippingConfirmAction: 'Teslimatı onayla',
+  shippingConfirmSaving: 'Onaylanıyor',
+  shippingConfirmError: 'Teslimat onaylanamadı. Lütfen tekrar deneyin.',
 } as const;

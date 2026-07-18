@@ -146,6 +146,28 @@
               }
             </div>
           }
+          @if (canConfirmDelivery(order)) {
+            <div class="shipping-confirm" (click)="$event.stopPropagation()">
+              <p>{{ text('shippingConfirmDescription') }}</p>
+              <button
+                type="button"
+                class="app-button"
+                [disabled]="confirmingShipmentId() === order.shipment.id"
+                (click)="confirmDelivery(order)"
+              >
+                {{
+                  text(
+                    confirmingShipmentId() === order.shipment.id
+                      ? 'shippingConfirmSaving'
+                      : 'shippingConfirmAction'
+                  )
+                }}
+              </button>
+              @if (confirmationErrorId() === order.shipment.id) {
+                <span role="alert">{{ text('shippingConfirmError') }}</span>
+              }
+            </div>
+          }
         </article>
       }
     </div>

@@ -48,6 +48,10 @@ export class OrdersService {
     return this.http.patch<Shipment>(`${API_BASE_URL}/orders/shipments/${id}/dispatch/`, payload);
   }
 
+  confirmDelivery(id: number): Observable<Order> {
+    return this.http.post<Order>(`${API_BASE_URL}/orders/shipments/${id}/confirm-delivery/`, {});
+  }
+
   startStripeCheckout(orderId: number): Observable<StripeCheckoutResponse> {
     return this.http.post<StripeCheckoutResponse>(`${API_BASE_URL}/payments/stripe/checkout/`, {
       order_id: orderId,

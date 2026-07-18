@@ -74,6 +74,16 @@ describe('OrdersService', () => {
     request.flush({ id: 9, status: 'shipped' });
   });
 
+  it('confirms delivery for the buyer shipment', () => {
+    service.confirmDelivery(9).subscribe();
+    const request = httpController.expectOne(
+      `${API_BASE_URL}/orders/shipments/9/confirm-delivery/`,
+    );
+    expect(request.request.method).toBe('POST');
+    expect(request.request.body).toEqual({});
+    request.flush({ id: 44, status: 'completed' });
+  });
+
   it('starts checkout with the selected provider', () => {
     service.startCheckout('paypal', 44).subscribe();
     const request = httpController.expectOne(`${API_BASE_URL}/payments/paypal/create-order/`);
