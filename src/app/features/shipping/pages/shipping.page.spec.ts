@@ -123,4 +123,15 @@ describe('ShippingPage', () => {
     });
     expect(component.orders()[0].shipment?.status).toBe('issue_reported');
   });
+
+  it('keeps space input inside the issue form', () => {
+    ordersService.list.mockReturnValueOnce(of([{ ...order, shipment: shipped }]));
+    const fixture = TestBed.createComponent(ShippingPage);
+    fixture.detectChanges();
+    fixture.componentInstance.openIssueForm({ ...order, shipment: shipped });
+    fixture.detectChanges();
+    const textarea = fixture.nativeElement.querySelector('textarea');
+    textarea.dispatchEvent(new KeyboardEvent('keydown', { key: ' ', bubbles: true }));
+    expect(fixture.componentInstance.selectedOrder()).toBeNull();
+  });
 });

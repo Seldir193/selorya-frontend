@@ -141,13 +141,6 @@
                   )
                 }}
               </button>
-              <button
-                type="button"
-                class="app-button app-button--secondary"
-                (click)="openIssueForm(order)"
-              >
-                {{ text('shippingIssueAction') }}
-              </button>
               @if (dispatchErrorId() === order.shipment.id) {
                 <span role="alert">{{ text('shippingDispatchError') }}</span>
               }
@@ -157,6 +150,7 @@
             <form
               class="shipping-issue"
               (click)="$event.stopPropagation()"
+              (keydown)="$event.stopPropagation()"
               (submit)="$event.preventDefault(); reportIssue(order)"
             >
               <label [for]="'issue-category-' + order.shipment.id">
@@ -231,6 +225,13 @@
                       : 'shippingConfirmAction'
                   )
                 }}
+              </button>
+              <button
+                type="button"
+                class="app-button app-button--secondary"
+                (click)="openIssueForm(order)"
+              >
+                {{ text('shippingIssueAction') }}
               </button>
               @if (confirmationErrorId() === order.shipment.id) {
                 <span role="alert">{{ text('shippingConfirmError') }}</span>
