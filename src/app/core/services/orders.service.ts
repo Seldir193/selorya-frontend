@@ -12,6 +12,7 @@ import {
   Shipment,
   ShipmentDispatchPayload,
   ShipmentIssuePayload,
+  ShipmentIssueResolutionPayload,
   ShippingOption,
   ShippingSelectionPayload,
   StripeCheckoutResponse,
@@ -55,6 +56,14 @@ export class OrdersService {
 
   reportShipmentIssue(id: number, payload: ShipmentIssuePayload): Observable<Order> {
     return this.http.post<Order>(`${API_BASE_URL}/orders/shipments/${id}/report-issue/`, payload);
+  }
+
+  listShipmentIssues(): Observable<Order[]> {
+    return this.http.get<Order[]>(`${API_BASE_URL}/orders/shipment-issues/`);
+  }
+
+  resolveShipmentIssue(id: number, payload: ShipmentIssueResolutionPayload): Observable<Order> {
+    return this.http.post<Order>(`${API_BASE_URL}/orders/shipment-issues/${id}/resolve/`, payload);
   }
 
   startStripeCheckout(orderId: number): Observable<StripeCheckoutResponse> {

@@ -6,6 +6,7 @@ import { deFeedbackTexts } from './de/feedback.de';
 import { deFooterTexts } from './de/footer.de';
 import { deHeaderTexts } from './de/header.de';
 import { deHomeTexts } from './de/home.de';
+import { deShipmentIssueTexts } from './de/issues.de';
 import { deListingTexts } from './de/listing.de';
 import { deListingModerationTexts } from './de/moderation.de';
 import { deLoginTexts } from './de/login.de';
@@ -36,4 +37,5 @@ export const deTexts = {
   ...favoritesDeTexts,
   ...deCommercialTexts,
   ...deListingModerationTexts,
+  ...deShipmentIssueTexts,
 } as const;

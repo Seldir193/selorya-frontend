@@ -44,6 +44,13 @@ export type ShipmentIssuePayload = {
   description: string;
 };
 
+export type ShipmentIssueResolutionStatus = 'resolved' | 'rejected';
+
+export type ShipmentIssueResolutionPayload = {
+  status: ShipmentIssueResolutionStatus;
+  note: string;
+};
+
 export type OrderCreatePayload = {
   listing_id: number;
   quantity: number;
@@ -68,6 +75,10 @@ export type Shipment = Partial<Omit<ShippingSelectionPayload, 'shipping_option_i
   issue_category?: ShipmentIssueCategory | '';
   issue_description?: string;
   issue_reported_at?: string | null;
+  issue_status?: 'open' | ShipmentIssueResolutionStatus | '';
+  issue_resolution_note?: string;
+  issue_resolved_at?: string | null;
+  issue_resolved_by?: number | null;
   created_at: string;
   updated_at: string;
 };

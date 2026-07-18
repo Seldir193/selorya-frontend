@@ -6,6 +6,7 @@ import { enFeedbackTexts } from './en/feedback.en';
 import { enFooterTexts } from './en/footer.en';
 import { enHeaderTexts } from './en/header.en';
 import { enHomeTexts } from './en/home.en';
+import { enShipmentIssueTexts } from './en/issues.en';
 import { enListingTexts } from './en/listing.en';
 import { enListingModerationTexts } from './en/moderation.en';
 import { enLoginTexts } from './en/login.en';
@@ -36,4 +37,5 @@ export const enTexts = {
   ...favoritesEnTexts,
   ...enCommercialTexts,
   ...enListingModerationTexts,
+  ...enShipmentIssueTexts,
 } as const;

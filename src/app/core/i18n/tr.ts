@@ -5,6 +5,7 @@ import { trDocumentsTexts } from './tr/documents.tr';
 import { trFeedbackTexts } from './tr/feedback.tr';
 import { trHeaderTexts } from './tr/header.tr';
 import { trHomeTexts } from './tr/home.tr';
+import { trShipmentIssueTexts } from './tr/issues.tr';
 import { trListingTexts } from './tr/listing.tr';
 import { trListingModerationTexts } from './tr/moderation.tr';
 import { trLoginTexts } from './tr/login.tr';
@@ -34,4 +35,5 @@ export const trTexts = {
   ...favoritesTrTexts,
   ...trCommercialTexts,
   ...trListingModerationTexts,
+  ...trShipmentIssueTexts,
 } as const;

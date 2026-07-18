@@ -184,6 +184,15 @@
                       >
                         {{ 'adminListingModerationNav' | translate }}
                       </a>
+
+                      <a
+                        routerLink="/admin/shipment-issues"
+                        class="user-menu__item"
+                        (click)="closeUserMenu()"
+                        [class.user-menu__item--active]="isCurrentRoute('/admin/shipment-issues')"
+                      >
+                        {{ 'adminShipmentIssuesNav' | translate }}
+                      </a>
                     </div>
                   }
 

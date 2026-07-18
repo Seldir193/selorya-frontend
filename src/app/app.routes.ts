@@ -128,4 +128,12 @@ export const routes: Routes = [
         (module) => module.AdminListingModerationPage,
       ),
   },
+  {
+    path: 'admin/shipment-issues',
+    canActivate: [adminGuard],
+    loadComponent: () =>
+      import('./features/admin/pages/admin-shipment-issues.page').then(
+        (module) => module.AdminShipmentIssuesPage,
+      ),
+  },
 ];
