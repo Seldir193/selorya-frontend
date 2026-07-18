@@ -45,4 +45,7 @@ export const enShippingTexts = {
   shippingIssueSaving: 'Sending',
   shippingIssueError: 'The problem could not be reported. Check your details.',
   shippingIssueReportedTitle: 'Reported problem',
+  shippingIssueResolutionOpen: 'Review pending',
+  shippingIssueResolutionResolved: 'Problem resolved',
+  shippingIssueResolutionRejected: 'Report rejected',
 } as const;

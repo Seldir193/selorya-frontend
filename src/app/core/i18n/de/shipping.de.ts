@@ -45,4 +45,7 @@ export const deShippingTexts = {
   shippingIssueSaving: 'Wird gesendet',
   shippingIssueError: 'Das Problem konnte nicht gemeldet werden. Prüfe deine Angaben.',
   shippingIssueReportedTitle: 'Gemeldetes Problem',
+  shippingIssueResolutionOpen: 'Bearbeitung offen',
+  shippingIssueResolutionResolved: 'Problem gelöst',
+  shippingIssueResolutionRejected: 'Meldung abgelehnt',
 } as const;

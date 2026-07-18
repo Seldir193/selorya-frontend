@@ -45,4 +45,7 @@ export const trShippingTexts = {
   shippingIssueSaving: 'Gönderiliyor',
   shippingIssueError: 'Sorun bildirilemedi. Bilgilerini kontrol et.',
   shippingIssueReportedTitle: 'Bildirilen sorun',
+  shippingIssueResolutionOpen: 'İnceleme bekliyor',
+  shippingIssueResolutionResolved: 'Sorun çözüldü',
+  shippingIssueResolutionRejected: 'Bildirim reddedildi',
 } as const;

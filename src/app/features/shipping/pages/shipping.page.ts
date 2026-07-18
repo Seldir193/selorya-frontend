@@ -205,6 +205,11 @@ export class ShippingPage {
     return category ? this.issueCategoryLabel(category) : this.text('shippingIssueCategoryOther');
   }
 
+  issueResolutionLabel(order: ShipmentOrder): string {
+    const status = order.shipment.issue_status || 'open';
+    return this.text(`shippingIssueResolution${this.toPascalCase(status)}`);
+  }
+
   scopeLabel(scope: OrderScope): string {
     return this.text(`shippingScope${this.toPascalCase(scope)}`);
   }

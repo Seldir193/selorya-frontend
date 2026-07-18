@@ -207,6 +207,10 @@
               <strong>{{ text('shippingIssueReportedTitle') }}</strong>
               <span>{{ reportedIssueCategory(order) }}</span>
               <p>{{ order.shipment.issue_description }}</p>
+              <strong>{{ issueResolutionLabel(order) }}</strong>
+              @if (order.shipment.issue_resolution_note) {
+                <p>{{ order.shipment.issue_resolution_note }}</p>
+              }
             </div>
           }
           @if (canConfirmDelivery(order)) {
