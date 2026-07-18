@@ -33,6 +33,9 @@ const order: Order = {
     selected_at: '2026-07-17T20:00:00Z',
     shipped_at: null,
     delivered_at: null,
+    issue_category: '',
+    issue_description: '',
+    issue_reported_at: null,
     created_at: '2026-07-17T20:00:00Z',
     updated_at: '2026-07-17T20:00:00Z',
   },
@@ -46,6 +49,9 @@ describe('ShippingPage', () => {
     list: vi.fn(() => of([order])),
     dispatchShipment: vi.fn(() => of(shipped)),
     confirmDelivery: vi.fn(() => of({ ...order, status: 'completed', shipment: shipped })),
+    reportShipmentIssue: vi.fn(() =>
+      of({ ...order, shipment: { ...shipped, status: 'issue_reported' as const } }),
+    ),
   };
   const i18nService = { t: vi.fn((key: string) => key), current: vi.fn(() => 'de') };
 
@@ -101,5 +107,20 @@ describe('ShippingPage', () => {
     component.confirmDelivery(shippedOrder);
     expect(ordersService.confirmDelivery).toHaveBeenCalledWith(5);
     expect(component.orders()[0].status).toBe('completed');
+  });
+
+  it('lets the buyer report an issue for a shipped delivery', () => {
+    const shippedOrder = { ...order, shipment: shipped };
+    ordersService.list.mockReturnValueOnce(of([shippedOrder]));
+    const component = TestBed.createComponent(ShippingPage).componentInstance;
+    component.openIssueForm(shippedOrder);
+    component.issueCategory.set('damaged');
+    component.issueDescription.set('Package damaged');
+    component.reportIssue(shippedOrder);
+    expect(ordersService.reportShipmentIssue).toHaveBeenCalledWith(5, {
+      category: 'damaged',
+      description: 'Package damaged',
+    });
+    expect(component.orders()[0].shipment?.status).toBe('issue_reported');
   });
 });

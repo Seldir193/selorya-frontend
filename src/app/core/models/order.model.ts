@@ -36,6 +36,14 @@ export type ShipmentDispatchPayload = {
   tracking_number: string;
 };
 
+export type ShipmentIssueCategory =
+  'not_received' | 'damaged' | 'not_as_described' | 'wrong_item' | 'other';
+
+export type ShipmentIssuePayload = {
+  category: ShipmentIssueCategory;
+  description: string;
+};
+
 export type OrderCreatePayload = {
   listing_id: number;
   quantity: number;
@@ -57,6 +65,9 @@ export type Shipment = Partial<Omit<ShippingSelectionPayload, 'shipping_option_i
   selected_at: string | null;
   shipped_at: string | null;
   delivered_at: string | null;
+  issue_category?: ShipmentIssueCategory | '';
+  issue_description?: string;
+  issue_reported_at?: string | null;
   created_at: string;
   updated_at: string;
 };

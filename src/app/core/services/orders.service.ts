@@ -11,6 +11,7 @@ import {
   PayPalCheckoutResponse,
   Shipment,
   ShipmentDispatchPayload,
+  ShipmentIssuePayload,
   ShippingOption,
   ShippingSelectionPayload,
   StripeCheckoutResponse,
@@ -50,6 +51,10 @@ export class OrdersService {
 
   confirmDelivery(id: number): Observable<Order> {
     return this.http.post<Order>(`${API_BASE_URL}/orders/shipments/${id}/confirm-delivery/`, {});
+  }
+
+  reportShipmentIssue(id: number, payload: ShipmentIssuePayload): Observable<Order> {
+    return this.http.post<Order>(`${API_BASE_URL}/orders/shipments/${id}/report-issue/`, payload);
   }
 
   startStripeCheckout(orderId: number): Observable<StripeCheckoutResponse> {

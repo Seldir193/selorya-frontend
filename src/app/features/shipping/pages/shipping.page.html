@@ -141,9 +141,78 @@
                   )
                 }}
               </button>
+              <button
+                type="button"
+                class="app-button app-button--secondary"
+                (click)="openIssueForm(order)"
+              >
+                {{ text('shippingIssueAction') }}
+              </button>
               @if (dispatchErrorId() === order.shipment.id) {
                 <span role="alert">{{ text('shippingDispatchError') }}</span>
               }
+            </div>
+          }
+          @if (issueFormId() === order.shipment.id) {
+            <form
+              class="shipping-issue"
+              (click)="$event.stopPropagation()"
+              (submit)="$event.preventDefault(); reportIssue(order)"
+            >
+              <label [for]="'issue-category-' + order.shipment.id">
+                {{ text('shippingIssueCategoryLabel') }}
+              </label>
+              <select
+                [id]="'issue-category-' + order.shipment.id"
+                [value]="issueCategory()"
+                (change)="issueCategory.set($any($event.target).value)"
+              >
+                @for (category of issueCategories; track category) {
+                  <option [value]="category">{{ issueCategoryLabel(category) }}</option>
+                }
+              </select>
+              <label [for]="'issue-description-' + order.shipment.id">
+                {{ text('shippingIssueDescriptionLabel') }}
+              </label>
+              <textarea
+                [id]="'issue-description-' + order.shipment.id"
+                maxlength="1000"
+                [value]="issueDescription()"
+                [placeholder]="text('shippingIssueDescriptionPlaceholder')"
+                (input)="issueDescription.set($any($event.target).value); issueErrorId.set(null)"
+              ></textarea>
+              <div class="shipping-issue__actions">
+                <button
+                  type="button"
+                  class="app-button app-button--secondary"
+                  (click)="closeIssueForm()"
+                >
+                  {{ text('shippingIssueCancel') }}
+                </button>
+                <button
+                  type="submit"
+                  class="app-button"
+                  [disabled]="reportingIssueId() === order.shipment.id"
+                >
+                  {{
+                    text(
+                      reportingIssueId() === order.shipment.id
+                        ? 'shippingIssueSaving'
+                        : 'shippingIssueSubmit'
+                    )
+                  }}
+                </button>
+              </div>
+              @if (issueErrorId() === order.shipment.id) {
+                <span role="alert">{{ text('shippingIssueError') }}</span>
+              }
+            </form>
+          }
+          @if (order.shipment.status === 'issue_reported') {
+            <div class="shipping-issue-summary">
+              <strong>{{ text('shippingIssueReportedTitle') }}</strong>
+              <span>{{ reportedIssueCategory(order) }}</span>
+              <p>{{ order.shipment.issue_description }}</p>
             </div>
           }
           @if (canConfirmDelivery(order)) {

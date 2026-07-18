@@ -1,5 +1,11 @@
 import { Component, computed, inject, signal } from '@angular/core';
-import { Order, OrderScope, Shipment, ShipmentStatus } from '../../../core/models/order.model';
+import {
+  Order,
+  OrderScope,
+  Shipment,
+  ShipmentIssueCategory,
+  ShipmentStatus,
+} from '../../../core/models/order.model';
 import { I18nService } from '../../../core/services/i18n.service';
 import { OrdersService } from '../../../core/services/orders.service';
 import { formatDisplayDateOnly, formatMoney } from '../../../core/utils/format.utils';
@@ -37,6 +43,11 @@ export class ShippingPage {
   readonly dispatchErrorId = signal<number | null>(null);
   readonly confirmingShipmentId = signal<number | null>(null);
   readonly confirmationErrorId = signal<number | null>(null);
+  readonly issueFormId = signal<number | null>(null);
+  readonly issueCategory = signal<ShipmentIssueCategory>('not_received');
+  readonly issueDescription = signal('');
+  readonly reportingIssueId = signal<number | null>(null);
+  readonly issueErrorId = signal<number | null>(null);
   readonly orderScopes: OrderScope[] = ['purchased', 'sold', 'all'];
   readonly pageSizeOptions = [10, 20, 50, 100];
   readonly statusFilters: ShipmentStatusFilter[] = [
@@ -49,6 +60,13 @@ export class ShippingPage {
     'issue_reported',
     'cancelled',
     'legacy_unknown',
+  ];
+  readonly issueCategories: ShipmentIssueCategory[] = [
+    'not_received',
+    'damaged',
+    'not_as_described',
+    'wrong_item',
+    'other',
   ];
 
   readonly statusOptions = computed<DropdownOption<ShipmentStatusFilter>[]>(() => {
@@ -155,6 +173,38 @@ export class ShippingPage {
     });
   }
 
+  openIssueForm(order: ShipmentOrder): void {
+    this.issueFormId.set(order.shipment.id);
+    this.issueCategory.set('not_received');
+    this.issueDescription.set('');
+    this.issueErrorId.set(null);
+  }
+
+  closeIssueForm(): void {
+    this.issueFormId.set(null);
+    this.issueErrorId.set(null);
+  }
+
+  reportIssue(order: ShipmentOrder): void {
+    const description = this.issueDescription().trim();
+    if (!description) return this.issueErrorId.set(order.shipment.id);
+    this.reportingIssueId.set(order.shipment.id);
+    const payload = { category: this.issueCategory(), description };
+    this.ordersService.reportShipmentIssue(order.shipment.id, payload).subscribe({
+      next: (updated) => this.completeIssueReport(updated),
+      error: () => this.failIssueReport(order.shipment.id),
+    });
+  }
+
+  issueCategoryLabel(category: ShipmentIssueCategory): string {
+    return this.text(`shippingIssueCategory${this.toPascalCase(category)}`);
+  }
+
+  reportedIssueCategory(order: ShipmentOrder): string {
+    const category = order.shipment.issue_category;
+    return category ? this.issueCategoryLabel(category) : this.text('shippingIssueCategoryOther');
+  }
+
   scopeLabel(scope: OrderScope): string {
     return this.text(`shippingScope${this.toPascalCase(scope)}`);
   }
@@ -249,6 +299,19 @@ export class ShippingPage {
   private failDelivery(shipmentId: number): void {
     this.confirmingShipmentId.set(null);
     this.confirmationErrorId.set(shipmentId);
+  }
+
+  private completeIssueReport(updated: Order): void {
+    this.orders.update((orders) =>
+      orders.map((order) => (order.id === updated.id ? updated : order)),
+    );
+    this.reportingIssueId.set(null);
+    this.issueFormId.set(null);
+  }
+
+  private failIssueReport(shipmentId: number): void {
+    this.reportingIssueId.set(null);
+    this.issueErrorId.set(shipmentId);
   }
 
   private resetPage(): void {
