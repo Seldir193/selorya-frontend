@@ -21,6 +21,7 @@ export class AdminShipmentIssuesPage {
   readonly isLoading = signal(true);
   readonly hasError = signal(false);
   readonly selectedOrder = signal<Order | null>(null);
+  readonly refundOrder = signal<Order | null>(null);
   readonly selectedStatus = signal<ShipmentIssueResolutionStatus>('resolved');
   readonly isSaving = signal(false);
   readonly actionError = signal(false);
@@ -68,8 +69,18 @@ export class AdminShipmentIssuesPage {
     });
   }
 
-  refund(order: Order): void {
-    if (!order.payment_id || !confirm(this.text('adminShipmentIssuesRefundConfirm'))) return;
+  openRefund(order: Order): void {
+    this.refundOrder.set(order);
+    this.actionError.set(false);
+  }
+
+  closeRefund(): void {
+    if (!this.refundingPaymentId()) this.refundOrder.set(null);
+  }
+
+  confirmRefund(): void {
+    const order = this.refundOrder();
+    if (!order?.payment_id) return;
     this.refundingPaymentId.set(order.payment_id);
     this.actionError.set(false);
     this.ordersService.refundPayment(order.payment_id).subscribe({
@@ -114,6 +125,7 @@ export class AdminShipmentIssuesPage {
 
   private completeRefund(): void {
     this.refundingPaymentId.set(null);
+    this.refundOrder.set(null);
     this.loadIssues();
   }
 

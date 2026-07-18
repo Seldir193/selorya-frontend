@@ -27,6 +27,9 @@ export const enShipmentIssueTexts = {
   adminShipmentIssuesCancel: 'Cancel',
   adminShipmentIssuesSave: 'Save decision',
   adminShipmentIssuesRefund: 'Issue full refund',
+  adminShipmentIssuesRefundTitle: 'Confirm full refund',
   adminShipmentIssuesRefundConfirm: 'Do you really want to refund the full payment?',
+  adminShipmentIssuesRefundConfirmButton: 'Issue full refund now',
+  adminShipmentIssuesRefundError: 'The refund could not be completed.',
   adminShipmentIssuesRefunded: 'Fully refunded',
 } as const;

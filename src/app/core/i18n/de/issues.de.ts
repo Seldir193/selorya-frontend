@@ -27,6 +27,9 @@ export const deShipmentIssueTexts = {
   adminShipmentIssuesCancel: 'Abbrechen',
   adminShipmentIssuesSave: 'Entscheidung speichern',
   adminShipmentIssuesRefund: 'Vollständig erstatten',
+  adminShipmentIssuesRefundTitle: 'Vollständige Erstattung bestätigen',
   adminShipmentIssuesRefundConfirm: 'Zahlung wirklich vollständig zurückerstatten?',
+  adminShipmentIssuesRefundConfirmButton: 'Jetzt vollständig erstatten',
+  adminShipmentIssuesRefundError: 'Die Rückerstattung konnte nicht abgeschlossen werden.',
   adminShipmentIssuesRefunded: 'Vollständig erstattet',
 } as const;

@@ -58,9 +58,9 @@ describe('AdminShipmentIssuesPage', () => {
   });
 
   it('requests a confirmed provider refund', () => {
-    vi.spyOn(globalThis, 'confirm').mockReturnValue(true);
     const component = TestBed.createComponent(AdminShipmentIssuesPage).componentInstance;
-    component.refund({ ...order, payment_id: 9 });
+    component.openRefund({ ...order, payment_id: 9 });
+    component.confirmRefund();
     expect(ordersService.refundPayment).toHaveBeenCalledWith(9);
   });
 });

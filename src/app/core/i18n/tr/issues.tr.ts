@@ -27,6 +27,9 @@ export const trShipmentIssueTexts = {
   adminShipmentIssuesCancel: 'İptal',
   adminShipmentIssuesSave: 'Kararı kaydet',
   adminShipmentIssuesRefund: 'Tam iade yap',
+  adminShipmentIssuesRefundTitle: 'Tam iadeyi onayla',
   adminShipmentIssuesRefundConfirm: 'Ödemenin tamamını gerçekten iade etmek istiyor musunuz?',
+  adminShipmentIssuesRefundConfirmButton: 'Şimdi tam iade yap',
+  adminShipmentIssuesRefundError: 'İade tamamlanamadı.',
   adminShipmentIssuesRefunded: 'Tamamen iade edildi',
 } as const;

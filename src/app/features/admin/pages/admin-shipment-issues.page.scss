@@ -76,7 +76,8 @@
   z-index: 1000;
 }
 
-.admin-issue-dialog form {
+.admin-issue-dialog form,
+.admin-issue-dialog__panel {
   background: var(--color-surface);
   border-radius: 24px;
   display: grid;
@@ -91,10 +92,15 @@
   padding: 12px;
 }
 
-.admin-issue-dialog form > div {
+.admin-issue-dialog form > div,
+.admin-issue-dialog__panel > div {
   display: flex;
   gap: 12px;
   justify-content: flex-end;
+}
+
+.admin-issue-dialog__panel p {
+  margin: 0;
 }
 
 @media (max-width: 760px) {

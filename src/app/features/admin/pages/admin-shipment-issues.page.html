@@ -83,7 +83,7 @@
                   type="button"
                   class="app-button"
                   [disabled]="refundingPaymentId() === order.payment_id"
-                  (click)="refund(order)"
+                  (click)="openRefund(order)"
                 >
                   {{ text('adminShipmentIssuesRefund') }}
                 </button>
@@ -132,6 +132,30 @@
           </button>
         </div>
       </form>
+    </div>
+  }
+
+  @if (refundOrder()) {
+    <div class="admin-issue-dialog" role="dialog" aria-modal="true">
+      <section class="admin-issue-dialog__panel">
+        <h2>{{ text('adminShipmentIssuesRefundTitle') }}</h2>
+        <p>{{ text('adminShipmentIssuesRefundConfirm') }}</p>
+        @if (actionError()) {
+          <span role="alert">{{ text('adminShipmentIssuesRefundError') }}</span>
+        }
+        <div>
+          <button
+            type="button"
+            class="app-button app-button--secondary"
+            (click)="closeRefund()"
+          >
+            {{ text('adminShipmentIssuesCancel') }}
+          </button>
+          <button type="button" class="app-button" (click)="confirmRefund()">
+            {{ text('adminShipmentIssuesRefundConfirmButton') }}
+          </button>
+        </div>
+      </section>
     </div>
   }
 </section>
