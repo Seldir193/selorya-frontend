@@ -1,0 +1,130 @@
+.admin-payouts-page {
+  display: grid;
+  gap: 24px;
+  margin: 0 auto;
+  max-width: 1120px;
+  padding: 36px 24px 72px;
+}
+
+.admin-payouts-head,
+.admin-payout-card header,
+.admin-payout-card footer {
+  align-items: center;
+  display: flex;
+  gap: 16px;
+  justify-content: space-between;
+}
+
+.admin-payouts-head h1,
+.admin-payouts-head p,
+.admin-payouts-head span,
+.admin-payout-card h2,
+.admin-payout-card dl,
+.admin-payouts-state p,
+.admin-payouts-state h2,
+.admin-payout-dialog h2,
+.admin-payout-dialog p {
+  margin: 0;
+}
+
+.admin-payouts-list {
+  display: grid;
+  gap: 18px;
+}
+
+.admin-payout-card,
+.admin-payouts-state {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border-soft);
+  border-radius: 24px;
+  box-shadow: var(--shadow-md);
+  display: grid;
+  gap: 18px;
+  padding: 22px;
+}
+
+.admin-payout-card dl {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.admin-payout-card dt {
+  color: var(--color-text-soft);
+  font-weight: 800;
+}
+
+.admin-payout-card dd {
+  margin: 4px 0 0;
+  overflow-wrap: anywhere;
+}
+
+.admin-payout-card__reference,
+.admin-payout-card__error {
+  background: var(--color-background);
+  border-radius: 14px;
+  display: grid;
+  gap: 4px;
+  padding: 14px;
+}
+
+.admin-payout-card__error,
+.admin-payout-dialog [role='alert'] {
+  color: var(--color-error);
+  font-weight: 700;
+}
+
+.admin-payout-card footer {
+  justify-content: flex-end;
+}
+
+.admin-payouts-state {
+  min-height: 220px;
+  place-content: center;
+  text-align: center;
+}
+
+.admin-payout-dialog {
+  align-items: center;
+  background: rgb(10 19 38 / 55%);
+  display: flex;
+  inset: 0;
+  justify-content: center;
+  position: fixed;
+  z-index: 1000;
+}
+
+.admin-payout-dialog form {
+  background: var(--color-surface);
+  border-radius: 24px;
+  display: grid;
+  gap: 14px;
+  max-width: 560px;
+  padding: 24px;
+  width: calc(100% - 32px);
+}
+
+.admin-payout-dialog input {
+  border: 1px solid var(--color-border);
+  border-radius: 14px;
+  min-height: 48px;
+  padding: 0 14px;
+  width: 100%;
+}
+
+.admin-payout-dialog form > div {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+}
+
+@media (max-width: 760px) {
+  .admin-payouts-head {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .admin-payout-card dl {
+    grid-template-columns: 1fr;
+  }
+}

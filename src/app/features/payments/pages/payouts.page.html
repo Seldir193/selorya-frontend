@@ -1,0 +1,126 @@
+<section class="payouts-page">
+  <header class="payouts-head">
+    <h1>{{ text('payoutsTitle') }}</h1>
+    <p>{{ text('payoutsDescription') }}</p>
+  </header>
+
+  <nav class="payouts-tabs" [attr.aria-label]="text('payoutsTitle')">
+    <a routerLink="/payments">{{ text('payoutsTabPayments') }}</a>
+    <a routerLink="/payments/payouts" class="payouts-tabs__active">
+      {{ text('payoutsTabPayouts') }}
+    </a>
+  </nav>
+
+  <div class="filter-toolbar payouts-toolbar">
+    <label class="filter-search">
+      <input
+        type="search"
+        [value]="searchQuery()"
+        [placeholder]="text('payoutsSearchPlaceholder')"
+        (input)="updateSearch($any($event.target).value)"
+      />
+    </label>
+    <app-dropdown
+      class="filter-control"
+      [value]="statusFilter()"
+      [options]="statusOptions()"
+      [ariaLabel]="text('payoutsStatusFilterLabel')"
+      minWidth="220px"
+      maxMenuHeight="260px"
+      itemAlign="left"
+      (valueChange)="changeStatus($event)"
+    />
+    @if (hasActiveFilters()) {
+      <button type="button" class="app-button app-button--secondary" (click)="clearFilters()">
+        {{ text('payoutsClearFilters') }}
+      </button>
+    }
+  </div>
+
+  @if (hasDownloadError()) {
+    <p class="payouts-error" role="alert">{{ text('payoutsDownloadError') }}</p>
+  }
+
+  @if (isLoading()) {
+    <div class="payouts-state">{{ text('payoutsLoading') }}</div>
+  } @else if (!payouts().length) {
+    <div class="payouts-state">
+      <h2>{{ text('payoutsEmptyTitle') }}</h2>
+      <p>{{ text('payoutsEmptyDescription') }}</p>
+    </div>
+  } @else if (!filteredPayouts().length) {
+    <div class="payouts-state">
+      <h2>{{ text('payoutsFilterEmptyTitle') }}</h2>
+      <p>{{ text('payoutsFilterEmptyDescription') }}</p>
+    </div>
+  } @else {
+    <div class="payouts-list">
+      <div class="payouts-table-head" aria-hidden="true">
+        <span>{{ text('payoutsColumnPayout') }}</span>
+        <span>{{ text('payoutsColumnOrder') }}</span>
+        <span>{{ text('payoutsColumnAmount') }}</span>
+        <span>{{ text('payoutsColumnCreated') }}</span>
+        <span>{{ text('payoutsColumnStatus') }}</span>
+        <span>{{ text('payoutsColumnDocument') }}</span>
+      </div>
+
+      @for (payout of paginatedPayouts(); track payout.id) {
+        <article class="payout-row">
+          <div>
+            <span>{{ text('payoutsColumnPayout') }}</span
+            ><strong>#{{ payout.id }}</strong>
+          </div>
+          <div>
+            <span>{{ text('payoutsColumnOrder') }}</span
+            ><strong>#{{ payout.order_id }}</strong>
+          </div>
+          <div>
+            <span>{{ text('payoutsColumnAmount') }}</span
+            ><strong>{{ payoutAmount(payout) }}</strong>
+          </div>
+          <div>
+            <span>{{ text('payoutsColumnCreated') }}</span
+            ><strong>{{ createdDate(payout) }}</strong>
+          </div>
+          <div>
+            <span>{{ text('payoutsColumnStatus') }}</span>
+            <strong class="payout-status">{{ statusLabel(payout.status) }}</strong>
+            @if (statusDate(payout)) {
+              <small>{{ statusDateLabel(payout) }}: {{ statusDate(payout) }}</small>
+            }
+          </div>
+          <div>
+            <span>{{ text('payoutsColumnDocument') }}</span>
+            @if (statementFor(payout); as statement) {
+              <button
+                type="button"
+                class="app-button app-button--secondary payout-download"
+                [disabled]="downloadingId() === payout.id"
+                (click)="downloadStatement(payout)"
+              >
+                {{
+                  text(
+                    downloadingId() === payout.id
+                      ? 'payoutsDownloadingStatement'
+                      : 'payoutsDownloadStatement'
+                  )
+                }}
+              </button>
+            } @else {
+              <small>{{ text('payoutsNotAvailable') }}</small>
+            }
+          </div>
+        </article>
+      }
+    </div>
+
+    <app-pagination
+      [page]="currentPage()"
+      [pageSize]="pageSize()"
+      [totalItems]="filteredPayouts().length"
+      [pageSizeOptions]="pageSizeOptions"
+      (pageChange)="changePage($event)"
+      (pageSizeChange)="changePageSize($event)"
+    />
+  }
+</section>

@@ -155,6 +155,15 @@
                     >
                       {{ 'navShipping' | translate }}
                     </a>
+
+                    <a
+                      routerLink="/payments/payouts"
+                      class="user-menu__item"
+                      (click)="closeUserMenu()"
+                      [class.user-menu__item--active]="isCurrentRoute('/payments/payouts')"
+                    >
+                      {{ 'navPayouts' | translate }}
+                    </a>
                   </div>
 
                   @if (isPlatformAdmin()) {
@@ -162,6 +171,15 @@
                       <p class="user-menu__group-title">
                         {{ 'adminCommercialMenuGroup' | translate }}
                       </p>
+
+                      <a
+                        routerLink="/admin/payouts"
+                        class="user-menu__item"
+                        (click)="closeUserMenu()"
+                        [class.user-menu__item--active]="isCurrentRoute('/admin/payouts')"
+                      >
+                        {{ 'adminPayoutsNav' | translate }}
+                      </a>
 
                       <a
                         routerLink="/admin/commercial-sellers"

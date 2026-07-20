@@ -1,4 +1,5 @@
 import { TestBed } from '@angular/core/testing';
+import { provideRouter } from '@angular/router';
 import { of } from 'rxjs';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { PaymentItem } from '../../../core/models/payment.model';
@@ -30,6 +31,7 @@ describe('PaymentsPage', () => {
     TestBed.configureTestingModule({
       imports: [PaymentsPage],
       providers: [
+        provideRouter([]),
         { provide: PaymentsService, useValue: paymentsService },
         { provide: I18nService, useValue: i18nService },
       ],

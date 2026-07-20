@@ -12,6 +12,7 @@ export const trDocumentsTexts = {
   documentsTypeCancellation: 'İptal',
   documentsTypePaymentReminder: 'Ödeme hatırlatması',
   documentsTypeDunningNotice: 'Ödeme ihtarı',
+  documentsTypePayoutStatement: 'Ödeme belgesi',
   documentsStatusDraft: 'Taslak',
   documentsStatusGenerated: 'Oluşturuldu',
   documentsStatusSent: 'Gönderildi',

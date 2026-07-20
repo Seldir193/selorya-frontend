@@ -8,11 +8,13 @@ export const deHeaderTexts = {
 
   navSettings: 'Einstellungen',
   navPayments: 'Zahlungen',
+  navPayouts: 'Auszahlungen',
   navShipping: 'Versand',
   navSecurity: 'Sicherheit',
   userMenuAccountGroup: 'Konto',
   userMenuActivityGroup: 'Aktivität',
   userMenuCommerceGroup: 'Commerce',
+  adminPayoutsNav: 'Auszahlungen verwalten',
   navMyListings: 'Meine Anzeigen',
   navSell: 'Verkaufen',
   authLogin: 'Anmelden',

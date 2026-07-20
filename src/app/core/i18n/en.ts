@@ -12,6 +12,7 @@ import { enListingModerationTexts } from './en/moderation.en';
 import { enLoginTexts } from './en/login.en';
 import { enOrdersTexts } from './en/orders.en';
 import { enPaymentsTexts } from './en/payments.en';
+import { enPayoutTexts } from './en/payouts.en';
 import { enPaginationTexts } from './en/pagination.en';
 import { enProfileTexts } from './en/profile.en';
 import { enShippingTexts } from './en/shipping.en';
@@ -26,6 +27,7 @@ export const enTexts = {
   ...enCheckoutTexts,
   ...enOrdersTexts,
   ...enPaymentsTexts,
+  ...enPayoutTexts,
   ...enPaginationTexts,
   ...enHomeTexts,
   ...enFooterTexts,

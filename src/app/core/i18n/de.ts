@@ -12,6 +12,7 @@ import { deListingModerationTexts } from './de/moderation.de';
 import { deLoginTexts } from './de/login.de';
 import { deOrdersTexts } from './de/orders.de';
 import { dePaymentsTexts } from './de/payments.de';
+import { dePayoutTexts } from './de/payouts.de';
 import { dePaginationTexts } from './de/pagination.de';
 import { deProfileTexts } from './de/profile.de';
 import { deShippingTexts } from './de/shipping.de';
@@ -26,6 +27,7 @@ export const deTexts = {
   ...deCheckoutTexts,
   ...deOrdersTexts,
   ...dePaymentsTexts,
+  ...dePayoutTexts,
   ...dePaginationTexts,
   ...deHomeTexts,
   ...deFooterTexts,

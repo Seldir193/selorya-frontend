@@ -12,6 +12,7 @@ export const deDocumentsTexts = {
   documentsTypeCancellation: 'Stornierung',
   documentsTypePaymentReminder: 'Zahlungserinnerung',
   documentsTypeDunningNotice: 'Mahnung',
+  documentsTypePayoutStatement: 'Auszahlungsabrechnung',
   documentsStatusDraft: 'Entwurf',
   documentsStatusGenerated: 'Erstellt',
   documentsStatusSent: 'Versendet',

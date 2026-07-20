@@ -31,6 +31,7 @@ export class DocumentsPage {
     cancellation: 'documentsTypeCancellation',
     payment_reminder: 'documentsTypePaymentReminder',
     dunning_notice: 'documentsTypeDunningNotice',
+    payout_statement: 'documentsTypePayoutStatement',
   };
 
   readonly documentStatusKeys: Record<string, string> = {

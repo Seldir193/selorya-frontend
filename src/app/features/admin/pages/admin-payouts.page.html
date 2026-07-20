@@ -1,0 +1,140 @@
+<section class="admin-payouts-page">
+  <header class="admin-payouts-head">
+    <div>
+      <p>{{ text('adminPayoutsEyebrow') }}</p>
+      <h1>{{ text('adminPayoutsTitle') }}</h1>
+      <span>{{ text('adminPayoutsSubtitle') }}</span>
+    </div>
+    <button type="button" class="app-button app-button--secondary" (click)="loadPayouts()">
+      {{ text('adminPayoutsReload') }}
+    </button>
+  </header>
+
+  <div class="filter-toolbar admin-payouts-toolbar">
+    <label class="filter-search">
+      <input
+        type="search"
+        [value]="searchQuery()"
+        [placeholder]="text('adminPayoutsSearchPlaceholder')"
+        (input)="updateSearch($any($event.target).value)"
+      />
+    </label>
+    <app-dropdown
+      class="filter-control"
+      [value]="statusFilter()"
+      [options]="statusOptions()"
+      [ariaLabel]="text('payoutsStatusFilterLabel')"
+      minWidth="220px"
+      maxMenuHeight="260px"
+      itemAlign="left"
+      (valueChange)="changeStatus($event)"
+    />
+    @if (hasActiveFilters()) {
+      <button type="button" class="app-button app-button--secondary" (click)="clearFilters()">
+        {{ text('payoutsClearFilters') }}
+      </button>
+    }
+  </div>
+
+  @if (isLoading()) {
+    <div class="admin-payouts-state">{{ text('adminPayoutsLoading') }}</div>
+  } @else if (hasError()) {
+    <div class="admin-payouts-state">
+      <p>{{ text('adminPayoutsLoadError') }}</p>
+      <button type="button" class="app-button" (click)="loadPayouts()">
+        {{ text('adminPayoutsRetry') }}
+      </button>
+    </div>
+  } @else if (!payouts().length) {
+    <div class="admin-payouts-state">{{ text('adminPayoutsEmpty') }}</div>
+  } @else if (!filteredPayouts().length) {
+    <div class="admin-payouts-state">
+      <h2>{{ text('payoutsFilterEmptyTitle') }}</h2>
+      <p>{{ text('payoutsFilterEmptyDescription') }}</p>
+    </div>
+  } @else {
+    <div class="admin-payouts-list">
+      @for (payout of paginatedPayouts(); track payout.id) {
+        <article class="admin-payout-card">
+          <header>
+            <div>
+              <span class="app-badge">{{ statusLabel(payout.status) }}</span>
+              <h2>{{ text('payoutsColumnPayout') }} #{{ payout.id }}</h2>
+            </div>
+            <strong>{{ payoutAmount(payout) }}</strong>
+          </header>
+          <dl>
+            <div>
+              <dt>{{ text('payoutsColumnOrder') }}</dt>
+              <dd>#{{ payout.order_id }}</dd>
+            </div>
+            <div>
+              <dt>{{ text('adminPayoutsSeller') }}</dt>
+              <dd>{{ payout.seller_email }}</dd>
+            </div>
+            <div>
+              <dt>{{ payoutDateLabel(payout) }}</dt>
+              <dd>{{ payoutDate(payout) }}</dd>
+            </div>
+          </dl>
+          @if (payout.external_reference) {
+            <div class="admin-payout-card__reference">
+              <strong>{{ text('adminPayoutsReference') }}</strong>
+              <span>{{ payout.external_reference }}</span>
+            </div>
+          }
+          @if (payout.failure_reason) {
+            <div class="admin-payout-card__error">{{ payout.failure_reason }}</div>
+          }
+          @if (payout.status === 'eligible') {
+            <footer>
+              <button type="button" class="app-button" (click)="openMarkPaid(payout)">
+                {{ text('adminPayoutsMarkPaid') }}
+              </button>
+            </footer>
+          }
+        </article>
+      }
+    </div>
+
+    <app-pagination
+      [page]="currentPage()"
+      [pageSize]="pageSize()"
+      [totalItems]="filteredPayouts().length"
+      [pageSizeOptions]="pageSizeOptions"
+      (pageChange)="changePage($event)"
+      (pageSizeChange)="changePageSize($event)"
+    />
+  }
+
+  @if (selectedPayout()) {
+    <div class="admin-payout-dialog" role="dialog" aria-modal="true">
+      <form [formGroup]="referenceForm" (submit)="$event.preventDefault(); submitMarkPaid()">
+        <h2>{{ text('adminPayoutsDialogTitle') }}</h2>
+        <p>{{ text('adminPayoutsDialogDescription') }}</p>
+        <label for="payout-reference">{{ text('adminPayoutsReferenceLabel') }}</label>
+        <input
+          id="payout-reference"
+          type="text"
+          maxlength="180"
+          formControlName="external_reference"
+          [placeholder]="text('adminPayoutsReferencePlaceholder')"
+        />
+        @if (referenceForm.controls.external_reference.touched && referenceForm.invalid) {
+          <span role="alert">{{ text('adminPayoutsReferenceRequired') }}</span>
+        }
+        @if (actionError()) {
+          <span role="alert">{{ text('adminPayoutsActionError') }}</span>
+        }
+        <div>
+          <button type="button" class="app-button app-button--secondary" (click)="closeDialog()">
+            {{ text('adminPayoutsCancel') }}
+          </button>
+          <button type="submit" class="app-button" [disabled]="isSaving()">
+            {{ text(isSaving() ? 'adminPayoutsSaving' : 'adminPayoutsConfirm') }}
+          </button>
+        </div>
+      </form>
+    </div>
+  }
+</section>

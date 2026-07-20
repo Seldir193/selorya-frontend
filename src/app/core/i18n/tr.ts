@@ -11,6 +11,7 @@ import { trListingModerationTexts } from './tr/moderation.tr';
 import { trLoginTexts } from './tr/login.tr';
 import { trOrdersTexts } from './tr/orders.tr';
 import { trPaymentsTexts } from './tr/payments.tr';
+import { trPayoutTexts } from './tr/payouts.tr';
 import { trPaginationTexts } from './tr/pagination.tr';
 import { trProfileTexts } from './tr/profile.tr';
 import { trShippingTexts } from './tr/shipping.tr';
@@ -25,6 +26,7 @@ export const trTexts = {
   ...trCheckoutTexts,
   ...trOrdersTexts,
   ...trPaymentsTexts,
+  ...trPayoutTexts,
   ...trPaginationTexts,
   ...trHomeTexts,
   ...trProfileTexts,

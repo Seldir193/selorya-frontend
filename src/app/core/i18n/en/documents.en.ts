@@ -12,6 +12,7 @@ export const enDocumentsTexts = {
   documentsTypeCancellation: 'Cancellation',
   documentsTypePaymentReminder: 'Payment reminder',
   documentsTypeDunningNotice: 'Dunning notice',
+  documentsTypePayoutStatement: 'Payout statement',
   documentsStatusDraft: 'Draft',
   documentsStatusGenerated: 'Generated',
   documentsStatusSent: 'Sent',

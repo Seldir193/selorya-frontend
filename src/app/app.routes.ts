@@ -51,6 +51,12 @@ export const routes: Routes = [
     canActivate: [authGuard],
   },
   {
+    path: 'payments/payouts',
+    canActivate: [authGuard],
+    loadComponent: () =>
+      import('./features/payments/pages/payouts.page').then((module) => module.PayoutsPage),
+  },
+  {
     path: 'payments',
     canActivate: [authGuard],
     loadComponent: () =>
@@ -111,6 +117,12 @@ export const routes: Routes = [
     path: 'checkout/cancel',
     component: CheckoutCancelPage,
     canActivate: [authGuard],
+  },
+  {
+    path: 'admin/payouts',
+    canActivate: [adminGuard],
+    loadComponent: () =>
+      import('./features/admin/pages/admin-payouts.page').then((module) => module.AdminPayoutsPage),
   },
   {
     path: 'admin/commercial-sellers',
