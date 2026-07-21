@@ -71,6 +71,7 @@ export type Shipment = Partial<Omit<ShippingSelectionPayload, 'shipping_option_i
   status: ShipmentStatus;
   selected_at: string | null;
   shipped_at: string | null;
+  auto_complete_at?: string | null;
   delivered_at: string | null;
   issue_category?: ShipmentIssueCategory | '';
   issue_description?: string;

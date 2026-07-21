@@ -31,6 +31,7 @@ export const deShippingTexts = {
   shippingConfirmAction: 'Lieferung erhalten',
   shippingConfirmSaving: 'Wird bestätigt',
   shippingConfirmError: 'Die Lieferung konnte nicht bestätigt werden. Bitte erneut versuchen.',
+  shippingAutoCompleteNotice: 'Ohne Rückmeldung wird die Bestellung automatisch abgeschlossen am',
   shippingIssueAction: 'Problem melden',
   shippingIssueCategoryLabel: 'Art des Problems',
   shippingIssueCategoryNotReceived: 'Nicht erhalten',

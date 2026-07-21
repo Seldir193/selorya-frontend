@@ -32,6 +32,7 @@ const order: Order = {
     status: 'selected',
     selected_at: '2026-07-17T20:00:00Z',
     shipped_at: null,
+    auto_complete_at: null,
     delivered_at: null,
     issue_category: '',
     issue_description: '',
@@ -122,6 +123,21 @@ describe('ShippingPage', () => {
       description: 'Package damaged',
     });
     expect(component.orders()[0].shipment?.status).toBe('issue_reported');
+  });
+
+  it('shows the automatic completion deadline to the buyer', () => {
+    const deadlineShipment = { ...shipped, auto_complete_at: '2026-07-31T12:00:00Z' };
+    ordersService.list.mockReturnValueOnce(of([{ ...order, shipment: deadlineShipment }]));
+    const fixture = TestBed.createComponent(ShippingPage);
+    fixture.detectChanges();
+    expect(fixture.nativeElement.textContent).toContain('shippingAutoCompleteNotice');
+    expect(fixture.nativeElement.textContent).toContain('31.07.2026');
+  });
+
+  it('prevents a second issue report after a reviewed issue', () => {
+    const component = TestBed.createComponent(ShippingPage).componentInstance;
+    const reviewed = { ...order, shipment: { ...shipped, issue_category: 'other' as const } };
+    expect(component.canReportIssue(reviewed)).toBe(false);
   });
 
   it('keeps space input inside the issue form', () => {

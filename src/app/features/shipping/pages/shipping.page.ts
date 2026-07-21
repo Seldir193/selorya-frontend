@@ -8,7 +8,11 @@ import {
 } from '../../../core/models/order.model';
 import { I18nService } from '../../../core/services/i18n.service';
 import { OrdersService } from '../../../core/services/orders.service';
-import { formatDisplayDateOnly, formatMoney } from '../../../core/utils/format.utils';
+import {
+  formatDisplayDate,
+  formatDisplayDateOnly,
+  formatMoney,
+} from '../../../core/utils/format.utils';
 import {
   DropdownComponent,
   DropdownOption,
@@ -162,6 +166,15 @@ export class ShippingPage {
 
   canConfirmDelivery(order: ShipmentOrder): boolean {
     return this.activeScope() === 'purchased' && order.shipment.status === 'shipped';
+  }
+
+  canReportIssue(order: ShipmentOrder): boolean {
+    return !order.shipment.issue_category;
+  }
+
+  completionDeadline(order: ShipmentOrder): string {
+    const deadline = order.shipment.auto_complete_at;
+    return deadline ? formatDisplayDate(deadline, this.i18n.current()) : '';
   }
 
   confirmDelivery(order: ShipmentOrder): void {

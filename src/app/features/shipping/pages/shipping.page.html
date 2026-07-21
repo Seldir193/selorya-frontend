@@ -202,7 +202,7 @@
               }
             </form>
           }
-          @if (order.shipment.status === 'issue_reported') {
+          @if (order.shipment.issue_category) {
             <div class="shipping-issue-summary">
               <strong>{{ text('shippingIssueReportedTitle') }}</strong>
               <span>{{ reportedIssueCategory(order) }}</span>
@@ -216,6 +216,9 @@
           @if (canConfirmDelivery(order)) {
             <div class="shipping-confirm" (click)="$event.stopPropagation()">
               <p>{{ text('shippingConfirmDescription') }}</p>
+              @if (completionDeadline(order); as deadline) {
+                <p>{{ text('shippingAutoCompleteNotice') }} <strong>{{ deadline }}</strong></p>
+              }
               <div class="shipping-confirm__actions">
                 <button
                   type="button"
@@ -231,7 +234,7 @@
                     )
                   }}
                 </button>
-                @if (issueFormId() !== order.shipment.id) {
+                @if (issueFormId() !== order.shipment.id && canReportIssue(order)) {
                   <button
                     type="button"
                     class="app-button app-button--secondary"
