@@ -30,6 +30,8 @@ export class AdminPayoutsPage {
   readonly selectedPayout = signal<PayoutItem | null>(null);
   readonly isSaving = signal(false);
   readonly actionError = signal(false);
+  readonly retryingId = signal<number | null>(null);
+  readonly retryErrorId = signal<number | null>(null);
   readonly searchQuery = signal('');
   readonly statusFilter = signal<PayoutStatusFilter>('all');
   readonly currentPage = signal(1);
@@ -39,6 +41,7 @@ export class AdminPayoutsPage {
     'all',
     'pending',
     'eligible',
+    'processing',
     'paid',
     'failed',
     'cancelled',
@@ -120,19 +123,30 @@ export class AdminPayoutsPage {
     });
   }
 
+  retryAutomatic(payout: PayoutItem): void {
+    if (this.retryingId()) return;
+    this.retryingId.set(payout.id);
+    this.retryErrorId.set(null);
+    this.payoutsService.retry(payout.id).subscribe({
+      next: (updated) => this.completeRetry(updated),
+      error: () => this.failRetry(payout.id),
+    });
+  }
+
   payoutAmount(payout: PayoutItem): string {
     return formatMoney(payout.amount, payout.currency, this.i18n.current());
   }
 
   payoutDate(payout: PayoutItem): string {
     return formatDisplayDate(
-      payout.paid_at || payout.eligible_at || payout.created_at,
+      payout.paid_at || payout.processing_at || payout.eligible_at || payout.created_at,
       this.i18n.current(),
     );
   }
 
   payoutDateLabel(payout: PayoutItem): string {
     if (payout.paid_at) return this.text('payoutsColumnPaid');
+    if (payout.processing_at) return this.text('payoutsColumnProcessing');
     if (payout.eligible_at) return this.text('payoutsColumnEligible');
     return this.text('payoutsColumnCreated');
   }
@@ -160,9 +174,7 @@ export class AdminPayoutsPage {
   }
 
   private completeMarkPaid(updated: PayoutItem): void {
-    this.payouts.update((items) =>
-      items.map((payout) => (payout.id === updated.id ? updated : payout)),
-    );
+    this.replacePayout(updated);
     this.isSaving.set(false);
     this.selectedPayout.set(null);
   }
@@ -170,6 +182,22 @@ export class AdminPayoutsPage {
   private failMarkPaid(): void {
     this.isSaving.set(false);
     this.actionError.set(true);
+  }
+
+  private completeRetry(updated: PayoutItem): void {
+    this.replacePayout(updated);
+    this.retryingId.set(null);
+  }
+
+  private failRetry(id: number): void {
+    this.retryingId.set(null);
+    this.retryErrorId.set(id);
+  }
+
+  private replacePayout(updated: PayoutItem): void {
+    this.payouts.update((items) =>
+      items.map((payout) => (payout.id === updated.id ? updated : payout)),
+    );
   }
 
   private matchesFilters(payout: PayoutItem): boolean {

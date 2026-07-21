@@ -31,4 +31,12 @@ describe('PayoutsService', () => {
     expect(request.request.body).toEqual({ external_reference: 'bank-123' });
     request.flush({});
   });
+
+  it('retries an automatic payout', () => {
+    service.retry(7).subscribe();
+    const request = http.expectOne(`${API_BASE_URL}/payouts/7/retry/`);
+    expect(request.request.method).toBe('POST');
+    expect(request.request.body).toEqual({});
+    request.flush({});
+  });
 });

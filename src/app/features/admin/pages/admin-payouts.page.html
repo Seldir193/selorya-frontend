@@ -86,8 +86,27 @@
           @if (payout.failure_reason) {
             <div class="admin-payout-card__error">{{ payout.failure_reason }}</div>
           }
-          @if (payout.status === 'eligible') {
+          @if (retryErrorId() === payout.id) {
+            <div class="admin-payout-card__error">{{ text('adminPayoutsRetryError') }}</div>
+          }
+          @if (payout.status === 'eligible' || payout.status === 'failed') {
             <footer>
+              @if (payout.status === 'failed') {
+                <button
+                  type="button"
+                  class="app-button app-button--secondary"
+                  [disabled]="retryingId() === payout.id"
+                  (click)="retryAutomatic(payout)"
+                >
+                  {{
+                    text(
+                      retryingId() === payout.id
+                        ? 'adminPayoutsRetryingAutomatic'
+                        : 'adminPayoutsRetryAutomatic'
+                    )
+                  }}
+                </button>
+              }
               <button type="button" class="app-button" (click)="openMarkPaid(payout)">
                 {{ text('adminPayoutsMarkPaid') }}
               </button>

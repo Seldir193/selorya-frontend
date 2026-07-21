@@ -40,6 +40,7 @@ export class PayoutsPage {
     'all',
     'pending',
     'eligible',
+    'processing',
     'paid',
     'failed',
     'cancelled',
@@ -114,12 +115,14 @@ export class PayoutsPage {
   }
 
   statusDate(payout: PayoutItem): string {
-    const value = payout.paid_at || payout.eligible_at;
+    const value = payout.paid_at || payout.processing_at || payout.eligible_at;
     return value ? formatDisplayDate(value, this.i18n.current()) : '';
   }
 
   statusDateLabel(payout: PayoutItem): string {
-    return this.text(payout.paid_at ? 'payoutsColumnPaid' : 'payoutsColumnEligible');
+    if (payout.paid_at) return this.text('payoutsColumnPaid');
+    if (payout.processing_at) return this.text('payoutsColumnProcessing');
+    return this.text('payoutsColumnEligible');
   }
 
   statusLabel(status: PayoutStatusFilter): string {

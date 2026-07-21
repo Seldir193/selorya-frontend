@@ -1,4 +1,10 @@
-export type PayoutStatus = 'pending' | 'eligible' | 'paid' | 'failed' | 'cancelled';
+export type PayoutStatus =
+  | 'pending'
+  | 'eligible'
+  | 'processing'
+  | 'paid'
+  | 'failed'
+  | 'cancelled';
 
 export type PayoutItem = {
   id: number;
@@ -8,9 +14,12 @@ export type PayoutItem = {
   status: PayoutStatus;
   amount: string;
   currency: string;
+  provider: string;
   external_reference: string;
   eligible_at: string | null;
+  processing_at: string | null;
   paid_at: string | null;
+  attempt_count: number;
   failure_reason: string;
   created_at: string;
   updated_at: string;

@@ -15,4 +15,8 @@ export class PayoutsService {
   markPaid(id: number, payload: MarkPayoutPaidPayload): Observable<PayoutItem> {
     return this.http.post<PayoutItem>(`${API_BASE_URL}/payouts/${id}/mark-paid/`, payload);
   }
+
+  retry(id: number): Observable<PayoutItem> {
+    return this.http.post<PayoutItem>(`${API_BASE_URL}/payouts/${id}/retry/`, {});
+  }
 }
