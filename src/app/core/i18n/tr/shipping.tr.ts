@@ -31,7 +31,7 @@ export const trShippingTexts = {
   shippingConfirmAction: 'Teslimatı onayla',
   shippingConfirmSaving: 'Onaylanıyor',
   shippingConfirmError: 'Teslimat onaylanamadı. Lütfen tekrar deneyin.',
-  shippingAutoCompleteNotice: 'Yanıt vermezsen sipariş şu tarihte otomatik tamamlanır:',
+  shippingAutoCompleteNotice: 'Kargo firması teslimatı onayladı. Yanıt vermezsen sipariş şu tarihte otomatik tamamlanır:',
   shippingIssueAction: 'Sorun bildir',
   shippingIssueCategoryLabel: 'Sorun türü',
   shippingIssueCategoryNotReceived: 'Teslim alınmadı',

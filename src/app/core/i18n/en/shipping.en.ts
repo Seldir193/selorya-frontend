@@ -31,7 +31,7 @@ export const enShippingTexts = {
   shippingConfirmAction: 'Confirm delivery',
   shippingConfirmSaving: 'Confirming',
   shippingConfirmError: 'The delivery could not be confirmed. Please try again.',
-  shippingAutoCompleteNotice: 'Without a response, the order will be completed automatically on',
+  shippingAutoCompleteNotice: 'The carrier confirmed delivery. Without a response, the order will be completed automatically on',
   shippingIssueAction: 'Report a problem',
   shippingIssueCategoryLabel: 'Type of problem',
   shippingIssueCategoryNotReceived: 'Not received',

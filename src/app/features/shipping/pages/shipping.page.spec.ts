@@ -126,7 +126,11 @@ describe('ShippingPage', () => {
   });
 
   it('shows the automatic completion deadline to the buyer', () => {
-    const deadlineShipment = { ...shipped, auto_complete_at: '2026-07-31T12:00:00Z' };
+    const deadlineShipment = {
+      ...shipped,
+      carrier_delivered_at: '2026-07-29T12:00:00Z',
+      auto_complete_at: '2026-07-31T12:00:00Z',
+    };
     ordersService.list.mockReturnValueOnce(of([{ ...order, shipment: deadlineShipment }]));
     const fixture = TestBed.createComponent(ShippingPage);
     fixture.detectChanges();
