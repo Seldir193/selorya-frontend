@@ -36,7 +36,19 @@ const statement = {
 } as DocumentItem;
 
 describe('PayoutsPage', () => {
-  const payoutsService = { list: vi.fn(() => of([payout])) };
+  const payoutsService = {
+    list: vi.fn(() => of([payout])),
+    onboardingStatus: vi.fn(() =>
+      of({
+        provider: 'stripe',
+        connected: true,
+        details_submitted: true,
+        payouts_enabled: true,
+        ready: true,
+      }),
+    ),
+    createOnboardingLink: vi.fn(() => of({ url: 'https://stripe.test' })),
+  };
   const documentsService = { list: vi.fn(() => of([statement])), download: vi.fn(() => of()) };
   const i18nService = { t: vi.fn((key: string) => key), current: vi.fn(() => 'de') };
 
@@ -65,5 +77,11 @@ describe('PayoutsPage', () => {
     const fixture = TestBed.createComponent(PayoutsPage);
     fixture.componentInstance.downloadStatement(payout);
     expect(documentsService.download).toHaveBeenCalledWith(statement);
+  });
+
+  it('shows the verified Stripe payout account', () => {
+    const fixture = TestBed.createComponent(PayoutsPage);
+    fixture.detectChanges();
+    expect(fixture.nativeElement.textContent).toContain('payoutsOnboardingReadyTitle');
   });
 });

@@ -39,4 +39,16 @@ describe('PayoutsService', () => {
     expect(request.request.body).toEqual({});
     request.flush({});
   });
+
+  it('loads the Stripe onboarding status', () => {
+    service.onboardingStatus().subscribe();
+    http.expectOne(`${API_BASE_URL}/payouts/stripe/onboarding/status/`).flush({});
+  });
+
+  it('creates a Stripe onboarding link', () => {
+    service.createOnboardingLink().subscribe();
+    const request = http.expectOne(`${API_BASE_URL}/payouts/stripe/onboarding/`);
+    expect(request.request.method).toBe('POST');
+    request.flush({ url: 'https://stripe.test' });
+  });
 });

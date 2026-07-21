@@ -11,6 +11,39 @@
     </a>
   </nav>
 
+  <section class="payout-onboarding" [class.payout-onboarding--ready]="onboarding()?.ready">
+    <div>
+      <span>{{ text('payoutsOnboardingEyebrow') }}</span>
+      @if (onboardingLoading()) {
+        <h2>{{ text('payoutsOnboardingLoading') }}</h2>
+      } @else {
+        <h2>{{ onboardingTitle() }}</h2>
+        <p>{{ onboardingDescription() }}</p>
+      }
+      @if (onboardingError()) {
+        <p class="payouts-error" role="alert">{{ text('payoutsOnboardingError') }}</p>
+      }
+    </div>
+    @if (!onboardingLoading() && !onboarding()?.ready) {
+      <button
+        type="button"
+        class="app-button"
+        [disabled]="onboardingStarting()"
+        (click)="startOnboarding()"
+      >
+        {{
+          text(
+            onboardingStarting()
+              ? 'payoutsOnboardingStarting'
+              : onboarding()?.connected
+                ? 'payoutsOnboardingContinue'
+                : 'payoutsOnboardingStart'
+          )
+        }}
+      </button>
+    }
+  </section>
+
   <div class="filter-toolbar payouts-toolbar">
     <label class="filter-search">
       <input

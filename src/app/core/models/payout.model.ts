@@ -28,3 +28,15 @@ export type PayoutItem = {
 export type MarkPayoutPaidPayload = {
   external_reference: string;
 };
+
+export type PayoutOnboardingStatus = {
+  provider: 'stripe';
+  connected: boolean;
+  details_submitted: boolean;
+  payouts_enabled: boolean;
+  ready: boolean;
+};
+
+export type PayoutOnboardingLink = {
+  url: string;
+};

@@ -1,7 +1,11 @@
 import { Component, computed, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { DocumentItem } from '../../../core/models/document.model';
-import { PayoutItem, PayoutStatus } from '../../../core/models/payout.model';
+import {
+  PayoutItem,
+  PayoutOnboardingStatus,
+  PayoutStatus,
+} from '../../../core/models/payout.model';
 import { DocumentsService } from '../../../core/services/documents.service';
 import { I18nService } from '../../../core/services/i18n.service';
 import { PayoutsService } from '../../../core/services/payouts.service';
@@ -27,6 +31,10 @@ export class PayoutsPage {
   private readonly payoutsService = inject(PayoutsService);
 
   readonly payouts = signal<PayoutItem[]>([]);
+  readonly onboarding = signal<PayoutOnboardingStatus | null>(null);
+  readonly onboardingLoading = signal(true);
+  readonly onboardingStarting = signal(false);
+  readonly onboardingError = signal(false);
   readonly documents = signal<DocumentItem[]>([]);
   readonly isLoading = signal(true);
   readonly hasDownloadError = signal(false);
@@ -60,8 +68,31 @@ export class PayoutsPage {
   });
 
   constructor() {
+    this.loadOnboarding();
     this.loadPayouts();
     this.loadDocuments();
+  }
+
+  startOnboarding(): void {
+    if (this.onboardingStarting()) return;
+    this.onboardingStarting.set(true);
+    this.onboardingError.set(false);
+    this.payoutsService.createOnboardingLink().subscribe({
+      next: ({ url }) => this.openOnboarding(url),
+      error: () => this.failOnboarding(),
+    });
+  }
+
+  onboardingTitle(): string {
+    if (this.onboarding()?.ready) return this.text('payoutsOnboardingReadyTitle');
+    if (this.onboarding()?.connected) return this.text('payoutsOnboardingPendingTitle');
+    return this.text('payoutsOnboardingRequiredTitle');
+  }
+
+  onboardingDescription(): string {
+    if (this.onboarding()?.ready) return this.text('payoutsOnboardingReadyDescription');
+    if (this.onboarding()?.connected) return this.text('payoutsOnboardingPendingDescription');
+    return this.text('payoutsOnboardingRequiredDescription');
   }
 
   updateSearch(value: string): void {
@@ -143,6 +174,32 @@ export class PayoutsPage {
       next: (payouts) => this.completeLoad(payouts),
       error: () => this.completeLoad([]),
     });
+  }
+
+  private loadOnboarding(): void {
+    this.payoutsService.onboardingStatus().subscribe({
+      next: (status) => this.completeOnboardingLoad(status),
+      error: () => this.failOnboardingLoad(),
+    });
+  }
+
+  private completeOnboardingLoad(status: PayoutOnboardingStatus): void {
+    this.onboarding.set(status);
+    this.onboardingLoading.set(false);
+  }
+
+  private failOnboardingLoad(): void {
+    this.onboardingLoading.set(false);
+    this.onboardingError.set(true);
+  }
+
+  private openOnboarding(url: string): void {
+    window.location.assign(url);
+  }
+
+  private failOnboarding(): void {
+    this.onboardingStarting.set(false);
+    this.onboardingError.set(true);
   }
 
   private loadDocuments(): void {
