@@ -93,7 +93,8 @@ describe('PayoutsPage', () => {
   it('shows Stripe management and the PayPal account', () => {
     const fixture = TestBed.createComponent(PayoutsPage);
     fixture.detectChanges();
+    const email = fixture.nativeElement.querySelector('input[type="email"]') as HTMLInputElement;
     expect(fixture.nativeElement.textContent).toContain('payoutsOnboardingManage');
-    expect(fixture.nativeElement.textContent).toContain('seller-paypal@example.com');
+    expect(email.value).toBe('seller-paypal@example.com');
   });
 });
