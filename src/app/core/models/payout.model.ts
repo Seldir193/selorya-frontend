@@ -40,3 +40,14 @@ export type PayoutOnboardingStatus = {
 export type PayoutOnboardingLink = {
   url: string;
 };
+
+export type PayoutProviderAccount = {
+  provider: 'stripe' | 'paypal';
+  connected: boolean;
+  ready: boolean;
+  destination: string;
+};
+
+export type PayPalPayoutAccountPayload = {
+  email: string;
+};

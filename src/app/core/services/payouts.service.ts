@@ -4,9 +4,11 @@ import { Observable } from 'rxjs';
 import { API_BASE_URL } from '../config/api.config';
 import {
   MarkPayoutPaidPayload,
+  PayPalPayoutAccountPayload,
   PayoutItem,
   PayoutOnboardingLink,
   PayoutOnboardingStatus,
+  PayoutProviderAccount,
 } from '../models/payout.model';
 
 @Injectable({ providedIn: 'root' })
@@ -36,5 +38,21 @@ export class PayoutsService {
       `${API_BASE_URL}/payouts/stripe/onboarding/`,
       {},
     );
+  }
+
+  createStripeDashboardLink(): Observable<PayoutOnboardingLink> {
+    return this.http.post<PayoutOnboardingLink>(`${API_BASE_URL}/payouts/stripe/dashboard/`, {});
+  }
+
+  paypalAccount(): Observable<PayoutProviderAccount> {
+    return this.http.get<PayoutProviderAccount>(`${API_BASE_URL}/payouts/paypal/account/`);
+  }
+
+  savePaypalAccount(payload: PayPalPayoutAccountPayload): Observable<PayoutProviderAccount> {
+    return this.http.put<PayoutProviderAccount>(`${API_BASE_URL}/payouts/paypal/account/`, payload);
+  }
+
+  deactivatePaypalAccount(): Observable<PayoutProviderAccount> {
+    return this.http.delete<PayoutProviderAccount>(`${API_BASE_URL}/payouts/paypal/account/`);
   }
 }

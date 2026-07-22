@@ -35,6 +35,13 @@ const statement = {
   document_number: 'PAY-2026-0001',
 } as DocumentItem;
 
+const paypalAccount = {
+  provider: 'paypal' as const,
+  connected: true,
+  ready: true,
+  destination: 'seller-paypal@example.com',
+};
+
 describe('PayoutsPage', () => {
   const payoutsService = {
     list: vi.fn(() => of([payout])),
@@ -48,6 +55,10 @@ describe('PayoutsPage', () => {
       }),
     ),
     createOnboardingLink: vi.fn(() => of({ url: 'https://stripe.test' })),
+    createStripeDashboardLink: vi.fn(() => of({ url: 'https://stripe.test/dashboard' })),
+    paypalAccount: vi.fn(() => of(paypalAccount)),
+    savePaypalAccount: vi.fn(() => of(paypalAccount)),
+    deactivatePaypalAccount: vi.fn(() => of({ ...paypalAccount, ready: false })),
   };
   const documentsService = { list: vi.fn(() => of([statement])), download: vi.fn(() => of()) };
   const i18nService = { t: vi.fn((key: string) => key), current: vi.fn(() => 'de') };
@@ -79,9 +90,11 @@ describe('PayoutsPage', () => {
     expect(documentsService.download).toHaveBeenCalledWith(statement);
   });
 
-  it('shows the verified Stripe payout account', () => {
+  it('shows Stripe management and the PayPal account', () => {
     const fixture = TestBed.createComponent(PayoutsPage);
     fixture.detectChanges();
-    expect(fixture.nativeElement.textContent).toContain('payoutsOnboardingReadyTitle');
+    const email = fixture.nativeElement.querySelector('input[type="email"]') as HTMLInputElement;
+    expect(fixture.nativeElement.textContent).toContain('payoutsOnboardingManage');
+    expect(email.value).toBe('seller-paypal@example.com');
   });
 });

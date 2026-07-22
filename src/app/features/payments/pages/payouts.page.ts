@@ -15,13 +15,19 @@ import {
   DropdownOption,
 } from '../../../shared/components/dropdown/dropdown.component';
 import { PaginationComponent } from '../../../shared/components/pagination/pagination.component';
+import { PaypalPayoutAccountComponent } from '../components/paypal-payout-account.component';
 
 type PayoutStatusFilter = 'all' | PayoutStatus;
 
 @Component({
   selector: 'app-payouts-page',
   standalone: true,
-  imports: [RouterLink, DropdownComponent, PaginationComponent],
+  imports: [
+    RouterLink,
+    DropdownComponent,
+    PaginationComponent,
+    PaypalPayoutAccountComponent,
+  ],
   templateUrl: './payouts.page.html',
   styleUrl: './payouts.page.scss',
 })
@@ -77,7 +83,7 @@ export class PayoutsPage {
     if (this.onboardingStarting()) return;
     this.onboardingStarting.set(true);
     this.onboardingError.set(false);
-    this.payoutsService.createOnboardingLink().subscribe({
+    this.stripeLinkRequest().subscribe({
       next: ({ url }) => this.openOnboarding(url),
       error: () => this.failOnboarding(),
     });
@@ -93,6 +99,13 @@ export class PayoutsPage {
     if (this.onboarding()?.ready) return this.text('payoutsOnboardingReadyDescription');
     if (this.onboarding()?.connected) return this.text('payoutsOnboardingPendingDescription');
     return this.text('payoutsOnboardingRequiredDescription');
+  }
+
+  onboardingAction(): string {
+    if (this.onboardingStarting()) return this.text('payoutsOnboardingStarting');
+    if (this.onboarding()?.ready) return this.text('payoutsOnboardingManage');
+    if (this.onboarding()?.connected) return this.text('payoutsOnboardingContinue');
+    return this.text('payoutsOnboardingStart');
   }
 
   updateSearch(value: string): void {
@@ -166,6 +179,11 @@ export class PayoutsPage {
 
   text(key: string): string {
     return this.i18n.t(key);
+  }
+
+  private stripeLinkRequest() {
+    if (this.onboarding()?.ready) return this.payoutsService.createStripeDashboardLink();
+    return this.payoutsService.createOnboardingLink();
   }
 
   private loadPayouts(): void {
