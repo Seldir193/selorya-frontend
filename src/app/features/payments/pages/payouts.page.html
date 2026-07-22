@@ -24,25 +24,19 @@
         <p class="payouts-error" role="alert">{{ text('payoutsOnboardingError') }}</p>
       }
     </div>
-    @if (!onboardingLoading() && !onboarding()?.ready) {
+    @if (!onboardingLoading()) {
       <button
         type="button"
         class="app-button"
         [disabled]="onboardingStarting()"
         (click)="startOnboarding()"
       >
-        {{
-          text(
-            onboardingStarting()
-              ? 'payoutsOnboardingStarting'
-              : onboarding()?.connected
-                ? 'payoutsOnboardingContinue'
-                : 'payoutsOnboardingStart'
-          )
-        }}
+        {{ onboardingAction() }}
       </button>
     }
   </section>
+
+  <app-paypal-payout-account />
 
   <div class="filter-toolbar payouts-toolbar">
     <label class="filter-search">
