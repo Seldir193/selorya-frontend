@@ -1,0 +1,42 @@
+<section class="paypal-payout-account">
+  <div>
+    <h2>{{ text('payoutsPaypalTitle') }}</h2>
+    <p>{{ text('payoutsPaypalDescription') }}</p>
+    @if (!loading()) {
+      <small>
+        {{ text(account()?.ready ? 'payoutsPaypalReady' : 'payoutsPaypalInactive') }}
+      </small>
+    }
+    @if (hasError()) {
+      <p class="paypal-payout-account__error" role="alert">{{ text('payoutsPaypalError') }}</p>
+    }
+  </div>
+
+  <div class="paypal-payout-account__controls">
+    <label>
+      <span>{{ text('payoutsPaypalEmail') }}</span>
+      <input
+        type="email"
+        autocomplete="email"
+        [value]="email()"
+        [disabled]="loading() || saving()"
+        (input)="updateEmail($any($event.target).value)"
+      />
+    </label>
+    <div class="paypal-payout-account__actions">
+      <button type="button" class="app-button" [disabled]="loading() || saving()" (click)="save()">
+        {{ text(saving() ? 'payoutsPaypalSaving' : 'payoutsPaypalSave') }}
+      </button>
+      @if (account()?.ready) {
+        <button
+          type="button"
+          class="app-button app-button--secondary"
+          [disabled]="saving()"
+          (click)="deactivate()"
+        >
+          {{ text('payoutsPaypalDeactivate') }}
+        </button>
+      }
+    </div>
+  </div>
+</section>
