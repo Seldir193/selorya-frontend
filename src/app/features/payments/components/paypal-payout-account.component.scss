@@ -1,0 +1,56 @@
+.paypal-payout-account {
+  align-items: end;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border-soft);
+  border-radius: 24px;
+  box-shadow: var(--shadow-md);
+  display: grid;
+  gap: 24px;
+  grid-template-columns: 1fr minmax(280px, 420px);
+  padding: 22px 24px;
+}
+
+.paypal-payout-account h2,
+.paypal-payout-account p {
+  margin: 0;
+}
+
+.paypal-payout-account > div:first-child {
+  display: grid;
+  gap: 6px;
+}
+
+.paypal-payout-account small,
+.paypal-payout-account p {
+  color: var(--color-text-soft);
+}
+
+.paypal-payout-account__controls,
+.paypal-payout-account label {
+  display: grid;
+  gap: 8px;
+}
+
+.paypal-payout-account input {
+  border: 1px solid var(--color-border-soft);
+  border-radius: 12px;
+  min-height: 44px;
+  padding: 0 12px;
+}
+
+.paypal-payout-account__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.paypal-payout-account__error {
+  color: var(--color-danger) !important;
+}
+
+@media (max-width: 760px) {
+  .paypal-payout-account {
+    align-items: stretch;
+    grid-template-columns: 1fr;
+  }
+}
