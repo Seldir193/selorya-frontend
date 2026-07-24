@@ -1,0 +1,205 @@
+@if (isVisible()) {
+  @if (order().shipment; as shipment) {
+  <section class="return-panel" [attr.aria-label]="text('returnPanelTitle')">
+    <header class="return-panel__header">
+      <div>
+        <span>{{ text('returnPanelEyebrow') }}</span>
+        <h3>{{ text('returnPanelTitle') }}</h3>
+      </div>
+      @if (shipment.return_request; as returnRequest) {
+        <strong class="app-badge">{{ statusLabel(returnRequest.status) }}</strong>
+      }
+    </header>
+
+    @if (scope() === 'purchased') {
+      <div class="return-panel__deadline">
+        <span>{{ text('returnDeadline') }}</span>
+        <strong>{{ returnDeadline() }}</strong>
+      </div>
+      <p class="return-panel__notice">
+        {{
+          text(
+            sellerType() === 'commercial'
+              ? 'returnCommercialSellerNotice'
+              : 'returnPrivateSellerNotice'
+          )
+        }}
+      </p>
+    }
+
+    @if (scope() === 'sold') {
+      <div class="return-panel__payout">
+        <div>
+          <span>{{ text('returnPayoutEligibleAt') }}</span>
+          <strong>{{ payoutEligibleAt() }}</strong>
+        </div>
+        <div>
+          <span>{{ text('returnPayoutBlocker') }}</span>
+          <strong>{{ payoutBlockLabel() }}</strong>
+        </div>
+      </div>
+    }
+
+    @if (shipment.return_request; as returnRequest) {
+      <div class="return-panel__summary">
+        <p>{{ statusHint(returnRequest.status) }}</p>
+        <dl>
+          <div>
+            <dt>{{ text('returnReason') }}</dt>
+            <dd>{{ reasonLabel(returnRequest.reason) }}</dd>
+          </div>
+          <div>
+            <dt>{{ text('returnRequestedAt') }}</dt>
+            <dd>{{ requestedAt() }}</dd>
+          </div>
+          <div>
+            <dt>{{ text('returnShippingPayer') }}</dt>
+            <dd>{{ payerLabel() }}</dd>
+          </div>
+          @if (returnRequest.carrier) {
+            <div>
+              <dt>{{ text('returnCarrier') }}</dt>
+              <dd>{{ returnRequest.carrier }}</dd>
+            </div>
+          }
+          @if (returnRequest.tracking_number) {
+            <div>
+              <dt>{{ text('returnTrackingNumber') }}</dt>
+              <dd>{{ returnRequest.tracking_number }}</dd>
+            </div>
+          }
+          @if (returnRequest.label_reference) {
+            <div>
+              <dt>{{ text('returnLabelReference') }}</dt>
+              <dd>{{ returnRequest.label_reference }}</dd>
+            </div>
+          }
+        </dl>
+        @if (returnRequest.description) {
+          <div>
+            <strong>{{ text('returnDescription') }}</strong>
+            <p>{{ returnRequest.description }}</p>
+          </div>
+        }
+        @if (returnRequest.resolution_note) {
+          <div>
+            <strong>{{ text('returnResolutionNote') }}</strong>
+            <p>{{ returnRequest.resolution_note }}</p>
+          </div>
+        }
+      </div>
+
+      @if (canShip() && !isReadOnly()) {
+        <form
+          class="return-panel__form"
+          (submit)="$event.preventDefault(); shipReturn()"
+        >
+          <label>
+            <span>{{ text('returnCarrier') }}</span>
+            <input
+              type="text"
+              maxlength="20"
+              [value]="carrier()"
+              [disabled]="activeAction() === 'ship'"
+              (input)="carrier.set($any($event.target).value); failedAction.set(null)"
+            />
+          </label>
+          <label>
+            <span>{{ text('returnTrackingNumber') }}</span>
+            <input
+              type="text"
+              maxlength="180"
+              [value]="trackingNumber()"
+              [disabled]="activeAction() === 'ship'"
+              (input)="trackingNumber.set($any($event.target).value); failedAction.set(null)"
+            />
+          </label>
+          <button
+            type="submit"
+            class="app-button"
+            [disabled]="activeAction() === 'ship' || !carrier().trim() || !trackingNumber().trim()"
+          >
+            {{ text(activeAction() === 'ship' ? 'returnShippingSaving' : 'returnShippingSubmit') }}
+          </button>
+          @if (failedAction() === 'ship') {
+            <p class="return-panel__error" role="alert">{{ text('returnShippingError') }}</p>
+          }
+        </form>
+      }
+
+      @if (canConfirm() && !isReadOnly()) {
+        <div class="return-panel__actions">
+          <button
+            type="button"
+            class="app-button"
+            [disabled]="activeAction() === 'confirm'"
+            (click)="confirmDelivery()"
+          >
+            {{ text(activeAction() === 'confirm' ? 'returnConfirmSaving' : 'returnConfirmAction') }}
+          </button>
+          @if (failedAction() === 'confirm') {
+            <p class="return-panel__error" role="alert">{{ text('returnConfirmError') }}</p>
+          }
+        </div>
+      }
+    } @else if (canRequest()) {
+      @if (!requestOpen()) {
+        <button type="button" class="app-button" (click)="openRequest()">
+          {{ text('returnRequestAction') }}
+        </button>
+      } @else {
+        <form
+          class="return-panel__form"
+          (submit)="$event.preventDefault(); requestReturn()"
+        >
+          <label>
+            <span>{{ text('returnReason') }}</span>
+            <app-dropdown
+              [value]="reason()"
+              [options]="reasonOptions()"
+              [ariaLabel]="text('returnReason')"
+              minWidth="100%"
+              maxMenuHeight="280px"
+              itemAlign="left"
+              [disabled]="activeAction() === 'request'"
+              (valueChange)="reason.set($event); failedAction.set(null)"
+            />
+          </label>
+          <label>
+            <span>{{ text('returnDescription') }}</span>
+            <textarea
+              maxlength="1000"
+              [value]="description()"
+              [disabled]="activeAction() === 'request'"
+              [placeholder]="text('returnDescriptionPlaceholder')"
+              (input)="description.set($any($event.target).value); failedAction.set(null)"
+            ></textarea>
+          </label>
+          <div class="return-panel__actions">
+            <button
+              type="button"
+              class="app-button app-button--secondary"
+              [disabled]="activeAction() === 'request'"
+              (click)="closeRequest()"
+            >
+              {{ text('returnCancel') }}
+            </button>
+            <button
+              type="submit"
+              class="app-button"
+              [disabled]="activeAction() === 'request' || !canSubmitRequest()"
+            >
+              {{ text(activeAction() === 'request' ? 'returnRequestSaving' : 'returnRequestSubmit') }}
+            </button>
+          </div>
+          @if (failedAction() === 'request') {
+            <p class="return-panel__error" role="alert">{{ text('returnRequestError') }}</p>
+          }
+        </form>
+      }
+    } @else if (scope() === 'purchased' && !shipment.return_allowed) {
+      <p class="return-panel__notice">{{ text('returnUnavailable') }}</p>
+    }
+  </section>
+}
+}

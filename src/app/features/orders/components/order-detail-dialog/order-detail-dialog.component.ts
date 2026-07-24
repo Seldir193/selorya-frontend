@@ -3,11 +3,12 @@ import { Order, OrderItem, PaymentProvider } from '../../../../core/models/order
 import { I18nService } from '../../../../core/services/i18n.service';
 import { formatDisplayDate, formatMoney } from '../../../../core/utils/format.utils';
 import { DialogComponent } from '../../../../shared/components/dialog/dialog.component';
+import { ReturnSummaryComponent } from '../return-summary/return-summary.component';
 
 @Component({
   selector: 'app-order-detail-dialog',
   standalone: true,
-  imports: [DialogComponent],
+  imports: [DialogComponent, ReturnSummaryComponent],
   templateUrl: './order-detail-dialog.component.html',
   styleUrl: './order-detail-dialog.component.scss',
 })
@@ -65,10 +66,10 @@ export class OrderDetailDialogComponent {
     const shipment = this.order()?.shipment;
     return Boolean(
       shipment?.recipient_name &&
-      shipment.address_line_1 &&
-      shipment.postal_code &&
-      shipment.city &&
-      shipment.country,
+        shipment.address_line_1 &&
+        shipment.postal_code &&
+        shipment.city &&
+        shipment.country,
     );
   }
 
@@ -87,18 +88,12 @@ export class OrderDetailDialogComponent {
   }
 
   paymentProviderLabel(provider: PaymentProvider | null): string {
-    if (!provider) {
-      return this.text('ordersPaymentProviderMissing');
-    }
-
+    if (!provider) return this.text('ordersPaymentProviderMissing');
     return this.text(`ordersPaymentProvider${this.toPascalCase(provider)}`);
   }
 
   paymentStatusLabel(status: string | null): string {
-    if (!status) {
-      return this.text('ordersPaymentStatusMissing');
-    }
-
+    if (!status) return this.text('ordersPaymentStatusMissing');
     return this.text(`ordersPaymentStatus${this.toPascalCase(status)}`);
   }
 

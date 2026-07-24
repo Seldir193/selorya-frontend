@@ -19,6 +19,7 @@ import {
 } from '../../../shared/components/dropdown/dropdown.component';
 import { PaginationComponent } from '../../../shared/components/pagination/pagination.component';
 import { OrderDetailDialogComponent } from '../../orders/components/order-detail-dialog/order-detail-dialog.component';
+import { ReturnPanelComponent } from '../components/return-panel/return-panel.component';
 
 type ShipmentOrder = Order & { shipment: Shipment };
 type ShipmentStatusFilter = 'all' | ShipmentStatus;
@@ -26,7 +27,12 @@ type ShipmentStatusFilter = 'all' | ShipmentStatus;
 @Component({
   selector: 'app-shipping-page',
   standalone: true,
-  imports: [DropdownComponent, PaginationComponent, OrderDetailDialogComponent],
+  imports: [
+    DropdownComponent,
+    PaginationComponent,
+    OrderDetailDialogComponent,
+    ReturnPanelComponent,
+  ],
   templateUrl: './shipping.page.html',
   styleUrl: './shipping.page.scss',
 })
@@ -169,7 +175,7 @@ export class ShippingPage {
   }
 
   canReportIssue(order: ShipmentOrder): boolean {
-    return !order.shipment.issue_category;
+    return !order.shipment.issue_category && !order.shipment.return_request;
   }
 
   completionDeadline(order: ShipmentOrder): string {

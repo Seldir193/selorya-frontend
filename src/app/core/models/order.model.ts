@@ -1,6 +1,16 @@
+import { ShipmentReturn } from './return.model';
+
 export type PaymentProvider = 'stripe' | 'paypal' | 'manual';
 export type CheckoutProvider = 'stripe' | 'paypal';
 export type OrderScope = 'purchased' | 'sold' | 'all';
+export type SellerType = 'private' | 'commercial';
+export type ShipmentPayoutBlockReason =
+  | ''
+  | 'shipment_missing'
+  | 'delivery_not_confirmed'
+  | 'return_open'
+  | 'shipment_issue'
+  | 'payout_window_open';
 export type ShipmentStatus =
   | 'selection_required'
   | 'selected'
@@ -73,10 +83,17 @@ export type Shipment = Partial<Omit<ShippingSelectionPayload, 'shipping_option_i
   shipped_at: string | null;
   carrier_status?: string;
   carrier_status_description?: string;
+  carrier_checked_at?: string | null;
   carrier_event_at?: string | null;
   carrier_delivered_at?: string | null;
   auto_complete_at?: string | null;
   delivered_at: string | null;
+  payout_eligible_at: string | null;
+  payout_blocked: boolean;
+  payout_block_reason: ShipmentPayoutBlockReason;
+  return_allowed: boolean;
+  return_deadline: string | null;
+  return_request: ShipmentReturn | null;
   issue_category?: ShipmentIssueCategory | '';
   issue_description?: string;
   issue_reported_at?: string | null;
@@ -92,6 +109,8 @@ export type OrderItem = {
   id: number;
   listing: number;
   seller: number;
+  seller_type_snapshot: SellerType;
+  commercial_seller_snapshot?: Record<string, unknown> | null;
   title_snapshot: string;
   price_snapshot: string;
   quantity: number;
