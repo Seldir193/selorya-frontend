@@ -144,6 +144,27 @@ describe('ReturnPanelComponent', () => {
     });
   });
 
+  it('requires details for problem-based returns', () => {
+    const fixture = create(orderFixture(), 'purchased');
+    fixture.componentInstance.openRequest();
+    fixture.componentInstance.reason.set('defective');
+    fixture.componentInstance.description.set('   ');
+    fixture.componentInstance.requestReturn();
+    expect(returnsService.requestReturn).not.toHaveBeenCalled();
+    expect(fixture.componentInstance.canSubmitRequest()).toBe(false);
+  });
+
+  it('allows a commercial withdrawal without justification', () => {
+    const fixture = create(orderFixture(), 'purchased');
+    fixture.componentInstance.openRequest();
+    fixture.componentInstance.reason.set('change_of_mind');
+    fixture.componentInstance.requestReturn();
+    expect(returnsService.requestReturn).toHaveBeenCalledWith(4, {
+      reason: 'change_of_mind',
+      description: '',
+    });
+  });
+
   it('allows return shipping only after approval', () => {
     const requested = create(orderFixture('commercial', 'requested'), 'purchased');
     expect(requested.componentInstance.canShip()).toBe(false);
