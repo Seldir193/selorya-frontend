@@ -37,5 +37,14 @@ jobs:
           cache: npm
       - run: npm install --global npm@11.6.2
       - run: npm ci
-      - run: npm test -- --watch=false
+      - name: Run frontend tests
+        shell: bash
+        run: set -o pipefail; npm test -- --watch=false 2>&1 | tee frontend-test.log
+      - name: Upload frontend test report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: frontend-test-report
+          path: frontend-test.log
+          retention-days: 7
       - run: npm run build
