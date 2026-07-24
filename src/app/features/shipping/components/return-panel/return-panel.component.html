@@ -154,15 +154,16 @@
         >
           <label>
             <span>{{ text('returnReason') }}</span>
-            <select
+            <app-dropdown
               [value]="reason()"
+              [options]="reasonOptions()"
+              [ariaLabel]="text('returnReason')"
+              minWidth="100%"
+              maxMenuHeight="280px"
+              itemAlign="left"
               [disabled]="activeAction() === 'request'"
-              (change)="reason.set($any($event.target).value)"
-            >
-              @for (option of availableReasons(); track option) {
-                <option [value]="option">{{ reasonLabel(option) }}</option>
-              }
-            </select>
+              (valueChange)="reason.set($event); failedAction.set(null)"
+            />
           </label>
           <label>
             <span>{{ text('returnDescription') }}</span>
@@ -186,7 +187,7 @@
             <button
               type="submit"
               class="app-button"
-              [disabled]="activeAction() === 'request'"
+              [disabled]="activeAction() === 'request' || !canSubmitRequest()"
             >
               {{ text(activeAction() === 'request' ? 'returnRequestSaving' : 'returnRequestSubmit') }}
             </button>
