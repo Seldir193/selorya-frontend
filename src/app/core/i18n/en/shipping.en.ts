@@ -31,7 +31,8 @@ export const enShippingTexts = {
   shippingConfirmAction: 'Confirm delivery',
   shippingConfirmSaving: 'Confirming',
   shippingConfirmError: 'The delivery could not be confirmed. Please try again.',
-  shippingAutoCompleteNotice: 'The carrier confirmed delivery. Without a response, the order will be completed automatically on',
+  shippingAutoCompleteNotice:
+    'The carrier confirmed delivery. Without a response, the order will be completed automatically on',
   shippingIssueAction: 'Report a problem',
   shippingIssueCategoryLabel: 'Type of problem',
   shippingIssueCategoryNotReceived: 'Not received',
@@ -46,7 +47,22 @@ export const enShippingTexts = {
   shippingIssueSaving: 'Sending',
   shippingIssueError: 'The problem could not be reported. Check your details.',
   shippingIssueReportedTitle: 'Reported problem',
-  shippingIssueResolutionOpen: 'Review pending',
-  shippingIssueResolutionResolved: 'Problem resolved',
-  shippingIssueResolutionRejected: 'Report rejected',
+  shippingIssueResolutionOpen: 'Seller response pending',
+  shippingIssueResolutionResolved: 'Seller accepted the refund',
+  shippingIssueResolutionRejected: 'Seller rejected the claim',
+  shippingIssueSellerDecisionNotice:
+    'You are the buyer’s contract partner. Selorya does not decide this product claim for you.',
+  shippingIssueSellerAccept: 'Accept claim',
+  shippingIssueSellerReject: 'Reject claim',
+  shippingIssueSellerAcceptTitle: 'Accept claim',
+  shippingIssueSellerRejectTitle: 'Reject claim',
+  shippingIssueSellerAcceptNotice:
+    'By confirming, you accept the full refund. Selorya sends it automatically to the payment provider.',
+  shippingIssueSellerRejectNotice:
+    'Give a clear reason for rejection. Selorya does not make its own factual decision.',
+  shippingIssueSellerNote: 'Reply to the buyer',
+  shippingIssueSellerNotePlaceholder: 'Explain your decision clearly',
+  shippingIssueSellerSubmit: 'Send binding response',
+  shippingIssueSellerSaving: 'Sending response',
+  shippingIssueSellerError: 'The response could not be saved. Check the reason provided.',
 } as const;
