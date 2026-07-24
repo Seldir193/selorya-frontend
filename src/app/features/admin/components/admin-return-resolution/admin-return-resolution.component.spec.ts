@@ -30,10 +30,7 @@ function orderFixture(status = 'requested'): Order {
 }
 
 describe('AdminReturnResolutionComponent', () => {
-  const returnsService = {
-    resolveReturn: vi.fn(() => of({})),
-    confirmReturnDelivery: vi.fn(() => of({})),
-  };
+  const returnsService = { resolveReturn: vi.fn(() => of({})) };
   const ordersService = { refundPayment: vi.fn(() => of({})) };
   const i18nService = {
     t: vi.fn((key: string) => key),
@@ -108,9 +105,8 @@ describe('AdminReturnResolutionComponent', () => {
     expect(ordersService.refundPayment).toHaveBeenCalledWith(3);
   });
 
-  it('confirms returned delivery from return shipped', () => {
+  it('keeps returned delivery confirmation seller-facing', () => {
     const fixture = create(orderFixture('return_shipped'));
-    fixture.componentInstance.confirmDelivery();
-    expect(returnsService.confirmReturnDelivery).toHaveBeenCalledWith(7);
+    expect(fixture.nativeElement.textContent).not.toContain('returnConfirmAction');
   });
 });
