@@ -4,12 +4,11 @@ import { Order, ShipmentIssueResolutionStatus } from '../../../core/models/order
 import { I18nService } from '../../../core/services/i18n.service';
 import { OrdersService } from '../../../core/services/orders.service';
 import { formatDisplayDate } from '../../../core/utils/format.utils';
-import { AdminReturnResolutionComponent } from '../components/admin-return-resolution/admin-return-resolution.component';
 
 @Component({
   selector: 'app-admin-shipment-issues-page',
   standalone: true,
-  imports: [ReactiveFormsModule, AdminReturnResolutionComponent],
+  imports: [ReactiveFormsModule],
   templateUrl: './admin-shipment-issues.page.html',
   styleUrl: './admin-shipment-issues.page.scss',
 })
