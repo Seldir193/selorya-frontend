@@ -31,7 +31,8 @@ export const trShippingTexts = {
   shippingConfirmAction: 'Teslimatı onayla',
   shippingConfirmSaving: 'Onaylanıyor',
   shippingConfirmError: 'Teslimat onaylanamadı. Lütfen tekrar deneyin.',
-  shippingAutoCompleteNotice: 'Kargo firması teslimatı onayladı. Yanıt vermezsen sipariş şu tarihte otomatik tamamlanır:',
+  shippingAutoCompleteNotice:
+    'Kargo firması teslimatı onayladı. Yanıt vermezsen sipariş şu tarihte otomatik tamamlanır:',
   shippingIssueAction: 'Sorun bildir',
   shippingIssueCategoryLabel: 'Sorun türü',
   shippingIssueCategoryNotReceived: 'Teslim alınmadı',
@@ -46,7 +47,22 @@ export const trShippingTexts = {
   shippingIssueSaving: 'Gönderiliyor',
   shippingIssueError: 'Sorun bildirilemedi. Bilgilerini kontrol et.',
   shippingIssueReportedTitle: 'Bildirilen sorun',
-  shippingIssueResolutionOpen: 'İnceleme bekliyor',
-  shippingIssueResolutionResolved: 'Sorun çözüldü',
-  shippingIssueResolutionRejected: 'Bildirim reddedildi',
+  shippingIssueResolutionOpen: 'Satıcı yanıtı bekleniyor',
+  shippingIssueResolutionResolved: 'Satıcı geri ödemeyi kabul etti',
+  shippingIssueResolutionRejected: 'Satıcı talebi reddetti',
+  shippingIssueSellerDecisionNotice:
+    'Alıcının sözleşme tarafı sensin. Selorya bu ürün talebine senin yerine karar vermez.',
+  shippingIssueSellerAccept: 'Talebi kabul et',
+  shippingIssueSellerReject: 'Talebi reddet',
+  shippingIssueSellerAcceptTitle: 'Talebi kabul et',
+  shippingIssueSellerRejectTitle: 'Talebi reddet',
+  shippingIssueSellerAcceptNotice:
+    'Onaylayarak tam geri ödemeyi kabul edersin. Selorya işlemi otomatik olarak ödeme sağlayıcısına iletir.',
+  shippingIssueSellerRejectNotice:
+    'Reddetme nedenini açıkça belirt. Selorya ayrıca maddi bir karar vermez.',
+  shippingIssueSellerNote: 'Alıcıya yanıt',
+  shippingIssueSellerNotePlaceholder: 'Kararını açıkça gerekçelendir',
+  shippingIssueSellerSubmit: 'Bağlayıcı yanıtı gönder',
+  shippingIssueSellerSaving: 'Yanıt gönderiliyor',
+  shippingIssueSellerError: 'Yanıt kaydedilemedi. Gerekçeyi kontrol et.',
 } as const;
