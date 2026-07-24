@@ -15,6 +15,7 @@ export const enCheckoutTexts = {
   checkoutCapacityDescription:
     'State whether this specific purchase is predominantly private or business-related.',
   checkoutCapacityLabel: 'For this contract I am buying as',
+  checkoutCapacityChoose: 'Please select',
   checkoutCapacityConsumer: 'Consumer – predominantly private',
   checkoutCapacityBusiness: 'Business – commercial or professional',
   checkoutCapacityConsumerNotice:
