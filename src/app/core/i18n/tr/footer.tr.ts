@@ -17,6 +17,7 @@ export const trFooterTexts = {
   footerHelpDocuments: 'Belgeler',
   footerHelpAccount: 'Hesap',
   footerLegalTitle: 'Yasal',
+  footerLegalWithdrawContract: 'Sözleşmeden cay',
   footerLegalPrivacy: 'Gizlilik',
   footerLegalTerms: 'Şartlar',
   footerLegalImprint: 'Künye',
