@@ -54,12 +54,20 @@ const order: Order = {
 
 describe('ShippingPage', () => {
   const shipped = { ...order.shipment!, status: 'shipped' as const, tracking_number: 'DHL-42' };
+  const openIssue = {
+    ...shipped,
+    status: 'issue_reported' as const,
+    issue_category: 'damaged' as const,
+    issue_description: 'Package damaged',
+    issue_status: 'open' as const,
+  };
   const ordersService = {
     list: vi.fn(() => of([order])),
     dispatchShipment: vi.fn(() => of(shipped)),
     confirmDelivery: vi.fn(() => of({ ...order, status: 'completed', shipment: shipped })),
-    reportShipmentIssue: vi.fn(() =>
-      of({ ...order, shipment: { ...shipped, status: 'issue_reported' as const } }),
+    reportShipmentIssue: vi.fn(() => of({ ...order, shipment: openIssue })),
+    respondShipmentIssue: vi.fn(() =>
+      of({ ...order, shipment: { ...openIssue, issue_status: 'resolved' as const } }),
     ),
   };
   const i18nService = { t: vi.fn((key: string) => key), current: vi.fn(() => 'de') };
@@ -123,7 +131,7 @@ describe('ShippingPage', () => {
     ordersService.list.mockReturnValueOnce(of([shippedOrder]));
     const component = TestBed.createComponent(ShippingPage).componentInstance;
     component.openIssueForm(shippedOrder);
-    component.issueCategory.set('damaged');
+    component.changeIssueCategory('damaged');
     component.issueDescription.set('Package damaged');
     component.reportIssue(shippedOrder);
     expect(ordersService.reportShipmentIssue).toHaveBeenCalledWith(5, {
@@ -131,6 +139,29 @@ describe('ShippingPage', () => {
       description: 'Package damaged',
     });
     expect(component.orders()[0].shipment?.status).toBe('issue_reported');
+  });
+
+  it('lets the seller accept a buyer claim without admin', () => {
+    const issueOrder = { ...order, shipment: openIssue };
+    ordersService.list.mockReturnValueOnce(of([issueOrder]));
+    const component = TestBed.createComponent(ShippingPage).componentInstance;
+    component.changeScope('sold');
+    component.openIssueResponse(issueOrder, 'resolved');
+    component.issueResponseNote.set('Full refund accepted');
+    component.respondIssue(issueOrder);
+    expect(ordersService.respondShipmentIssue).toHaveBeenCalledWith(5, {
+      status: 'resolved',
+      note: 'Full refund accepted',
+    });
+    expect(component.orders()[0].shipment?.issue_status).toBe('resolved');
+  });
+
+  it('requires a seller response note', () => {
+    const issueOrder = { ...order, shipment: openIssue };
+    const component = TestBed.createComponent(ShippingPage).componentInstance;
+    component.respondIssue(issueOrder);
+    expect(component.issueResponseErrorId()).toBe(5);
+    expect(ordersService.respondShipmentIssue).not.toHaveBeenCalled();
   });
 
   it('shows the automatic completion deadline to the buyer', () => {
