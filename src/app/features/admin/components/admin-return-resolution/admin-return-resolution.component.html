@@ -87,22 +87,6 @@
       </footer>
     }
 
-    @if (canConfirmDelivery()) {
-      <footer>
-        <button
-          type="button"
-          class="app-button"
-          [disabled]="activeAction() === 'confirm'"
-          (click)="confirmDelivery()"
-        >
-          {{ text(activeAction() === 'confirm' ? 'returnConfirmSaving' : 'returnConfirmAction') }}
-        </button>
-        @if (actionError() === 'confirm') {
-          <span role="alert">{{ text('returnConfirmError') }}</span>
-        }
-      </footer>
-    }
-
     @if (returnRequest.status === 'return_delivered') {
       <footer>
         <button type="button" class="app-button" [disabled]="!canRefund()" (click)="openRefund()">
@@ -141,11 +125,16 @@
       @if (decision() === 'approved') {
         <label>
           <span>{{ text('returnShippingPayer') }}</span>
-          <select formControlName="shipping_payer">
-            @for (payer of shippingPayers; track payer) {
-              <option [value]="payer">{{ payerLabel(payer) }}</option>
-            }
-          </select>
+          <app-dropdown
+            [value]="decisionForm.controls.shipping_payer.value"
+            [options]="shippingPayerOptions()"
+            [ariaLabel]="text('returnShippingPayer')"
+            minWidth="100%"
+            maxMenuHeight="280px"
+            itemAlign="left"
+            [disabled]="activeAction() === 'resolve'"
+            (valueChange)="updateShippingPayer($event)"
+          />
         </label>
         <label>
           <span>{{ text('returnCarrier') }}</span>
