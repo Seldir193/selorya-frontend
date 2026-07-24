@@ -4,6 +4,7 @@ import {
   OrderScope,
   Shipment,
   ShipmentIssueCategory,
+  ShipmentIssueResolutionStatus,
   ShipmentStatus,
 } from '../../../core/models/order.model';
 import { I18nService } from '../../../core/services/i18n.service';
@@ -20,6 +21,7 @@ import {
 import { PaginationComponent } from '../../../shared/components/pagination/pagination.component';
 import { OrderDetailDialogComponent } from '../../orders/components/order-detail-dialog/order-detail-dialog.component';
 import { ReturnPanelComponent } from '../components/return-panel/return-panel.component';
+
 
 type ShipmentOrder = Order & { shipment: Shipment };
 type ShipmentStatusFilter = 'all' | ShipmentStatus;
@@ -58,6 +60,11 @@ export class ShippingPage {
   readonly issueDescription = signal('');
   readonly reportingIssueId = signal<number | null>(null);
   readonly issueErrorId = signal<number | null>(null);
+  readonly issueResponseFormId = signal<number | null>(null);
+  readonly issueResponseStatus = signal<ShipmentIssueResolutionStatus>('resolved');
+  readonly issueResponseNote = signal('');
+  readonly respondingIssueId = signal<number | null>(null);
+  readonly issueResponseErrorId = signal<number | null>(null);
   readonly orderScopes: OrderScope[] = ['purchased', 'sold', 'all'];
   readonly pageSizeOptions = [10, 20, 50, 100];
   readonly statusFilters: ShipmentStatusFilter[] = [
@@ -79,18 +86,21 @@ export class ShippingPage {
     'other',
   ];
 
-  readonly statusOptions = computed<DropdownOption<ShipmentStatusFilter>[]>(() => {
-    return this.statusFilters.map((status) => ({ value: status, label: this.statusLabel(status) }));
-  });
-
-  readonly shipmentOrders = computed(() => {
-    return this.orders().filter((order): order is ShipmentOrder => Boolean(order.shipment));
-  });
-
-  readonly filteredOrders = computed(() => {
-    return this.shipmentOrders().filter((order) => this.matchesFilters(order));
-  });
-
+  readonly statusOptions = computed<DropdownOption<ShipmentStatusFilter>[]>(() =>
+    this.statusFilters.map((status) => ({ value: status, label: this.statusLabel(status) })),
+  );
+  readonly issueCategoryOptions = computed<DropdownOption<ShipmentIssueCategory>[]>(() =>
+    this.issueCategories.map((category) => ({
+      value: category,
+      label: this.issueCategoryLabel(category),
+    })),
+  );
+  readonly shipmentOrders = computed(() =>
+    this.orders().filter((order): order is ShipmentOrder => Boolean(order.shipment)),
+  );
+  readonly filteredOrders = computed(() =>
+    this.shipmentOrders().filter((order) => this.matchesFilters(order)),
+  );
   readonly paginatedOrders = computed(() => {
     const start = (this.currentPage() - 1) * this.pageSize();
     return this.filteredOrders().slice(start, start + this.pageSize());
@@ -111,6 +121,7 @@ export class ShippingPage {
   changeScope(scope: OrderScope): void {
     if (scope === this.activeScope()) return;
     this.activeScope.set(scope);
+    this.resetInteractionState();
     this.resetPage();
     this.loadOrders();
   }
@@ -166,7 +177,7 @@ export class ShippingPage {
       .dispatchShipment(order.shipment.id, { status: 'shipped', tracking_number: tracking })
       .subscribe({
         next: (shipment) => this.completeDispatch(order.id, shipment),
-        error: () => this.failDispatch(order),
+        error: () => this.failDispatch(order.shipment.id),
       });
   }
 
@@ -176,6 +187,14 @@ export class ShippingPage {
 
   canReportIssue(order: ShipmentOrder): boolean {
     return !order.shipment.issue_category && !order.shipment.return_request;
+  }
+
+  canRespondIssue(order: ShipmentOrder): boolean {
+    return Boolean(
+      this.activeScope() === 'sold' &&
+        order.shipment.issue_category &&
+        order.shipment.issue_status === 'open',
+    );
   }
 
   completionDeadline(order: ShipmentOrder): string {
@@ -204,6 +223,11 @@ export class ShippingPage {
     this.issueErrorId.set(null);
   }
 
+  changeIssueCategory(category: ShipmentIssueCategory): void {
+    this.issueCategory.set(category);
+    this.issueErrorId.set(null);
+  }
+
   reportIssue(order: ShipmentOrder): void {
     const description = this.issueDescription().trim();
     if (!description) return this.issueErrorId.set(order.shipment.id);
@@ -212,6 +236,30 @@ export class ShippingPage {
     this.ordersService.reportShipmentIssue(order.shipment.id, payload).subscribe({
       next: (updated) => this.completeIssueReport(updated),
       error: () => this.failIssueReport(order.shipment.id),
+    });
+  }
+
+  openIssueResponse(order: ShipmentOrder, status: ShipmentIssueResolutionStatus): void {
+    this.issueResponseFormId.set(order.shipment.id);
+    this.issueResponseStatus.set(status);
+    this.issueResponseNote.set('');
+    this.issueResponseErrorId.set(null);
+  }
+
+  closeIssueResponse(): void {
+    if (this.respondingIssueId()) return;
+    this.issueResponseFormId.set(null);
+    this.issueResponseErrorId.set(null);
+  }
+
+  respondIssue(order: ShipmentOrder): void {
+    const note = this.issueResponseNote().trim();
+    if (!note) return this.issueResponseErrorId.set(order.shipment.id);
+    this.respondingIssueId.set(order.shipment.id);
+    const payload = { status: this.issueResponseStatus(), note };
+    this.ordersService.respondShipmentIssue(order.shipment.id, payload).subscribe({
+      next: (updated) => this.completeIssueResponse(updated),
+      error: () => this.failIssueResponse(order.shipment.id),
     });
   }
 
@@ -284,13 +332,7 @@ export class ShippingPage {
 
   private searchableText(order: ShipmentOrder): string {
     const shipment = order.shipment;
-    return [
-      order.id,
-      shipment.service_name,
-      shipment.carrier,
-      shipment.tracking_number,
-      this.itemTitle(order),
-    ]
+    return [order.id, shipment.service_name, shipment.carrier, shipment.tracking_number, this.itemTitle(order)]
       .join(' ')
       .toLowerCase();
   }
@@ -298,6 +340,12 @@ export class ShippingPage {
   private setOrders(orders: Order[]): void {
     this.orders.set(orders);
     this.isLoading.set(false);
+  }
+
+  private replaceOrder(updated: Order): void {
+    this.orders.update((orders) =>
+      orders.map((order) => (order.id === updated.id ? updated : order)),
+    );
   }
 
   private completeDispatch(orderId: number, shipment: Shipment): void {
@@ -308,15 +356,13 @@ export class ShippingPage {
     this.dispatchErrorId.set(null);
   }
 
-  private failDispatch(order: ShipmentOrder): void {
+  private failDispatch(shipmentId: number): void {
     this.savingShipmentId.set(null);
-    this.dispatchErrorId.set(order.shipment.id);
+    this.dispatchErrorId.set(shipmentId);
   }
 
   private completeDelivery(updated: Order): void {
-    this.orders.update((orders) =>
-      orders.map((order) => (order.id === updated.id ? updated : order)),
-    );
+    this.replaceOrder(updated);
     this.confirmingShipmentId.set(null);
   }
 
@@ -326,9 +372,7 @@ export class ShippingPage {
   }
 
   private completeIssueReport(updated: Order): void {
-    this.orders.update((orders) =>
-      orders.map((order) => (order.id === updated.id ? updated : order)),
-    );
+    this.replaceOrder(updated);
     this.reportingIssueId.set(null);
     this.issueFormId.set(null);
   }
@@ -336,6 +380,23 @@ export class ShippingPage {
   private failIssueReport(shipmentId: number): void {
     this.reportingIssueId.set(null);
     this.issueErrorId.set(shipmentId);
+  }
+
+  private completeIssueResponse(updated: Order): void {
+    this.replaceOrder(updated);
+    this.respondingIssueId.set(null);
+    this.issueResponseFormId.set(null);
+  }
+
+  private failIssueResponse(shipmentId: number): void {
+    this.respondingIssueId.set(null);
+    this.issueResponseErrorId.set(shipmentId);
+  }
+
+  private resetInteractionState(): void {
+    this.closeIssueForm();
+    this.issueResponseFormId.set(null);
+    this.issueResponseErrorId.set(null);
   }
 
   private resetPage(): void {
