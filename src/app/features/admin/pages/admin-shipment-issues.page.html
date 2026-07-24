@@ -41,57 +41,66 @@
             </div>
             <time>{{ issueDate(order) }}</time>
           </header>
-          <dl>
-            <div>
-              <dt>{{ text('adminShipmentIssuesItem') }}</dt>
-              <dd>{{ order.items[0].title_snapshot }}</dd>
-            </div>
-            <div>
-              <dt>{{ text('adminShipmentIssuesBuyer') }}</dt>
-              <dd>{{ order.buyer_name }} · {{ order.buyer_email }}</dd>
-            </div>
-            <div>
-              <dt>{{ text('adminShipmentIssuesCategory') }}</dt>
-              <dd>{{ order.shipment?.issue_category }}</dd>
-            </div>
-          </dl>
-          <div class="admin-issue-card__description">
-            <strong>{{ text('adminShipmentIssuesDescription') }}</strong>
-            <p>{{ order.shipment?.issue_description }}</p>
-          </div>
-          @if (order.shipment?.issue_status === 'open') {
-            <footer>
-              <button type="button" class="app-button" (click)="openResolution(order, 'resolved')">
-                {{ text('adminShipmentIssuesResolve') }}
-              </button>
-              <button
-                type="button"
-                class="app-button app-button--secondary"
-                (click)="openResolution(order, 'rejected')"
-              >
-                {{ text('adminShipmentIssuesReject') }}
-              </button>
-            </footer>
+
+          @if (order.shipment?.return_request) {
+            <app-admin-return-resolution [order]="order" (changed)="loadIssues()" />
           } @else {
-            <div class="admin-issue-card__resolution">
-              <strong>{{ text('adminShipmentIssuesResolution') }}</strong>
-              <p>{{ order.shipment?.issue_resolution_note }}</p>
+            <dl>
+              <div>
+                <dt>{{ text('adminShipmentIssuesItem') }}</dt>
+                <dd>{{ order.items[0].title_snapshot }}</dd>
+              </div>
+              <div>
+                <dt>{{ text('adminShipmentIssuesBuyer') }}</dt>
+                <dd>{{ order.buyer_name }} · {{ order.buyer_email }}</dd>
+              </div>
+              <div>
+                <dt>{{ text('adminShipmentIssuesCategory') }}</dt>
+                <dd>{{ order.shipment?.issue_category }}</dd>
+              </div>
+            </dl>
+            <div class="admin-issue-card__description">
+              <strong>{{ text('adminShipmentIssuesDescription') }}</strong>
+              <p>{{ order.shipment?.issue_description }}</p>
             </div>
-            @if (order.shipment?.issue_status === 'resolved' && order.payment_status === 'paid') {
+            @if (order.shipment?.issue_status === 'open') {
               <footer>
                 <button
                   type="button"
                   class="app-button"
-                  [disabled]="refundingPaymentId() === order.payment_id"
-                  (click)="openRefund(order)"
+                  (click)="openResolution(order, 'resolved')"
                 >
-                  {{ text('adminShipmentIssuesRefund') }}
+                  {{ text('adminShipmentIssuesResolve') }}
+                </button>
+                <button
+                  type="button"
+                  class="app-button app-button--secondary"
+                  (click)="openResolution(order, 'rejected')"
+                >
+                  {{ text('adminShipmentIssuesReject') }}
                 </button>
               </footer>
-            } @else if (order.payment_status === 'refunded') {
-              <strong class="admin-issue-card__refunded">
-                {{ text('adminShipmentIssuesRefunded') }}
-              </strong>
+            } @else {
+              <div class="admin-issue-card__resolution">
+                <strong>{{ text('adminShipmentIssuesResolution') }}</strong>
+                <p>{{ order.shipment?.issue_resolution_note }}</p>
+              </div>
+              @if (order.shipment?.issue_status === 'resolved' && order.payment_status === 'paid') {
+                <footer>
+                  <button
+                    type="button"
+                    class="app-button"
+                    [disabled]="refundingPaymentId() === order.payment_id"
+                    (click)="openRefund(order)"
+                  >
+                    {{ text('adminShipmentIssuesRefund') }}
+                  </button>
+                </footer>
+              } @else if (order.payment_status === 'refunded') {
+                <strong class="admin-issue-card__refunded">
+                  {{ text('adminShipmentIssuesRefunded') }}
+                </strong>
+              }
             }
           }
         </article>

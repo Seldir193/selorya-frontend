@@ -15,6 +15,7 @@ import { enPaymentsTexts } from './en/payments.en';
 import { enPayoutTexts } from './en/payouts.en';
 import { enPaginationTexts } from './en/pagination.en';
 import { enProfileTexts } from './en/profile.en';
+import { enReturnTexts } from './en/returns.en';
 import { enShippingTexts } from './en/shipping.en';
 import { enSignupTexts } from './en/signup.en';
 import { favoritesEnTexts } from './en/favorites.en';
@@ -33,6 +34,7 @@ export const enTexts = {
   ...enFooterTexts,
   ...enProfileTexts,
   ...enShippingTexts,
+  ...enReturnTexts,
   ...enCategoryMenuTexts,
   ...enListingTexts,
   ...enDocumentsTexts,

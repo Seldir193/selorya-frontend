@@ -25,6 +25,12 @@ const shipment: Shipment = {
   selected_at: '2026-07-17T10:00:00Z',
   shipped_at: '2026-07-17T12:00:00Z',
   delivered_at: null,
+  payout_eligible_at: null,
+  payout_blocked: true,
+  payout_block_reason: 'delivery_not_confirmed',
+  return_allowed: false,
+  return_deadline: null,
+  return_request: null,
   created_at: '2026-07-17T10:00:00Z',
   updated_at: '2026-07-17T12:00:00Z',
 };

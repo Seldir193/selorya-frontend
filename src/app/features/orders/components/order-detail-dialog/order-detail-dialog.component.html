@@ -39,7 +39,6 @@
                 <strong>{{ item.title_snapshot }}</strong>
                 <span>{{ text('ordersQuantity') }} {{ item.quantity }}</span>
               </div>
-
               <strong>{{ itemTotal(item) }}</strong>
             </div>
           }
@@ -92,6 +91,8 @@
           </p>
         }
       </section>
+
+      <app-return-summary [order]="currentOrder" />
 
       <section class="order-detail__summary">
         <span>{{ text('ordersTotal') }}</span>

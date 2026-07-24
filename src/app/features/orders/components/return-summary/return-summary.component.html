@@ -1,0 +1,52 @@
+@if (hasContext()) {
+  <section class="return-summary">
+    <h3>{{ text('returnSummaryTitle') }}</h3>
+    <dl>
+      <div>
+        <dt>{{ text('returnSellerType') }}</dt>
+        <dd>{{ sellerTypeLabel() }}</dd>
+      </div>
+      <div>
+        <dt>{{ text('returnDeadline') }}</dt>
+        <dd>{{ deadline() }}</dd>
+      </div>
+      <div>
+        <dt>{{ text('returnPayoutEligibleAt') }}</dt>
+        <dd>{{ payoutEligibleAt() }}</dd>
+      </div>
+      <div>
+        <dt>{{ text('returnRefundStatus') }}</dt>
+        <dd>{{ refundStatus() }}</dd>
+      </div>
+    </dl>
+
+    @if (order().shipment?.return_request; as returnRequest) {
+      <dl>
+        <div>
+          <dt>{{ text('returnStatus') }}</dt>
+          <dd>{{ statusLabel(returnRequest.status) }}</dd>
+        </div>
+        <div>
+          <dt>{{ text('returnReason') }}</dt>
+          <dd>{{ reasonLabel() }}</dd>
+        </div>
+        <div>
+          <dt>{{ text('returnShippingPayer') }}</dt>
+          <dd>{{ payerLabel() }}</dd>
+        </div>
+        @if (returnRequest.tracking_number) {
+          <div>
+            <dt>{{ text('returnTrackingNumber') }}</dt>
+            <dd>{{ returnRequest.tracking_number }}</dd>
+          </div>
+        }
+      </dl>
+      @if (returnRequest.resolution_note) {
+        <div class="return-summary__note">
+          <strong>{{ text('returnResolutionNote') }}</strong>
+          <p>{{ returnRequest.resolution_note }}</p>
+        </div>
+      }
+    }
+  </section>
+}

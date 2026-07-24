@@ -1,0 +1,40 @@
+.return-summary {
+  border-top: 1px solid var(--color-border-soft);
+  display: grid;
+  gap: 14px;
+  padding-top: 18px;
+}
+
+.return-summary h3,
+.return-summary p {
+  margin: 0;
+}
+
+.return-summary dl {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin: 0;
+}
+
+.return-summary dl div,
+.return-summary__note {
+  display: grid;
+  gap: 4px;
+}
+
+.return-summary dt {
+  color: var(--color-text-soft);
+  font-size: 0.85rem;
+}
+
+.return-summary dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 600px) {
+  .return-summary dl {
+    grid-template-columns: 1fr;
+  }
+}

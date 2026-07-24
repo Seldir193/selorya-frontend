@@ -1,0 +1,125 @@
+:host {
+  display: contents;
+}
+
+.return-panel {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border-soft);
+  border-radius: 18px;
+  display: grid;
+  gap: 16px;
+  grid-column: 1 / -1;
+  padding: 18px;
+}
+
+.return-panel__header,
+.return-panel__actions,
+.return-panel__payout {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: space-between;
+}
+
+.return-panel__header div,
+.return-panel__summary,
+.return-panel__form,
+.return-panel__payout div {
+  display: grid;
+  gap: 8px;
+}
+
+.return-panel__header h3,
+.return-panel__header span,
+.return-panel__summary p,
+.return-panel__notice,
+.return-panel__deadline {
+  margin: 0;
+}
+
+.return-panel__header span,
+.return-panel__deadline span,
+.return-panel__payout span,
+.return-panel dt {
+  color: var(--color-text-soft);
+  font-size: 0.85rem;
+}
+
+.return-panel__deadline {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: space-between;
+}
+
+.return-panel__payout {
+  background: var(--color-background-soft);
+  border-radius: 14px;
+  padding: 14px;
+}
+
+.return-panel__summary {
+  border-top: 1px solid var(--color-border-soft);
+  padding-top: 14px;
+}
+
+.return-panel dl {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin: 0;
+}
+
+.return-panel dl div {
+  display: grid;
+  gap: 4px;
+}
+
+.return-panel dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.return-panel__form label {
+  display: grid;
+  gap: 7px;
+}
+
+.return-panel input,
+.return-panel select,
+.return-panel textarea {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border-soft);
+  border-radius: 12px;
+  color: var(--color-text);
+  font: inherit;
+  min-height: 44px;
+  padding: 10px 12px;
+  width: 100%;
+}
+
+.return-panel textarea {
+  min-height: 110px;
+  resize: vertical;
+}
+
+.return-panel__error {
+  color: var(--color-danger);
+  margin: 0;
+}
+
+@media (max-width: 680px) {
+  .return-panel {
+    padding: 15px;
+  }
+
+  .return-panel dl {
+    grid-template-columns: 1fr;
+  }
+
+  .return-panel__actions .app-button {
+    width: 100%;
+  }
+}

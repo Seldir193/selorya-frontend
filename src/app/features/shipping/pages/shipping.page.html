@@ -83,38 +83,33 @@
         >
           <div>
             <span>{{ text('shippingColumnOrder') }}</span>
-
             <strong>#{{ order.id }}</strong>
           </div>
           <div>
             <span>{{ text('shippingColumnItem') }}</span>
-
             <strong>{{ itemTitle(order) }}</strong>
           </div>
           <div>
             <span>{{ text('shippingColumnDate') }}</span>
-
             <strong>{{ orderDate(order) }}</strong>
           </div>
           <div>
             <span>{{ text('shippingColumnMethod') }}</span>
-
             <strong>{{ shippingMethod(order) }}</strong>
           </div>
           <div>
             <span>{{ text('shippingColumnCost') }}</span>
-
             <strong>{{ shippingPrice(order) }}</strong>
           </div>
           <div>
             <span>{{ text('shippingColumnTracking') }}</span>
-
             <strong>{{ trackingNumber(order) }}</strong>
           </div>
           <div>
             <span>{{ text('shippingColumnStatus') }}</span>
             <strong class="shipping-status">{{ statusLabel(order.shipment.status) }}</strong>
           </div>
+
           @if (canDispatch(order)) {
             <div class="shipping-dispatch" (click)="$event.stopPropagation()">
               <label [for]="'tracking-' + order.shipment.id">
@@ -146,6 +141,7 @@
               }
             </div>
           }
+
           @if (issueFormId() === order.shipment.id) {
             <form
               class="shipping-issue"
@@ -202,6 +198,7 @@
               }
             </form>
           }
+
           @if (order.shipment.issue_category) {
             <div class="shipping-issue-summary">
               <strong>{{ text('shippingIssueReportedTitle') }}</strong>
@@ -213,6 +210,15 @@
               }
             </div>
           }
+
+          <app-return-panel
+            [order]="order"
+            [scope]="activeScope()"
+            (click)="$event.stopPropagation()"
+            (keydown)="$event.stopPropagation()"
+            (changed)="loadOrders()"
+          />
+
           @if (canConfirmDelivery(order)) {
             <div class="shipping-confirm" (click)="$event.stopPropagation()">
               <p>{{ text('shippingConfirmDescription') }}</p>
