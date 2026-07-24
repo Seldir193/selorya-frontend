@@ -26,6 +26,7 @@ import {
 type ShippingControlName = keyof ShippingSelectionPayload;
 type CheckoutData = { listing: Listing; shippingOptions: ShippingOption[] };
 type SelectedBuyerCapacity = Exclude<BuyerCapacity, 'undetermined'>;
+type CapacitySelection = SelectedBuyerCapacity | '';
 
 @Component({
   selector: 'app-checkout-page',
@@ -52,7 +53,8 @@ export class CheckoutPage {
   readonly isSubmitting = signal(false);
   readonly submitted = signal(false);
   readonly form = this.createForm();
-  readonly capacityOptions = computed<DropdownOption<SelectedBuyerCapacity>[]>(() => [
+  readonly capacityOptions = computed<DropdownOption<CapacitySelection>[]>(() => [
+    { value: '', label: this.text('checkoutCapacityChoose') },
     { value: 'consumer', label: this.text('checkoutCapacityConsumer') },
     { value: 'business', label: this.text('checkoutCapacityBusiness') },
   ]);
@@ -109,12 +111,13 @@ export class CheckoutPage {
     return this.noticeRequired() && !this.form.controls.withdrawal_cost_notice_confirmed.value;
   }
 
-  capacity(): SelectedBuyerCapacity {
+  capacity(): CapacitySelection {
     return this.form.controls.buyer_capacity.value;
   }
 
-  setCapacity(value: SelectedBuyerCapacity): void {
+  setCapacity(value: CapacitySelection): void {
     this.form.controls.buyer_capacity.setValue(value);
+    this.form.controls.buyer_capacity.markAsTouched();
   }
 
   listingImage(): string {
@@ -157,7 +160,7 @@ export class CheckoutPage {
     const user = this.authService.user();
     const profile = user?.customer_profile;
     return this.formBuilder.nonNullable.group({
-      buyer_capacity: ['consumer' as SelectedBuyerCapacity, Validators.required],
+      buyer_capacity: ['' as CapacitySelection, Validators.required],
       withdrawal_cost_notice_confirmed: [false],
       shipping_option_id: [0, [Validators.required, Validators.min(1)]],
       recipient_name: [user?.full_name ?? '', [Validators.required, Validators.maxLength(180)]],
@@ -205,15 +208,30 @@ export class CheckoutPage {
     return {
       listing_id: listingId,
       quantity: 1,
-      buyer_capacity: this.capacity(),
-      withdrawal_cost_notice_confirmed: this.noticeRequired(),
+      buyer_capacity: this.selectedCapacity(),
+      withdrawal_cost_notice_confirmed:
+        this.form.controls.withdrawal_cost_notice_confirmed.value,
       shipping: this.shippingPayload(),
     };
   }
 
+  private selectedCapacity(): SelectedBuyerCapacity {
+    const capacity = this.capacity();
+    if (!capacity) throw new Error('Buyer capacity is required.');
+    return capacity;
+  }
+
   private shippingPayload(): ShippingSelectionPayload {
-    const { buyer_capacity, withdrawal_cost_notice_confirmed, ...shipping } = this.form.getRawValue();
-    return shipping;
+    const values = this.form.getRawValue();
+    return {
+      shipping_option_id: values.shipping_option_id,
+      recipient_name: values.recipient_name,
+      address_line_1: values.address_line_1,
+      address_line_2: values.address_line_2,
+      postal_code: values.postal_code,
+      city: values.city,
+      country: values.country,
+    };
   }
 
   private completeOrderCreation(orderId: number): void {
