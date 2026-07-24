@@ -15,6 +15,7 @@ export const deCheckoutTexts = {
   checkoutCapacityDescription:
     'Gib an, ob du diesen konkreten Kauf überwiegend privat oder geschäftlich tätigst.',
   checkoutCapacityLabel: 'Ich kaufe bei diesem Vertrag als',
+  checkoutCapacityChoose: 'Bitte auswählen',
   checkoutCapacityConsumer: 'Verbraucher – überwiegend privat',
   checkoutCapacityBusiness: 'Unternehmer – geschäftlich oder beruflich',
   checkoutCapacityConsumerNotice:
