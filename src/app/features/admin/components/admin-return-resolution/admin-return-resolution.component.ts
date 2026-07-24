@@ -1,4 +1,4 @@
-import { Component, inject, input, output, signal } from '@angular/core';
+import { Component, computed, inject, input, output, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Order } from '../../../../core/models/order.model';
 import {
@@ -12,8 +12,12 @@ import { OrdersService } from '../../../../core/services/orders.service';
 import { ReturnsService } from '../../../../core/services/returns.service';
 import { formatDisplayDate } from '../../../../core/utils/format.utils';
 import { DialogComponent } from '../../../../shared/components/dialog/dialog.component';
+import {
+  DropdownComponent,
+  DropdownOption,
+} from '../../../../shared/components/dropdown/dropdown.component';
 
-type AdminReturnAction = 'resolve' | 'confirm' | 'refund';
+type AdminReturnAction = 'resolve' | 'refund';
 type DecisionFormValue = {
   note: string;
   shipping_payer: ShipmentReturnShippingPayer | '';
@@ -24,7 +28,7 @@ type DecisionFormValue = {
 @Component({
   selector: 'app-admin-return-resolution',
   standalone: true,
-  imports: [ReactiveFormsModule, DialogComponent],
+  imports: [ReactiveFormsModule, DialogComponent, DropdownComponent],
   templateUrl: './admin-return-resolution.component.html',
   styleUrl: './admin-return-resolution.component.scss',
 })
@@ -48,6 +52,14 @@ export class AdminReturnResolutionComponent {
     'platform',
     'undecided',
   ];
+  readonly shippingPayerOptions = computed<
+    DropdownOption<ShipmentReturnShippingPayer | ''>[]
+  >(() => {
+    return this.shippingPayers.map((payer) => ({
+      value: payer,
+      label: this.payerLabel(payer),
+    }));
+  });
   readonly decisionForm = this.fb.nonNullable.group({
     note: ['', [Validators.required, Validators.maxLength(1000)]],
     shipping_payer: ['' as ShipmentReturnShippingPayer | ''],
@@ -77,14 +89,8 @@ export class AdminReturnResolutionComponent {
     });
   }
 
-  confirmDelivery(): void {
-    const returnRequest = this.order().shipment?.return_request;
-    if (!returnRequest || !this.canConfirmDelivery()) return;
-    this.startAction('confirm');
-    this.returnsService.confirmReturnDelivery(returnRequest.id).subscribe({
-      next: () => this.completeAction(),
-      error: () => this.failAction('confirm'),
-    });
+  updateShippingPayer(payer: ShipmentReturnShippingPayer | ''): void {
+    this.decisionForm.controls.shipping_payer.setValue(payer);
   }
 
   openRefund(): void {
@@ -108,10 +114,6 @@ export class AdminReturnResolutionComponent {
 
   canResolve(): boolean {
     return this.returnStatus() === 'requested' && !this.activeAction();
-  }
-
-  canConfirmDelivery(): boolean {
-    return this.returnStatus() === 'return_shipped' && !this.activeAction();
   }
 
   canRefund(): boolean {
