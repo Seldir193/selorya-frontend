@@ -10,7 +10,21 @@ export const deCheckoutTexts = {
   checkoutEyebrow: 'Sicherer Checkout',
   checkoutTitle: 'Lieferung und Zahlung',
   checkoutDescription:
-    'Wähle deine Versandart und bestätige die Lieferadresse, bevor du zum Zahlungsanbieter weitergeleitet wirst.',
+    'Wähle deine Vertragsrolle, Versandart und Lieferadresse, bevor du zum Zahlungsanbieter weitergeleitet wirst.',
+  checkoutCapacityTitle: 'Vertragsrolle',
+  checkoutCapacityDescription:
+    'Gib an, ob du diesen konkreten Kauf überwiegend privat oder geschäftlich tätigst.',
+  checkoutCapacityLabel: 'Ich kaufe bei diesem Vertrag als',
+  checkoutCapacityConsumer: 'Verbraucher – überwiegend privat',
+  checkoutCapacityBusiness: 'Unternehmer – geschäftlich oder beruflich',
+  checkoutCapacityConsumerNotice:
+    'Bei einem gewerblichen Verkäufer können die gesetzlichen Verbraucherschutzregeln gelten.',
+  checkoutCapacityBusinessNotice:
+    'Für einen geschäftlichen Kauf besteht kein automatisches gesetzliches 14-Tage-Widerrufsrecht.',
+  checkoutWithdrawalCostConfirmation:
+    'Ich habe die Information erhalten, dass ich bei einem gesetzlichen Widerruf die unmittelbaren Rücksendekosten trage.',
+  checkoutWithdrawalCostRequired:
+    'Bestätige die Information zu den Rücksendekosten, bevor du fortfährst.',
   checkoutShippingTitle: 'Versandart',
   checkoutShippingDescription: 'Wähle eine verfügbare Versandoption.',
   checkoutAddressTitle: 'Lieferadresse',
