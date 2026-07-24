@@ -7,6 +7,10 @@ import {
 import { I18nService } from '../../../../core/services/i18n.service';
 import { ReturnsService } from '../../../../core/services/returns.service';
 import { formatDisplayDate } from '../../../../core/utils/format.utils';
+import {
+  DropdownComponent,
+  DropdownOption,
+} from '../../../../shared/components/dropdown/dropdown.component';
 
 type ReturnAction = 'request' | 'ship' | 'confirm';
 const RETURN_REASONS: ShipmentReturnReason[] = [
@@ -22,6 +26,7 @@ const RETURN_REASONS: ShipmentReturnReason[] = [
 @Component({
   selector: 'app-return-panel',
   standalone: true,
+  imports: [DropdownComponent],
   templateUrl: './return-panel.component.html',
   styleUrl: './return-panel.component.scss',
 })
@@ -44,6 +49,13 @@ export class ReturnPanelComponent {
     return RETURN_REASONS.filter((reason) => this.reasonAllowed(reason));
   });
 
+  readonly reasonOptions = computed<DropdownOption<ShipmentReturnReason>[]>(() => {
+    return this.availableReasons().map((reason) => ({
+      value: reason,
+      label: this.reasonLabel(reason),
+    }));
+  });
+
   openRequest(): void {
     this.reason.set(this.availableReasons()[0] ?? 'defective');
     this.description.set('');
@@ -57,7 +69,7 @@ export class ReturnPanelComponent {
 
   requestReturn(): void {
     const shipment = this.order().shipment;
-    if (!shipment || !this.canRequest()) return;
+    if (!shipment || !this.canRequest() || !this.canSubmitRequest()) return;
     this.startAction('request');
     const payload = { reason: this.reason(), description: this.description().trim() };
     this.returnsService.requestReturn(shipment.id, payload).subscribe({
@@ -97,6 +109,10 @@ export class ReturnPanelComponent {
         !shipment.issue_category &&
         !this.activeAction(),
     );
+  }
+
+  canSubmitRequest(): boolean {
+    return this.reason() === 'change_of_mind' || Boolean(this.description().trim());
   }
 
   canShip(): boolean {
