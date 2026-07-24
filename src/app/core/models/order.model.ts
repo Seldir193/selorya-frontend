@@ -4,6 +4,7 @@ export type PaymentProvider = 'stripe' | 'paypal' | 'manual';
 export type CheckoutProvider = 'stripe' | 'paypal';
 export type OrderScope = 'purchased' | 'sold' | 'all';
 export type SellerType = 'private' | 'commercial';
+export type BuyerCapacity = 'consumer' | 'business' | 'undetermined';
 export type ShipmentPayoutBlockReason =
   | ''
   | 'shipment_missing'
@@ -64,6 +65,8 @@ export type ShipmentIssueResolutionPayload = {
 export type OrderCreatePayload = {
   listing_id: number;
   quantity: number;
+  buyer_capacity: Exclude<BuyerCapacity, 'undetermined'>;
+  withdrawal_cost_notice_confirmed: boolean;
   shipping: ShippingSelectionPayload;
 };
 
@@ -124,6 +127,8 @@ export type Order = {
   buyer: number;
   buyer_email: string;
   buyer_name: string;
+  buyer_capacity_snapshot: BuyerCapacity;
+  withdrawal_cost_notice_snapshot: boolean;
   status: string;
   currency: string;
   subtotal: string;
