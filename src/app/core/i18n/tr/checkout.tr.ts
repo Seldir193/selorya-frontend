@@ -10,7 +10,21 @@ export const trCheckoutTexts = {
   checkoutEyebrow: 'Güvenli ödeme',
   checkoutTitle: 'Teslimat ve ödeme',
   checkoutDescription:
-    'Ödeme sağlayıcısına geçmeden önce gönderim yöntemini seç ve teslimat adresini onayla.',
+    'Ödeme sağlayıcısına geçmeden önce sözleşme sıfatını, gönderim yöntemini ve teslimat adresini seç.',
+  checkoutCapacityTitle: 'Sözleşmedeki sıfatın',
+  checkoutCapacityDescription:
+    'Bu özel satın alımın ağırlıklı olarak kişisel mi yoksa ticari mi olduğunu belirt.',
+  checkoutCapacityLabel: 'Bu sözleşmede satın alma sıfatım',
+  checkoutCapacityConsumer: 'Tüketici – ağırlıklı olarak özel amaçlı',
+  checkoutCapacityBusiness: 'İşletme – ticari veya mesleki amaçlı',
+  checkoutCapacityConsumerNotice:
+    'Satıcı ticari ise yasal tüketici koruma kuralları uygulanabilir.',
+  checkoutCapacityBusinessNotice:
+    'Ticari satın alımlarda otomatik yasal 14 günlük cayma hakkı yoktur.',
+  checkoutWithdrawalCostConfirmation:
+    'Yasal cayma durumunda doğrudan iade kargo masrafını taşıdığıma ilişkin bilgiyi aldım.',
+  checkoutWithdrawalCostRequired:
+    'Devam etmeden önce iade masrafı bilgilendirmesini onayla.',
   checkoutShippingTitle: 'Gönderim yöntemi',
   checkoutShippingDescription: 'Mevcut gönderim seçeneklerinden birini seç.',
   checkoutAddressTitle: 'Teslimat adresi',
