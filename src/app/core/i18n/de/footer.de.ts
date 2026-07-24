@@ -17,6 +17,7 @@ export const deFooterTexts = {
   footerHelpDocuments: 'Dokumente',
   footerHelpAccount: 'Konto',
   footerLegalTitle: 'Rechtliches',
+  footerLegalWithdrawContract: 'Vertrag widerrufen',
   footerLegalPrivacy: 'Datenschutz',
   footerLegalTerms: 'AGB',
   footerLegalImprint: 'Impressum',
