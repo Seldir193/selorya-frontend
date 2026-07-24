@@ -15,6 +15,7 @@ export const trCheckoutTexts = {
   checkoutCapacityDescription:
     'Bu özel satın alımın ağırlıklı olarak kişisel mi yoksa ticari mi olduğunu belirt.',
   checkoutCapacityLabel: 'Bu sözleşmede satın alma sıfatım',
+  checkoutCapacityChoose: 'Lütfen seç',
   checkoutCapacityConsumer: 'Tüketici – ağırlıklı olarak özel amaçlı',
   checkoutCapacityBusiness: 'İşletme – ticari veya mesleki amaçlı',
   checkoutCapacityConsumerNotice:
