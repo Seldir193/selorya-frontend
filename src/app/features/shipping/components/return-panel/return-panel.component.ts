@@ -1,32 +1,18 @@
-import { Component, computed, inject, input, output, signal } from '@angular/core';
-import { Order, OrderScope, SellerType } from '../../../../core/models/order.model';
-import {
-  ShipmentReturnReason,
-  ShipmentReturnStatus,
-} from '../../../../core/models/return.model';
+import { Component, inject, input, output, signal } from '@angular/core';
+import { Order, OrderScope } from '../../../../core/models/order.model';
+import { ShipmentReturnStatus } from '../../../../core/models/return.model';
 import { I18nService } from '../../../../core/services/i18n.service';
 import { ReturnsService } from '../../../../core/services/returns.service';
 import { formatDisplayDate } from '../../../../core/utils/format.utils';
-import {
-  DropdownComponent,
-  DropdownOption,
-} from '../../../../shared/components/dropdown/dropdown.component';
+import { DialogComponent } from '../../../../shared/components/dialog/dialog.component';
+
 
 type ReturnAction = 'request' | 'ship' | 'confirm';
-const RETURN_REASONS: ShipmentReturnReason[] = [
-  'change_of_mind',
-  'defective',
-  'not_as_described',
-  'wrong_item',
-  'damaged',
-  'counterfeit',
-  'other',
-];
 
 @Component({
   selector: 'app-return-panel',
   standalone: true,
-  imports: [DropdownComponent],
+  imports: [DialogComponent],
   templateUrl: './return-panel.component.html',
   styleUrl: './return-panel.component.scss',
 })
@@ -37,43 +23,28 @@ export class ReturnPanelComponent {
   readonly order = input.required<Order>();
   readonly scope = input.required<OrderScope>();
   readonly changed = output<void>();
-  readonly requestOpen = signal(false);
-  readonly reason = signal<ShipmentReturnReason>('defective');
-  readonly description = signal('');
+  readonly withdrawalOpen = signal(false);
   readonly carrier = signal('');
   readonly trackingNumber = signal('');
   readonly activeAction = signal<ReturnAction | null>(null);
   readonly failedAction = signal<ReturnAction | null>(null);
 
-  readonly availableReasons = computed(() => {
-    return RETURN_REASONS.filter((reason) => this.reasonAllowed(reason));
-  });
-
-  readonly reasonOptions = computed<DropdownOption<ShipmentReturnReason>[]>(() => {
-    return this.availableReasons().map((reason) => ({
-      value: reason,
-      label: this.reasonLabel(reason),
-    }));
-  });
-
-  openRequest(): void {
-    this.reason.set(this.availableReasons()[0] ?? 'defective');
-    this.description.set('');
+  openWithdrawal(): void {
     this.failedAction.set(null);
-    this.requestOpen.set(true);
+    this.withdrawalOpen.set(true);
   }
 
-  closeRequest(): void {
-    if (!this.activeAction()) this.requestOpen.set(false);
+  closeWithdrawal(): void {
+    if (!this.activeAction()) this.withdrawalOpen.set(false);
   }
 
-  requestReturn(): void {
+  confirmWithdrawal(): void {
     const shipment = this.order().shipment;
-    if (!shipment || !this.canRequest() || !this.canSubmitRequest()) return;
+    if (!shipment || !this.canRequest()) return;
     this.startAction('request');
-    const payload = { reason: this.reason(), description: this.description().trim() };
+    const payload = { reason: 'change_of_mind' as const, description: '' };
     this.returnsService.requestReturn(shipment.id, payload).subscribe({
-      next: () => this.completeRequest(),
+      next: () => this.completeWithdrawal(),
       error: () => this.failAction('request'),
     });
   }
@@ -111,10 +82,6 @@ export class ReturnPanelComponent {
     );
   }
 
-  canSubmitRequest(): boolean {
-    return this.reason() === 'change_of_mind' || Boolean(this.description().trim());
-  }
-
   canShip(): boolean {
     const status = this.returnStatus();
     return this.scope() === 'purchased' && ['approved', 'label_created'].includes(status ?? '');
@@ -134,14 +101,6 @@ export class ReturnPanelComponent {
     if (shipment.return_request) return true;
     if (this.scope() === 'sold') return Boolean(shipment.payout_eligible_at || shipment.payout_blocked);
     return this.scope() === 'purchased' && ['shipped', 'delivered'].includes(shipment.status);
-  }
-
-  sellerType(): SellerType {
-    return this.order().items[0]?.seller_type_snapshot ?? 'private';
-  }
-
-  reasonLabel(reason: ShipmentReturnReason): string {
-    return this.text(`returnReason${this.toPascalCase(reason)}`);
   }
 
   statusLabel(status: ShipmentReturnStatus): string {
@@ -174,6 +133,10 @@ export class ReturnPanelComponent {
     return this.formatDate(this.order().shipment?.return_request?.requested_at);
   }
 
+  carrierAcceptedAt(): string {
+    return this.formatDate(this.order().shipment?.return_request?.carrier_accepted_at);
+  }
+
   returnStatus(): ShipmentReturnStatus | null {
     return this.order().shipment?.return_request?.status ?? null;
   }
@@ -182,17 +145,13 @@ export class ReturnPanelComponent {
     return this.i18n.t(key);
   }
 
-  private reasonAllowed(reason: ShipmentReturnReason): boolean {
-    return reason !== 'change_of_mind' || this.sellerType() === 'commercial';
-  }
-
   private startAction(action: ReturnAction): void {
     this.activeAction.set(action);
     this.failedAction.set(null);
   }
 
-  private completeRequest(): void {
-    this.requestOpen.set(false);
+  private completeWithdrawal(): void {
+    this.withdrawalOpen.set(false);
     this.completeAction();
   }
 
