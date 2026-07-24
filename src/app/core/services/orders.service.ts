@@ -58,12 +58,8 @@ export class OrdersService {
     return this.http.post<Order>(`${API_BASE_URL}/orders/shipments/${id}/report-issue/`, payload);
   }
 
-  listShipmentIssues(): Observable<Order[]> {
-    return this.http.get<Order[]>(`${API_BASE_URL}/orders/shipment-issues/`);
-  }
-
-  resolveShipmentIssue(id: number, payload: ShipmentIssueResolutionPayload): Observable<Order> {
-    return this.http.post<Order>(`${API_BASE_URL}/orders/shipment-issues/${id}/resolve/`, payload);
+  respondShipmentIssue(id: number, payload: ShipmentIssueResolutionPayload): Observable<Order> {
+    return this.http.post<Order>(`${API_BASE_URL}/orders/shipments/${id}/issue-response/`, payload);
   }
 
   refundPayment(id: number): Observable<unknown> {

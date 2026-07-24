@@ -57,7 +57,8 @@ describe('CheckoutPage', () => {
   ];
   let component: CheckoutPage;
 
-  function fillAddress(): void {
+  function fillContractAndAddress(): void {
+    component.setCapacity('consumer');
     component.form.patchValue(address);
   }
 
@@ -65,6 +66,8 @@ describe('CheckoutPage', () => {
     return {
       listing_id: listing.id,
       quantity: 1,
+      buyer_capacity: 'consumer',
+      withdrawal_cost_notice_confirmed: false,
       shipping: { shipping_option_id: shippingOption.id, ...address },
     };
   }
@@ -89,8 +92,15 @@ describe('CheckoutPage', () => {
     expect(component.form.controls.city.value).toBe('Essen');
   });
 
-  it('creates an order with shipping before starting Stripe', () => {
-    fillAddress();
+  it('requires an explicit contract capacity', () => {
+    component.form.patchValue(address);
+    component.submit();
+    expect(component.capacityInvalid()).toBe(true);
+    expect(ordersService.create).not.toHaveBeenCalled();
+  });
+
+  it('creates an order with contract and shipping snapshots', () => {
+    fillContractAndAddress();
     component.submit();
     expect(ordersService.create).toHaveBeenCalledWith(expectedPayload());
     expect(ordersService.startCheckout).toHaveBeenCalledWith('stripe', 44);
@@ -100,7 +110,7 @@ describe('CheckoutPage', () => {
   it('reuses the pending order after a payment start failure', () => {
     const failure = throwError(() => new Error('payment unavailable'));
     ordersService.startCheckout.mockReturnValueOnce(failure).mockReturnValue(NEVER);
-    fillAddress();
+    fillContractAndAddress();
     component.submit();
     component.submit();
     expect(ordersService.create).toHaveBeenCalledOnce();
@@ -109,6 +119,7 @@ describe('CheckoutPage', () => {
   });
 
   it('does not create an order with an incomplete address', () => {
+    component.setCapacity('consumer');
     component.submit();
     expect(component.form.invalid).toBe(true);
     expect(ordersService.create).not.toHaveBeenCalled();

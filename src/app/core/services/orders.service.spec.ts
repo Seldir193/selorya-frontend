@@ -48,8 +48,14 @@ describe('OrdersService', () => {
     request.flush([]);
   });
 
-  it('creates an order with the selected shipping data', () => {
-    const payload: OrderCreatePayload = { listing_id: 11, quantity: 1, shipping };
+  it('creates an order with contract and shipping data', () => {
+    const payload: OrderCreatePayload = {
+      listing_id: 11,
+      quantity: 1,
+      buyer_capacity: 'consumer',
+      withdrawal_cost_notice_confirmed: true,
+      shipping,
+    };
     service.create(payload).subscribe();
     const request = httpController.expectOne(`${API_BASE_URL}/orders/create/`);
     expect(request.request.method).toBe('POST');

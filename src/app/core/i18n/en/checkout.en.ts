@@ -10,7 +10,22 @@ export const enCheckoutTexts = {
   checkoutEyebrow: 'Secure checkout',
   checkoutTitle: 'Delivery and payment',
   checkoutDescription:
-    'Choose your shipping method and confirm the delivery address before continuing to the payment provider.',
+    'Choose your contract capacity, shipping method and delivery address before continuing to the payment provider.',
+  checkoutCapacityTitle: 'Contract capacity',
+  checkoutCapacityDescription:
+    'State whether this specific purchase is predominantly private or business-related.',
+  checkoutCapacityLabel: 'For this contract I am buying as',
+  checkoutCapacityChoose: 'Please select',
+  checkoutCapacityConsumer: 'Consumer – predominantly private',
+  checkoutCapacityBusiness: 'Business – commercial or professional',
+  checkoutCapacityConsumerNotice:
+    'Statutory consumer protection rules may apply when the seller is commercial.',
+  checkoutCapacityBusinessNotice:
+    'A business purchase has no automatic statutory 14-day withdrawal right.',
+  checkoutWithdrawalCostConfirmation:
+    'I received the information that I bear the direct return shipping costs for a statutory withdrawal.',
+  checkoutWithdrawalCostRequired:
+    'Confirm the return-cost information before continuing.',
   checkoutShippingTitle: 'Shipping method',
   checkoutShippingDescription: 'Choose an available shipping option.',
   checkoutAddressTitle: 'Delivery address',

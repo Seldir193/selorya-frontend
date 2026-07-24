@@ -31,7 +31,8 @@ export const deShippingTexts = {
   shippingConfirmAction: 'Lieferung erhalten',
   shippingConfirmSaving: 'Wird bestätigt',
   shippingConfirmError: 'Die Lieferung konnte nicht bestätigt werden. Bitte erneut versuchen.',
-  shippingAutoCompleteNotice: 'Der Versanddienstleister hat die Zustellung bestätigt. Ohne Rückmeldung wird die Bestellung automatisch abgeschlossen am',
+  shippingAutoCompleteNotice:
+    'Der Versanddienstleister hat die Zustellung bestätigt. Ohne Rückmeldung wird die Bestellung automatisch abgeschlossen am',
   shippingIssueAction: 'Problem melden',
   shippingIssueCategoryLabel: 'Art des Problems',
   shippingIssueCategoryNotReceived: 'Nicht erhalten',
@@ -46,7 +47,22 @@ export const deShippingTexts = {
   shippingIssueSaving: 'Wird gesendet',
   shippingIssueError: 'Das Problem konnte nicht gemeldet werden. Prüfe deine Angaben.',
   shippingIssueReportedTitle: 'Gemeldetes Problem',
-  shippingIssueResolutionOpen: 'Bearbeitung offen',
-  shippingIssueResolutionResolved: 'Problem gelöst',
-  shippingIssueResolutionRejected: 'Meldung abgelehnt',
+  shippingIssueResolutionOpen: 'Antwort des Verkäufers offen',
+  shippingIssueResolutionResolved: 'Verkäufer hat die Erstattung akzeptiert',
+  shippingIssueResolutionRejected: 'Verkäufer hat die Forderung abgelehnt',
+  shippingIssueSellerDecisionNotice:
+    'Du bist Vertragspartner des Käufers. Selorya entscheidet diesen Produktmangel nicht für dich.',
+  shippingIssueSellerAccept: 'Forderung akzeptieren',
+  shippingIssueSellerReject: 'Forderung ablehnen',
+  shippingIssueSellerAcceptTitle: 'Forderung akzeptieren',
+  shippingIssueSellerRejectTitle: 'Forderung ablehnen',
+  shippingIssueSellerAcceptNotice:
+    'Mit der Bestätigung akzeptierst du die vollständige Erstattung. Selorya übermittelt sie automatisch an den Zahlungsanbieter.',
+  shippingIssueSellerRejectNotice:
+    'Begründe deine Ablehnung nachvollziehbar. Selorya trifft keine eigene Sachentscheidung.',
+  shippingIssueSellerNote: 'Antwort an den Käufer',
+  shippingIssueSellerNotePlaceholder: 'Begründe deine Entscheidung eindeutig',
+  shippingIssueSellerSubmit: 'Antwort verbindlich senden',
+  shippingIssueSellerSaving: 'Antwort wird gesendet',
+  shippingIssueSellerError: 'Die Antwort konnte nicht gespeichert werden. Prüfe die Begründung.',
 } as const;

@@ -25,7 +25,8 @@
 .return-panel__header div,
 .return-panel__summary,
 .return-panel__form,
-.return-panel__payout div {
+.return-panel__payout div,
+.return-panel__withdrawal-dialog {
   display: grid;
   gap: 8px;
 }
@@ -34,14 +35,16 @@
 .return-panel__header span,
 .return-panel__summary p,
 .return-panel__notice,
-.return-panel__deadline {
+.return-panel__deadline,
+.return-panel__withdrawal-dialog p {
   margin: 0;
 }
 
 .return-panel__header span,
 .return-panel__deadline span,
 .return-panel__payout span,
-.return-panel dt {
+.return-panel dt,
+.return-panel__withdrawal-dialog dt {
   color: var(--color-text-soft);
   font-size: 0.85rem;
 }
@@ -65,19 +68,22 @@
   padding-top: 14px;
 }
 
-.return-panel dl {
+.return-panel dl,
+.return-panel__withdrawal-dialog dl {
   display: grid;
   gap: 10px;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   margin: 0;
 }
 
-.return-panel dl div {
+.return-panel dl div,
+.return-panel__withdrawal-dialog dl div {
   display: grid;
   gap: 4px;
 }
 
-.return-panel dd {
+.return-panel dd,
+.return-panel__withdrawal-dialog dd {
   margin: 0;
   overflow-wrap: anywhere;
 }
@@ -105,6 +111,10 @@
   resize: vertical;
 }
 
+.return-panel__withdrawal-dialog {
+  gap: 16px;
+}
+
 .return-panel__error {
   color: var(--color-danger);
   margin: 0;
@@ -115,7 +125,8 @@
     padding: 15px;
   }
 
-  .return-panel dl {
+  .return-panel dl,
+  .return-panel__withdrawal-dialog dl {
     grid-template-columns: 1fr;
   }
 

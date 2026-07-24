@@ -10,6 +10,7 @@
 @use './styles/icon-buttons';
 @use './styles/scrollbars';
 @use './styles/image-preview';
+@use './app/features/checkout/pages/checkout-contract';
 
 html {
   height: 100%;

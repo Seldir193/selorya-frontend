@@ -1,0 +1,36 @@
+.checkout-contract {
+  display: grid;
+  gap: 14px;
+}
+
+.checkout-contract__notice {
+  margin: 0;
+  padding: 14px;
+  border-radius: var(--radius-md);
+  background: var(--color-surface-soft);
+  color: var(--color-text-soft);
+  line-height: 1.6;
+}
+
+.checkout-contract__confirmation {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: start;
+  gap: 10px;
+  color: var(--color-text);
+  cursor: pointer;
+  line-height: 1.5;
+}
+
+.checkout-contract__confirmation input {
+  width: 18px;
+  height: 18px;
+  margin-top: 2px;
+  accent-color: var(--color-primary);
+}
+
+.checkout-contract__error {
+  color: var(--color-danger);
+  font-size: 12px;
+  font-weight: 700;
+}

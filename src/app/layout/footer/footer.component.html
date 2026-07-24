@@ -39,6 +39,7 @@
 
       <nav class="footer__group" [attr.aria-label]="'footerLegalTitle' | translate">
         <h2>{{ 'footerLegalTitle' | translate }}</h2>
+        <a routerLink="/shipping">{{ 'footerLegalWithdrawContract' | translate }}</a>
         <a href="#">{{ 'footerLegalPrivacy' | translate }}</a>
         <a href="#">{{ 'footerLegalTerms' | translate }}</a>
         <a href="#">{{ 'footerLegalImprint' | translate }}</a>
@@ -61,18 +62,6 @@
           <img src="assets/icons/footer/linkedin.svg" alt="" aria-hidden="true" />
         </a>
       </div>
-
-      <!-- <div class="footer__apps">
-        <a href="#" class="footer__store">
-          <span>{{ 'footerAppStoreKicker' | translate }}</span>
-          <strong>{{ 'footerAppStoreTitle' | translate }}</strong>
-        </a>
-
-        <a href="#" class="footer__store">
-          <span>{{ 'footerPlayStoreKicker' | translate }}</span>
-          <strong>{{ 'footerPlayStoreTitle' | translate }}</strong>
-        </a>
-      </div> -->
 
       <div class="footer__apps">
         <a href="#" class="footer__store" aria-label="App Store">

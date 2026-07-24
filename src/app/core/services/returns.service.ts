@@ -4,7 +4,6 @@ import { Observable } from 'rxjs';
 import { API_BASE_URL } from '../config/api.config';
 import {
   ShipmentReturn,
-  ShipmentReturnDecisionPayload,
   ShipmentReturnRequestPayload,
   ShipmentReturnShippingPayload,
 } from '../models/return.model';
@@ -19,16 +18,6 @@ export class ReturnsService {
   ): Observable<ShipmentReturn> {
     return this.http.post<ShipmentReturn>(
       `${API_BASE_URL}/orders/shipments/${shipmentId}/returns/`,
-      payload,
-    );
-  }
-
-  resolveReturn(
-    returnId: number,
-    payload: ShipmentReturnDecisionPayload,
-  ): Observable<ShipmentReturn> {
-    return this.http.post<ShipmentReturn>(
-      `${API_BASE_URL}/orders/shipment-returns/${returnId}/resolve/`,
       payload,
     );
   }

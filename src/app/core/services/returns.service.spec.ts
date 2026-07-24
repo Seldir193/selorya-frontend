@@ -4,11 +4,11 @@ import { TestBed } from '@angular/core/testing';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import { API_BASE_URL } from '../config/api.config';
 import {
-  ShipmentReturnDecisionPayload,
   ShipmentReturnRequestPayload,
   ShipmentReturnShippingPayload,
 } from '../models/return.model';
 import { ReturnsService } from './returns.service';
+
 
 describe('ReturnsService', () => {
   let service: ReturnsService;
@@ -24,30 +24,13 @@ describe('ReturnsService', () => {
 
   afterEach(() => httpController.verify());
 
-  it('requests a return for a shipment', () => {
+  it('submits a statutory withdrawal for a shipment', () => {
     const payload: ShipmentReturnRequestPayload = {
-      reason: 'defective',
-      description: 'The item is defective.',
+      reason: 'change_of_mind',
+      description: '',
     };
     service.requestReturn(8, payload).subscribe();
     const request = httpController.expectOne(`${API_BASE_URL}/orders/shipments/8/returns/`);
-    expect(request.request.method).toBe('POST');
-    expect(request.request.body).toEqual(payload);
-    request.flush({ id: 4 });
-  });
-
-  it('resolves a return with optional approval fields', () => {
-    const payload: ShipmentReturnDecisionPayload = {
-      decision: 'approved',
-      note: 'Approved.',
-      shipping_payer: 'seller',
-      carrier: 'dhl',
-      label_reference: 'RET-44',
-    };
-    service.resolveReturn(4, payload).subscribe();
-    const request = httpController.expectOne(
-      `${API_BASE_URL}/orders/shipment-returns/4/resolve/`,
-    );
     expect(request.request.method).toBe('POST');
     expect(request.request.body).toEqual(payload);
     request.flush({ id: 4 });

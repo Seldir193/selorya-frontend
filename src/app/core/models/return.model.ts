@@ -1,3 +1,4 @@
+export type ShipmentReturnKind = 'withdrawal' | 'claim';
 export type ShipmentReturnReason =
   | 'change_of_mind'
   | 'defective'
@@ -20,11 +21,11 @@ export type ShipmentReturnStatus =
   | 'cancelled';
 
 export type ShipmentReturnShippingPayer = 'buyer' | 'seller' | 'platform' | 'undecided';
-export type ShipmentReturnDecision = 'approved' | 'rejected';
 
 export type ShipmentReturn = {
   id: number;
   shipment: number;
+  kind: ShipmentReturnKind;
   reason: ShipmentReturnReason;
   description: string;
   status: ShipmentReturnStatus;
@@ -32,6 +33,10 @@ export type ShipmentReturn = {
   carrier: string;
   tracking_number: string;
   label_reference: string;
+  carrier_status: string;
+  carrier_status_description: string;
+  carrier_event_at: string | null;
+  carrier_accepted_at: string | null;
   requested_at: string;
   approved_at: string | null;
   rejected_at: string | null;
@@ -45,16 +50,8 @@ export type ShipmentReturn = {
 };
 
 export type ShipmentReturnRequestPayload = {
-  reason: ShipmentReturnReason;
+  reason: 'change_of_mind';
   description: string;
-};
-
-export type ShipmentReturnDecisionPayload = {
-  decision: ShipmentReturnDecision;
-  note: string;
-  shipping_payer?: ShipmentReturnShippingPayer;
-  carrier?: string;
-  label_reference?: string;
 };
 
 export type ShipmentReturnShippingPayload = {

@@ -17,6 +17,7 @@ export const enFooterTexts = {
   footerHelpDocuments: 'Documents',
   footerHelpAccount: 'Account',
   footerLegalTitle: 'Legal',
+  footerLegalWithdrawContract: 'Withdraw from contract',
   footerLegalPrivacy: 'Privacy',
   footerLegalTerms: 'Terms',
   footerLegalImprint: 'Imprint',

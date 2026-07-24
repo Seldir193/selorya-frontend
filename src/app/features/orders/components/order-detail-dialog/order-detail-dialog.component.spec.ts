@@ -40,6 +40,8 @@ const order: Order = {
   buyer: 4,
   buyer_email: 'buyer@example.com',
   buyer_name: 'Max Mustermann',
+  buyer_capacity_snapshot: 'consumer',
+  withdrawal_cost_notice_snapshot: true,
   status: 'paid',
   currency: 'EUR',
   subtotal: '40.00',

@@ -28,9 +28,59 @@
 
     <div class="checkout-layout">
       <form class="checkout-form" [formGroup]="form" (ngSubmit)="submit()">
-        <section class="checkout-section" aria-labelledby="checkout-shipping-title">
+        <section class="checkout-section" aria-labelledby="checkout-capacity-title">
           <header class="checkout-section__head">
             <span>1</span>
+            <div>
+              <h2 id="checkout-capacity-title">{{ text('checkoutCapacityTitle') }}</h2>
+              <p>{{ text('checkoutCapacityDescription') }}</p>
+            </div>
+          </header>
+
+          <div class="checkout-contract">
+            <label class="checkout-field">
+              <span>{{ text('checkoutCapacityLabel') }}</span>
+              <app-dropdown
+                [value]="capacity()"
+                [options]="capacityOptions()"
+                [ariaLabel]="text('checkoutCapacityLabel')"
+                minWidth="100%"
+                itemAlign="left"
+                [disabled]="form.controls.buyer_capacity.disabled"
+                (valueChange)="setCapacity($event)"
+              />
+              @if (capacityInvalid()) {
+                <small>{{ text('checkoutFieldRequired') }}</small>
+              }
+            </label>
+
+            <p class="checkout-contract__notice">
+              {{
+                text(
+                  capacity() === 'consumer'
+                    ? 'checkoutCapacityConsumerNotice'
+                    : 'checkoutCapacityBusinessNotice'
+                )
+              }}
+            </p>
+
+            @if (noticeRequired()) {
+              <label class="checkout-contract__confirmation">
+                <input type="checkbox" formControlName="withdrawal_cost_notice_confirmed" />
+                <span>{{ text('checkoutWithdrawalCostConfirmation') }}</span>
+              </label>
+              @if (submitted() && noticeInvalid()) {
+                <small class="checkout-contract__error">
+                  {{ text('checkoutWithdrawalCostRequired') }}
+                </small>
+              }
+            }
+          </div>
+        </section>
+
+        <section class="checkout-section" aria-labelledby="checkout-shipping-title">
+          <header class="checkout-section__head">
+            <span>2</span>
             <div>
               <h2 id="checkout-shipping-title">{{ text('checkoutShippingTitle') }}</h2>
               <p>{{ text('checkoutShippingDescription') }}</p>
@@ -56,7 +106,7 @@
 
         <section class="checkout-section" aria-labelledby="checkout-address-title">
           <header class="checkout-section__head">
-            <span>2</span>
+            <span>3</span>
             <div>
               <h2 id="checkout-address-title">{{ text('checkoutAddressTitle') }}</h2>
               <p>{{ text('checkoutAddressDescription') }}</p>
@@ -133,7 +183,7 @@
 
         <section class="checkout-section checkout-section--payment">
           <header class="checkout-section__head">
-            <span>3</span>
+            <span>4</span>
             <div>
               <h2>{{ text('checkoutPaymentTitle') }}</h2>
               <p>{{ text('checkoutPaymentDescription') }}</p>

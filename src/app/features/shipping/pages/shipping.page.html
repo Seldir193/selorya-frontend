@@ -149,18 +149,15 @@
               (keydown)="$event.stopPropagation()"
               (submit)="$event.preventDefault(); reportIssue(order)"
             >
-              <label [for]="'issue-category-' + order.shipment.id">
-                {{ text('shippingIssueCategoryLabel') }}
-              </label>
-              <select
-                [id]="'issue-category-' + order.shipment.id"
+              <label>{{ text('shippingIssueCategoryLabel') }}</label>
+              <app-dropdown
                 [value]="issueCategory()"
-                (change)="issueCategory.set($any($event.target).value)"
-              >
-                @for (category of issueCategories; track category) {
-                  <option [value]="category">{{ issueCategoryLabel(category) }}</option>
-                }
-              </select>
+                [options]="issueCategoryOptions()"
+                [ariaLabel]="text('shippingIssueCategoryLabel')"
+                minWidth="100%"
+                itemAlign="left"
+                (valueChange)="changeIssueCategory($event)"
+              />
               <label [for]="'issue-description-' + order.shipment.id">
                 {{ text('shippingIssueDescriptionLabel') }}
               </label>
@@ -209,6 +206,92 @@
                 <p>{{ order.shipment.issue_resolution_note }}</p>
               }
             </div>
+          }
+
+          @if (canRespondIssue(order) && issueResponseFormId() !== order.shipment.id) {
+            <div class="shipping-issue-response" (click)="$event.stopPropagation()">
+              <p>{{ text('shippingIssueSellerDecisionNotice') }}</p>
+              <div class="shipping-issue__actions">
+                <button
+                  type="button"
+                  class="app-button"
+                  (click)="openIssueResponse(order, 'resolved')"
+                >
+                  {{ text('shippingIssueSellerAccept') }}
+                </button>
+                <button
+                  type="button"
+                  class="app-button app-button--secondary"
+                  (click)="openIssueResponse(order, 'rejected')"
+                >
+                  {{ text('shippingIssueSellerReject') }}
+                </button>
+              </div>
+            </div>
+          }
+
+          @if (issueResponseFormId() === order.shipment.id) {
+            <form
+              class="shipping-issue shipping-issue-response"
+              (click)="$event.stopPropagation()"
+              (keydown)="$event.stopPropagation()"
+              (submit)="$event.preventDefault(); respondIssue(order)"
+            >
+              <strong>
+                {{
+                  text(
+                    issueResponseStatus() === 'resolved'
+                      ? 'shippingIssueSellerAcceptTitle'
+                      : 'shippingIssueSellerRejectTitle'
+                  )
+                }}
+              </strong>
+              <p>
+                {{
+                  text(
+                    issueResponseStatus() === 'resolved'
+                      ? 'shippingIssueSellerAcceptNotice'
+                      : 'shippingIssueSellerRejectNotice'
+                  )
+                }}
+              </p>
+              <label [for]="'issue-response-note-' + order.shipment.id">
+                {{ text('shippingIssueSellerNote') }}
+              </label>
+              <textarea
+                [id]="'issue-response-note-' + order.shipment.id"
+                maxlength="1000"
+                [value]="issueResponseNote()"
+                [placeholder]="text('shippingIssueSellerNotePlaceholder')"
+                (input)="issueResponseNote.set($any($event.target).value); issueResponseErrorId.set(null)"
+              ></textarea>
+              <div class="shipping-issue__actions">
+                <button
+                  type="button"
+                  class="app-button app-button--secondary"
+                  [disabled]="respondingIssueId() === order.shipment.id"
+                  (click)="closeIssueResponse()"
+                >
+                  {{ text('shippingIssueCancel') }}
+                </button>
+                <button
+                  type="submit"
+                  class="app-button"
+                  [disabled]="respondingIssueId() === order.shipment.id"
+                >
+                  {{
+                    text(
+                      respondingIssueId() === order.shipment.id
+                        ? 'shippingIssueSellerSaving'
+                        : 'shippingIssueSellerSubmit'
+                    )
+                  }}
+                </button>
+              </div>
+              @if (issueResponseErrorId() === order.shipment.id) {
+                <span role="alert">{{ text('shippingIssueSellerError') }}</span>
+              }
+            </form>
           }
 
           <app-return-panel

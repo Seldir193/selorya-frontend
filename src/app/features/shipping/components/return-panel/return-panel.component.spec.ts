@@ -10,20 +10,26 @@ import { ReturnPanelComponent } from './return-panel.component';
 function orderFixture(
   sellerType: SellerType = 'commercial',
   returnStatus: ShipmentReturnStatus | null = null,
+  returnAllowed = !returnStatus,
 ): Order {
   const returnRequest = returnStatus
     ? {
         id: 7,
         shipment: 4,
-        reason: 'defective' as const,
-        description: 'Defect',
+        kind: 'withdrawal' as const,
+        reason: 'change_of_mind' as const,
+        description: '',
         status: returnStatus,
-        shipping_payer: 'seller' as const,
+        shipping_payer: 'buyer' as const,
         carrier: '',
         tracking_number: '',
         label_reference: '',
+        carrier_status: '',
+        carrier_status_description: '',
+        carrier_event_at: null,
+        carrier_accepted_at: null,
         requested_at: '2026-07-24T10:00:00Z',
-        approved_at: null,
+        approved_at: '2026-07-24T10:00:00Z',
         rejected_at: null,
         shipped_at: null,
         delivered_at: null,
@@ -39,6 +45,8 @@ function orderFixture(
     buyer: 2,
     buyer_email: 'buyer@example.com',
     buyer_name: 'Buyer',
+    buyer_capacity_snapshot: 'consumer',
+    withdrawal_cost_notice_snapshot: true,
     status: 'paid',
     currency: 'EUR',
     subtotal: '20.00',
@@ -78,8 +86,8 @@ function orderFixture(
       payout_eligible_at: '2026-08-06T10:00:00Z',
       payout_blocked: Boolean(returnRequest),
       payout_block_reason: returnRequest ? 'return_open' : 'payout_window_open',
-      return_allowed: !returnRequest,
-      return_deadline: '2026-08-06T10:00:00Z',
+      return_allowed: returnAllowed,
+      return_deadline: returnAllowed ? '2026-08-06T10:00:00Z' : null,
       return_request: returnRequest,
       created_at: '2026-07-20T10:00:00Z',
       updated_at: '2026-07-23T10:00:00Z',
@@ -119,75 +127,44 @@ describe('ReturnPanelComponent', () => {
     return fixture;
   }
 
-  it('offers change of mind only for commercial sellers', () => {
-    const commercial = create(orderFixture('commercial'), 'purchased');
-    commercial.componentInstance.openRequest();
-    commercial.detectChanges();
-    expect(commercial.nativeElement.textContent).toContain('returnReasonChangeOfMind');
-    commercial.destroy();
-
-    const privateFixture = create(orderFixture('private'), 'purchased');
-    privateFixture.componentInstance.openRequest();
-    privateFixture.detectChanges();
-    expect(privateFixture.nativeElement.textContent).not.toContain('returnReasonChangeOfMind');
+  it('shows the statutory withdrawal function only when backend allows it', () => {
+    const allowed = create(orderFixture(), 'purchased');
+    expect(allowed.nativeElement.textContent).toContain('returnWithdrawalAction');
+    allowed.destroy();
+    const blocked = create(orderFixture('commercial', null, false), 'purchased');
+    expect(blocked.nativeElement.textContent).not.toContain('returnWithdrawalAction');
   });
 
-  it('sends the selected reason and description', () => {
+  it('submits only a reason-free statutory withdrawal', () => {
     const fixture = create(orderFixture(), 'purchased');
-    fixture.componentInstance.openRequest();
-    fixture.componentInstance.reason.set('defective');
-    fixture.componentInstance.description.set('Broken zipper');
-    fixture.componentInstance.requestReturn();
-    expect(returnsService.requestReturn).toHaveBeenCalledWith(4, {
-      reason: 'defective',
-      description: 'Broken zipper',
-    });
-  });
-
-  it('requires details for problem-based returns', () => {
-    const fixture = create(orderFixture(), 'purchased');
-    fixture.componentInstance.openRequest();
-    fixture.componentInstance.reason.set('defective');
-    fixture.componentInstance.description.set('   ');
-    fixture.componentInstance.requestReturn();
-    expect(returnsService.requestReturn).not.toHaveBeenCalled();
-    expect(fixture.componentInstance.canSubmitRequest()).toBe(false);
-  });
-
-  it('allows a commercial withdrawal without justification', () => {
-    const fixture = create(orderFixture(), 'purchased');
-    fixture.componentInstance.openRequest();
-    fixture.componentInstance.reason.set('change_of_mind');
-    fixture.componentInstance.requestReturn();
+    fixture.componentInstance.openWithdrawal();
+    fixture.componentInstance.confirmWithdrawal();
     expect(returnsService.requestReturn).toHaveBeenCalledWith(4, {
       reason: 'change_of_mind',
       description: '',
     });
   });
 
-  it('allows return shipping only after approval', () => {
+  it('allows return shipping only after automatic approval', () => {
     const requested = create(orderFixture('commercial', 'requested'), 'purchased');
     expect(requested.componentInstance.canShip()).toBe(false);
     requested.destroy();
-
     const approved = create(orderFixture('commercial', 'approved'), 'purchased');
     expect(approved.componentInstance.canShip()).toBe(true);
   });
 
-  it('allows the seller to confirm a shipped return', () => {
+  it('keeps seller receipt confirmation as a fallback', () => {
     const fixture = create(orderFixture('commercial', 'return_shipped'), 'sold');
     fixture.componentInstance.confirmDelivery();
     expect(returnsService.confirmReturnDelivery).toHaveBeenCalledWith(7);
   });
 
-  it('keeps the form available after an API error', () => {
-    returnsService.requestReturn.mockReturnValueOnce(
-      throwError(() => new Error('request failed')),
-    );
+  it('keeps the confirmation dialog open after an API error', () => {
+    returnsService.requestReturn.mockReturnValueOnce(throwError(() => new Error('failed')));
     const fixture = create(orderFixture(), 'purchased');
-    fixture.componentInstance.openRequest();
-    fixture.componentInstance.requestReturn();
+    fixture.componentInstance.openWithdrawal();
+    fixture.componentInstance.confirmWithdrawal();
     expect(fixture.componentInstance.failedAction()).toBe('request');
-    expect(fixture.componentInstance.requestOpen()).toBe(true);
+    expect(fixture.componentInstance.withdrawalOpen()).toBe(true);
   });
 });
