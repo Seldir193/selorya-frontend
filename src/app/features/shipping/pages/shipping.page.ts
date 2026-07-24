@@ -5,7 +5,6 @@ import {
   Shipment,
   ShipmentIssueCategory,
   ShipmentIssueResolutionStatus,
-  ShipmentStatus,
 } from '../../../core/models/order.model';
 import { I18nService } from '../../../core/services/i18n.service';
 import { OrdersService } from '../../../core/services/orders.service';
@@ -21,10 +20,15 @@ import {
 import { PaginationComponent } from '../../../shared/components/pagination/pagination.component';
 import { OrderDetailDialogComponent } from '../../orders/components/order-detail-dialog/order-detail-dialog.component';
 import { ReturnPanelComponent } from '../components/return-panel/return-panel.component';
-
+import {
+  ORDER_SCOPES,
+  PAGE_SIZE_OPTIONS,
+  SHIPMENT_ISSUE_CATEGORIES,
+  SHIPMENT_STATUS_FILTERS,
+  ShipmentStatusFilter,
+} from './shipping.constants';
 
 type ShipmentOrder = Order & { shipment: Shipment };
-type ShipmentStatusFilter = 'all' | ShipmentStatus;
 
 @Component({
   selector: 'app-shipping-page',
@@ -65,26 +69,10 @@ export class ShippingPage {
   readonly issueResponseNote = signal('');
   readonly respondingIssueId = signal<number | null>(null);
   readonly issueResponseErrorId = signal<number | null>(null);
-  readonly orderScopes: OrderScope[] = ['purchased', 'sold', 'all'];
-  readonly pageSizeOptions = [10, 20, 50, 100];
-  readonly statusFilters: ShipmentStatusFilter[] = [
-    'all',
-    'selection_required',
-    'selected',
-    'label_created',
-    'shipped',
-    'delivered',
-    'issue_reported',
-    'cancelled',
-    'legacy_unknown',
-  ];
-  readonly issueCategories: ShipmentIssueCategory[] = [
-    'not_received',
-    'damaged',
-    'not_as_described',
-    'wrong_item',
-    'other',
-  ];
+  readonly orderScopes = ORDER_SCOPES;
+  readonly pageSizeOptions = PAGE_SIZE_OPTIONS;
+  readonly statusFilters = SHIPMENT_STATUS_FILTERS;
+  readonly issueCategories = SHIPMENT_ISSUE_CATEGORIES;
 
   readonly statusOptions = computed<DropdownOption<ShipmentStatusFilter>[]>(() =>
     this.statusFilters.map((status) => ({ value: status, label: this.statusLabel(status) })),
